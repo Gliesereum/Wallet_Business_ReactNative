@@ -1,0 +1,95 @@
+{
+  "signup": {
+    "request": {
+      "userType":"BUSINESS",
+      "type": "PHONE",
+      "value": "380501525273",
+      "code": "336799"
+    },
+    "response": {
+      "user": {
+        "id": "b7482219-7298-4f7d-b2b5-c790d5dcff7a",
+        "firstName": null,
+        "lastName": null,
+        "middleName": null,
+        "position": null,
+        "country": null,
+        "city": null,
+        "address": null,
+        "addAddress": null,
+        "avatarUrl": null,
+        "coverUrl": null,
+        "gender": null,
+        "banStatus": "UNBAN",
+        "verifiedStatus": "UNVERIFIED",
+        "userType": "BUSINESS"
+      },
+      "tokenInfo": {
+        "accessToken": "39d7385f-7be7-43dc-98f3-64a88ff523d5",
+        "refreshToken": "4d5b8f32-9279-4d84-8cde-1edd80cd07a1",
+        "accessExpirationDate": 1545058640725,
+        "refreshExpirationDate": 1553093840725,
+        "userId": "b7482219-7298-4f7d-b2b5-c790d5dcff7a"
+      }
+    }
+  },
+  "signin": {
+    "request": {
+
+    },
+    "response": {
+      "user": {
+        "id": "b7482219-7298-4f7d-b2b5-c790d5dcff7a",
+        "firstName": null,
+        "lastName": null,
+        "middleName": null,
+        "position": null,
+        "country": null,
+        "city": null,
+        "address": null,
+        "addAddress": null,
+        "avatarUrl": null,
+        "coverUrl": null,
+        "gender": null,
+        "banStatus": "UNBAN",
+        "verifiedStatus": "UNVERIFIED",
+        "userType": "BUSINESS"
+      },
+      "tokenInfo": {
+        "accessToken": "eb25f8d8-1124-4f50-9c62-4673de96f755",
+        "refreshToken": "91fd713a-0819-4a0b-acd9-c09464a1ee09",
+        "accessExpirationDate": 1545059307068,
+        "refreshExpirationDate": 1553094507068,
+        "userId": "b7482219-7298-4f7d-b2b5-c790d5dcff7a"
+      }
+    }
+  },
+  "me": {
+    "id": "b7482219-7298-4f7d-b2b5-c790d5dcff7a",
+    "firstName": null,
+    "lastName": null,
+    "middleName": null,
+    "position": null,
+    "country": null,
+    "city": null,
+    "address": null,
+    "addAddress": null,
+    "avatarUrl": null,
+    "coverUrl": null,
+    "gender": null,
+    "banStatus": "UNBAN",
+    "verifiedStatus": "UNVERIFIED",
+    "userType": "BUSINESS"
+  },
+  "business": {
+    "id": "9737d2fe-ac1f-49aa-8ca6-26421358f587",
+    "name": null,
+    "userId": "b7482219-7298-4f7d-b2b5-c790d5dcff7a",
+    "description": null,
+    "edrpou": null,
+    "address": null,
+    "logoUrl": null,
+    "coverUrl": null,
+    "kycstatus": "KFC_NOT_PASSED"
+  }
+}
