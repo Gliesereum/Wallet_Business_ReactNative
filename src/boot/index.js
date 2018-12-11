@@ -3,7 +3,7 @@ import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 
 import App from './containers/App';
 import Auth from './containers/Auth';
-import Loading from './containers/Loading'
+import Loading from './containers/Loading';
 
 
 

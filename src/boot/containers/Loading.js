@@ -23,14 +23,19 @@ class Loading extends Component {
 
   initApp = async () => {
     const token = await AsyncStorage.getItem('token');
-    await delay(100);
+    const {authenticated} = this.props.auth;
+    if (authenticated) {
+      this.props.navigation.navigate('App');
+      return
+    }
     if(!token) {
       this.props.navigation.navigate('Auth');
       return;
     }
     try {
-      const {} = JSON.parse(token);
-      const user = await asyncRequest('');
+      const {accessToken} = JSON.parse(token);
+      const headers = {'Authorization': `Bearer ${accessToken}`};
+      const user = await asyncRequest('user/me', 'GET', null, headers);
     }
     catch (e) {
       this.props.navigation.navigate('Auth');

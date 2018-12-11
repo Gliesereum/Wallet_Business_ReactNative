@@ -6,11 +6,11 @@ import { CheckBox, Body, Button, Text, View, Toast } from "native-base";
 import PhoneInput from "react-native-phone-input";
 
 import appActions from "../../redux/app/actions";
+import authActions from '../../redux/auth/actions';
 
-import { delay, asyncRequest } from "../../utils";
+import { asyncRequest } from "../../utils";
 
 const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {
@@ -56,7 +56,7 @@ class Phone extends Component {
     const { phone, isNew } = this.state;
     const phoneNumber = phone.replace('+', '');
     const url = `phone/code?phone=${phoneNumber}&isNew=${isNew}`;
-    return { url }
+    return { url };
   };
 
   sendCodeConfig = (code) => {
@@ -91,16 +91,13 @@ class Phone extends Component {
     await this.props.$globalSpinnerOn();
     try {
       const {url, body} = this.sendCodeConfig(code);
-      await asyncRequest(url, 'POST', body);
+      const request = await asyncRequest(url, 'POST', body);
+      await this.props.$authUser(request);
       this.props.navigation.navigate('App');
-      Toast.show({
-        text: 'Welcome, Developer!'
-      });
+      Toast.show({ text: 'Welcome, Developer!' });
     }
     catch (e) {
-      Toast.show({
-        text: e.message || 'Ошибка'
-      });
+      Toast.show({ text: e.message || 'Ошибка' });
     }
     finally {
       await this.props.$globalSpinnerOff();
@@ -150,4 +147,4 @@ class Phone extends Component {
 }
 
 
-export default connect(state => state, ({ ...appActions }))(Phone);
+export default connect(state => state, ({ ...appActions, ...authActions }))(Phone);

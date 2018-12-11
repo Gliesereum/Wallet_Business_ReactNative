@@ -1,22 +1,42 @@
-import React, {Component} from 'react';
-import {View, Text} from 'native-base';
+import React from "react";
+import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 
 
-class App extends Component {
+import Profile from '../../screens/profile';
+import DashBoard from '../../screens/dashboard';
 
-  _renderApp = () => {
-    return (
-      <View>
-        <Text>Welcome to app</Text>
-      </View>
-    );
-  };
+import EmailProfile from '../../screens/profile/email';
+import IndividualProfile from '../../screens/profile/individual';
+import MainProfile from '../../screens/profile/main';
 
-  render() {
-    return this._renderApp();
+import SideBar from '../../screens/sidebar';
+
+
+const Drawer = createDrawerNavigator({
+    DashBoard: {screen: DashBoard},
+    Profile: {screen: Profile},
+  },
+  {
+    initialRouteName: "Profile",
+    contentOptions: {
+      activeTintColor: "#e91e63"
+    },
+    contentComponent: props => <SideBar {...props} />
   }
+);
 
-}
+const AppNavigator = createStackNavigator({
+    Drawer: { screen: Drawer },
+
+    MainProfile: {screen: MainProfile},
+    IndividualProfile: {screen: IndividualProfile},
+    EmailProfile: {screen: EmailProfile},
+  },
+  {
+    initialRouteName: "Drawer",
+    headerMode: "none"
+  }
+);
 
 
-export default App;
+export default AppNavigator;
