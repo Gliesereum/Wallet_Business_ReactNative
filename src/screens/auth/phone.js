@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
   }
 });
 
-//TODO Refactor requests
 
 
 class Phone extends Component {

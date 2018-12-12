@@ -40,7 +40,6 @@ function checkHttpStatus(response) {
   }
 }
 
-//TODO Refactor auth headers and cookies
 
 function header(headers) {
   const defaultHeaders = { "content-type": "application/json", "accept": "application/json" };

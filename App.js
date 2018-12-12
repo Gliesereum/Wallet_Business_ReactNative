@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { StyleProvider, Root } from 'native-base';
+import {View, Text} from 'native-base';
 
 import RootApp from './src/boot';
 

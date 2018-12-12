@@ -24,6 +24,7 @@ class Loading extends Component {
   initApp = async () => {
     const token = await AsyncStorage.getItem('token');
     const {authenticated} = this.props.auth;
+    this.props.navigation.navigate('App');
     if (authenticated) {
       this.props.navigation.navigate('App');
       return

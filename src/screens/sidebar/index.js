@@ -9,12 +9,12 @@ import {
   Container,
   Left,
   Right,
-  Badge
+  Badge,
 } from "native-base";
 import styles from "./style";
 
-const drawerCover = require("../../../assets/drawer-cover.png");
-const drawerImage = require("../../../assets/logo-kitchen-sink.png");
+const drawerCover = require("../../../assets/drawer-cover.jpg");
+const drawerImage = require("../../../assets/logo.svg");
 const datas = [
   {
     name: "Мойки",
