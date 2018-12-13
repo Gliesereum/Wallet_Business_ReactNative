@@ -23,7 +23,6 @@ class Code extends React.Component {
 
   renderScreen = () => {
     const { navigation } = this.props;
-    const code = navigation.getParam("code");
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Content>
@@ -31,7 +30,7 @@ class Code extends React.Component {
             <Item>
               <Input
                 keyboardType="numeric"
-                value={code}
+                value={this.state.value}
                 onChangeText={this.inputHandler}
               />
             </Item>

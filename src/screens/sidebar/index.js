@@ -17,8 +17,8 @@ const drawerCover = require("../../../assets/drawer-cover.jpg");
 const drawerImage = require("../../../assets/logo.svg");
 const datas = [
   {
-    name: "Мойки",
-    route: "NHTypography",
+    name: "Мои мойки",
+    route: "CarWashes",
     icon: "paper",
     bg: "#48525D"
   },
@@ -26,6 +26,12 @@ const datas = [
     name: "Профиль",
     route: "Profile",
     icon: "key",
+    bg: "#48525D"
+  },
+  {
+    name: "Выйти",
+    route: "Logout",
+    icon: "ios-exit",
     bg: "#48525D"
   },
 ];

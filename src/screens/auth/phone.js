@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard } from "react-native";
-import { CheckBox, Body, Button, Text, View, Toast } from "native-base";
+import { CheckBox, Button, Text, View, Toast } from "native-base";
 
 import PhoneInput from "react-native-phone-input";
 
 import appActions from "../../redux/app/actions";
-import authActions from '../../redux/auth/actions';
+import authActions from "../../redux/auth/actions";
 
-import { asyncRequest } from "../../utils";
+import { asyncRequest, asyncRequestTest } from "../../utils";
 
 const width = Dimensions.get("window").width;
 
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
 });
 
 
-
 class Phone extends Component {
 
   state = { phone: "+380", isNew: false, code: "" };
@@ -53,32 +52,32 @@ class Phone extends Component {
 
   getCodeConfig = () => {
     const { phone, isNew } = this.state;
-    const phoneNumber = phone.replace('+', '');
+    const phoneNumber = phone.replace("+", "");
     const url = `phone/code?phone=${phoneNumber}&isNew=${isNew}`;
     return { url };
   };
 
   sendCodeConfig = (code) => {
-    const {isNew, phone, } = this.state;
+    const { isNew, phone } = this.state;
     const authType = isNew ? "signup" : "signin";
-    const phoneNumber = phone.replace('+', '');
+    const phoneNumber = phone.replace("+", "");
     const url = `auth/${authType}`;
-    const body = {'code': code, type: 'PHONE', value: phoneNumber, userType:'BUSINESS'};
-    return {url, body};
+    const body = { "code": code, type: "PHONE", value: phoneNumber, userType: "BUSINESS" };
+    return { url, body };
   };
 
   getCodeHandler = async () => {
-    const {url} = this.getCodeConfig();
+    const { url } = this.getCodeConfig();
     await this.props.$globalSpinnerOn();
     try {
-      await asyncRequest(url, 'GET');
+      await asyncRequestTest(url, "GET");
       this.props.navigation.navigate("Code", {
         code: this.state.code,
         onSubmit: this.sendCodeHandler
       });
     } catch (e) {
       Toast.show({
-        text: e.message || 'Ошибка'
+        text: e.message || "Ошибка"
       });
     } finally {
       await this.props.$globalSpinnerOff();
@@ -89,16 +88,14 @@ class Phone extends Component {
   sendCodeHandler = async code => {
     await this.props.$globalSpinnerOn();
     try {
-      const {url, body} = this.sendCodeConfig(code);
-      const request = await asyncRequest(url, 'POST', body);
-      await this.props.$authUser(request);
-      this.props.navigation.navigate('App');
-      Toast.show({ text: 'Welcome, Developer!' });
-    }
-    catch (e) {
-      Toast.show({ text: e.message || 'Ошибка' });
-    }
-    finally {
+      const { url, body } = this.sendCodeConfig(code);
+      const request = await asyncRequest(url, "POST", body);
+      await this.props.$loginUser(request.tokenInfo);
+      this.props.navigation.navigate("Loading");
+      Toast.show({ text: "Welcome, Developer!" });
+    } catch (e) {
+      Toast.show({ text: e.message || "Ошибка" });
+    } finally {
       await this.props.$globalSpinnerOff();
     }
 

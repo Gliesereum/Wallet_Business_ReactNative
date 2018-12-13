@@ -1,20 +1,25 @@
 import React from "react";
 import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 
+import Profile from "../../screens/profile";
+import DashBoard from "../../screens/dashboard";
+import CarWashes from '../../screens/carwashes';
+import LogOut from '../../screens/logout';
 
-import Profile from '../../screens/profile';
-import DashBoard from '../../screens/dashboard';
+import EmailProfile from "../../screens/profile/email";
+import IndividualProfile from "../../screens/profile/individual";
+import MainProfile from "../../screens/profile/main";
 
-import EmailProfile from '../../screens/profile/email';
-import IndividualProfile from '../../screens/profile/individual';
-import MainProfile from '../../screens/profile/main';
+import NewCarWash from '../../screens/carwashes/newCarWash';
 
-import SideBar from '../../screens/sidebar';
+import SideBar from "../../screens/sidebar";
 
 
 const Drawer = createDrawerNavigator({
-    DashBoard: {screen: DashBoard},
-    Profile: {screen: Profile},
+    DashBoard: { screen: DashBoard },
+    CarWashes: {screen: CarWashes},
+    Profile: { screen: Profile },
+    Logout: {screen: LogOut}
   },
   {
     initialRouteName: "Profile",
@@ -28,9 +33,11 @@ const Drawer = createDrawerNavigator({
 const AppNavigator = createStackNavigator({
     Drawer: { screen: Drawer },
 
-    MainProfile: {screen: MainProfile},
-    IndividualProfile: {screen: IndividualProfile},
-    EmailProfile: {screen: EmailProfile},
+    MainProfile: { screen: MainProfile },
+    IndividualProfile: { screen: IndividualProfile },
+    EmailProfile: { screen: EmailProfile },
+
+    NewCarWash: {screen: NewCarWash}
   },
   {
     initialRouteName: "Drawer",
