@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Container, Content, Icon, Form, Label, Input, Item, Text, Toast } from "native-base";
+import { Button, Container, Content, Icon, Form, Label, Input, Item, Text, Toast, View } from "native-base";
 
 import { HeaderLayout } from "../../components/Layout";
 import { asyncRequestTest } from "../../utils";
 
-import appActions from '../../redux/app/actions';
-import washActions from '../../redux/washes/actions';
+import appActions from "../../redux/app/actions";
+import washActions from "../../redux/washes/actions";
+import { Dimensions } from "react-native";
+
+
+const deviceHeight = Dimensions.get("window").height;
 
 
 const fields = [
@@ -32,7 +36,7 @@ class NewCarWash extends Component {
 
   onSubmit = async () => {
     const url = "carwash";
-    const {$addWash} = this.props;
+    const { $addWash } = this.props;
     const { token } = this.props.auth;
     try {
       this.props.$globalSpinnerOn();
@@ -41,9 +45,8 @@ class NewCarWash extends Component {
       await this.props.navigation.goBack();
       Toast.show({ text: "Успешно создана мойка!" });
     } catch (e) {
-      Toast.show({ text: e.message || 'Ошибка'});
-    }
-    finally {
+      Toast.show({ text: e.message || "Ошибка" });
+    } finally {
       this.props.$globalSpinnerOff();
     }
   };
@@ -63,7 +66,35 @@ class NewCarWash extends Component {
     );
   };
 
+  renderNotAllowedCreateCarWash = () => {
+    return (
+      <View style={{paddingTop: deviceHeight / 2.5}}>
+        <Text style={{textAlign: 'center'}}>
+          Аккаунт не верифицирован. Добавьте личную информацию и электронную почту.
+        </Text>
+      </View>
+    );
+  };
+
+  renderForm = () => {
+    return (
+      <View>
+        <Form>
+          {fields.map(this.renderItemInput)}
+        </Form>
+        <Button
+          style={{ marginLeft: 5, marginRight: 5, marginTop: 10 }}
+          onPress={() => this.onSubmit()}
+          full
+          block
+        ><Text>Создать</Text>
+        </Button>
+      </View>
+    );
+  };
+
   renderScreen = () => {
+    const { verifiedStatus } = this.props.auth.user;
     return (
       <Container>
         <HeaderLayout
@@ -75,16 +106,7 @@ class NewCarWash extends Component {
           body={"Новая мойка"}
         />
         <Content>
-          <Form>
-            {fields.map(this.renderItemInput)}
-          </Form>
-          <Button
-            style={{marginLeft: 5, marginRight: 5, marginTop: 10}}
-            onPress={() => this.onSubmit()}
-            full
-            block
-          ><Text>Создать</Text>
-          </Button>
+          {verifiedStatus ? this.renderForm() : this.renderNotAllowedCreateCarWash()}
         </Content>
       </Container>
     );
@@ -97,4 +119,4 @@ class NewCarWash extends Component {
 }
 
 
-export default connect(state => state, ({...appActions, ...washActions}))(NewCarWash);
+export default connect(state => state, ({ ...appActions, ...washActions }))(NewCarWash);
