@@ -1,5 +1,7 @@
 import config from "../config";
 
+// import {store} from '../redux/store';
+
 const timeOutMessageError = new Error("Превишен интервал ожидания. Повторите попытку!");
 
 const timeOut = (reject, time = 60000) => (setTimeout(() => reject(timeOutMessageError), time));
@@ -41,11 +43,11 @@ const requestConfig = (method, token, body) => {
 };
 
 
-export const asyncRequestTest = (url, method = "GET", token, body, requestTime) => {
+export const asyncRequestTest = (url, method = "GET", moduleUrl = "karma", token, body, requestTime) => {
   return new Promise(async (resolve, reject) => {
     const timer = timeOut(reject, requestTime);
     try {
-      const fullURL = `${config.url}${url}`;
+      const fullURL = `${config.url}${moduleUrl}/v1/${url}`;
       const _requestConfig = requestConfig(method, token, body);
       const request = await fetch(fullURL, _requestConfig);
       const data = await request.json();
@@ -64,12 +66,19 @@ export const asyncRequestTest = (url, method = "GET", token, body, requestTime) 
 };
 
 
+export const withToken = fn => (...argv) => {
+  // console.log(store);
+  // const token = store.getState().auth.accessToken;
+  // return fn({...argv, token});
+};
+
+
 function header(token) {
   const defaultHeaders = { "content-type": "application/json", "accept": "application/json" };
   if (!token) {
     return defaultHeaders;
   }
   return { ...defaultHeaders, "Authorization": `Bearer ${token}` };
-}
+};
 
 

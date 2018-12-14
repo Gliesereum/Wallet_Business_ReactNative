@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, Container, Content, Icon, Button, Toast, View, Form, Input, Label, Item } from "native-base";
+import { Text, Container, Content, Icon, Button, Toast, View, Form, Input, Label, Item, ListItem, Body } from "native-base";
 import { asyncRequest, asyncRequestTest } from "../../utils";
 
 import { HeaderLayout } from "../../components/Layout";
@@ -14,13 +14,13 @@ class Email extends Component {
 
   getCode = async () => {
     const { $globalSpinnerOn, $globalSpinnerOff } = this.props;
-    const {email} = this.state;
+    const { email } = this.state;
     const url = `email/code?email=${email}&isNew=true`;
     try {
       $globalSpinnerOn();
-      const request = await asyncRequestTest(url);
+      const request = await asyncRequestTest(url, 'GET', 'account');
       this.setState(state => ({ ...state, gotCode: true }));
-      Toast.show({text: "Введите код отправленный на указаную почту"});
+      Toast.show({ text: "Введите код отправленный на указаную почту" });
     } catch (e) {
       Toast.show({ text: e || "Ошибка" });
     } finally {
@@ -29,21 +29,22 @@ class Email extends Component {
   };
 
   sendCode = async () => {
-    const { $addEmail, navigate } = this.props;
-    const {code, email} = this.state;
+    const { $addEmail, navigation } = this.props;
+    const { token } = this.props.auth;
+    const { code, email } = this.state;
     const url = `email`;
-    const body = {code, email};
+    const body = { code, email };
     const { $globalSpinnerOn, $globalSpinnerOff } = this.props;
     try {
       $globalSpinnerOn();
-      const newEmail = await asyncRequest(url, 'POST', body);
+      const newEmail = await asyncRequestTest(url, "POST", 'account', token, body);
       await $addEmail(newEmail);
-      Toast.show({text: "Успешно добавлена почта"});
-      navigate.goBack();
+      await Toast.show({ text: "Успешно добавлена почта" });
+      navigation.goBack();
     } catch (e) {
-      Toast.show({ text: e || "Ошибка" });
+      await Toast.show({ text: e.message || "Ошибка" });
     } finally {
-      $globalSpinnerOff();
+      await $globalSpinnerOff();
     }
   };
 
@@ -52,8 +53,13 @@ class Email extends Component {
   };
 
   renderEmailsList = () => {
+    const {emails} = this.props.auth
     return (
-      <View><Text>Список Почт</Text></View>
+      <View>
+        {emails.map(item=>(
+          <ListItem key={item.id}><Body><Text>{item.email}</Text></Body></ListItem>
+        ))}
+      </View>
     );
   };
 

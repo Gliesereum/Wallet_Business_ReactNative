@@ -11,10 +11,10 @@ import {
 } from "native-base";
 
 import { HeaderLayout } from "../../components/Layout";
-import { asyncRequest } from "../../utils";
+import { asyncRequest, asyncRequestTest } from "../../utils";
 
-import appActiions from '../../redux/app/actions';
-import authActiions from '../../redux/auth/actions';
+import appActiions from "../../redux/app/actions";
+import authActiions from "../../redux/auth/actions";
 
 const fields = [
   { label: "Название", key: "name" },
@@ -46,15 +46,16 @@ class Invdividual extends Component {
   updateBusiness = async () => {
     const url = `user/business`;
     const { data } = this.state;
+    const { token } = this.props.auth;
     const { $updateBusiness, $globalSpinnerOn, $globalSpinnerOff, navigation } = this.props;
     try {
       $globalSpinnerOn();
-      const newUser = await asyncRequest(url, "PUT", data);
+      const newUser = await asyncRequestTest(url, "PUT", 'account', token, data);
       await $updateBusiness(newUser);
       await Toast.show({ text: "Успешно обновлён профиль" });
       await navigation.goBack();
     } catch (e) {
-      await Toast.show({ text: e || "Ошибка" });
+      await Toast.show({ text: e.message || "Ошибка" });
     } finally {
       $globalSpinnerOff();
     }
@@ -96,4 +97,4 @@ class Invdividual extends Component {
   }
 }
 
-export default connect(state => state,({...authActiions, ...appActiions}))(Invdividual);
+export default connect(state => state, ({ ...authActiions, ...appActiions }))(Invdividual);

@@ -27,14 +27,17 @@ class Loading extends Component {
     try {
       await this.checkToken();
       if (this.token) {
+        await this.props.$authToken(this.token);
         await this.checkUser();
         await this.checkBusiness();
         await this.checkEmail();
-        await this.props.navigation.navigate('App');
+        await this.props.navigation.navigate("App");
       }
-    }
-    catch (e) {
-      this.props.navigation.navigate('Auth');
+      else {
+        this.props.navigation.navigate("Logout");
+      }
+    } catch (e) {
+      this.props.navigation.navigate("Auth");
     }
 
   };
@@ -60,32 +63,32 @@ class Loading extends Component {
   checkUser = async () => {
     try {
       const url = "user/me";
-      const user = await asyncRequestTest(url, "GET", this.token);
-      console.log('user', user);
+      const user = await asyncRequestTest(url, "GET", "account", this.token);
       this.props.$authUser(user);
     } catch (e) {
-      console.log('error', e);
+      const error = e;
+      console.log("error", e);
     }
   };
 
   checkBusiness = async () => {
     try {
       const url = "user/business";
-      const business = await asyncRequestTest(url, "GET", this.token);
+      const business = await asyncRequestTest(url, "GET", "account", this.token);
       await this.props.$authBusiness(business);
     } catch (e) {
-      console.log('error', e);
+      console.log("error", e);
     }
   };
 
   checkEmail = async () => {
     try {
       const url = "email/by/user";
-      const email = await asyncRequestTest(url, "GET", this.token);
+      const email = await asyncRequestTest(url, "GET", "account", this.token);
       await this.props.$authEmail(email);
     } catch (e) {
       console.log(e);
-      this.props.navigation.navigate('Auth');
+      this.props.navigation.navigate("Auth");
     }
   };
 
@@ -102,4 +105,4 @@ class Loading extends Component {
 }
 
 
-export default connect(state => state, ({ ...appActions,  ...authActions}))(Loading);
+export default connect(state => state, ({ ...appActions, ...authActions }))(Loading);

@@ -10,14 +10,20 @@ import {
   Input,
   Item,
   Label,
-  Toast
+  Toast,
+  Picker
 } from "native-base";
-import { asyncRequest, asyncRequestTest } from "../../utils";
+
+const deviceWidth = Dimensions.get("window").width;
+
+
+import { asyncRequestTest } from "../../utils";
 
 import { HeaderLayout } from "../../components/Layout";
 
 import authActions from "../../redux/auth/actions";
 import appActions from "../../redux/app/actions";
+import { Dimensions } from "react-native";
 
 const fields = [
   { label: "Имя", key: "firstName" },
@@ -27,10 +33,16 @@ const fields = [
   { label: "Страна Проживания", key: "country" },
   { label: "Город Проживания", key: "city" },
   { label: "Адресс, 8 символов", key: "address" },
-  { label: "Дополнительный Адресс", key: "addAddress" },
+  { label: "Дополнительный Адресс, 8 символов", key: "addAddress" },
   { label: "Аватар (URL)", key: "avatarUrl" },
   { label: "Обложка (URL)", key: "coverUrl" },
-  { label: "Пол", key: "gender", options: [] }
+  {
+    label: "Пол", key: "gender", type: "select", options: [
+      { label: "Не указан", key: "UNKNOWN" },
+      { label: "Мужской", key: "MALE" },
+      { label: "Женский", key: "FEMALE" }
+    ]
+  }
 ];
 
 
@@ -54,25 +66,50 @@ class Main extends Component {
   };
 
   updateProfile = async () => {
-    const url = `user`;
-    const { data } = this.state;
     const { $updateUser, $globalSpinnerOn, $globalSpinnerOff, navigation } = this.props;
+    await $globalSpinnerOn();
     try {
-      $globalSpinnerOn();
-      const newUser = await asyncRequestTest(url, "PUT", data);
+      const url = `user`;
+      const { data } = this.state;
+      const { token } = this.props.auth;
+      const newUser = await asyncRequestTest(url, "PUT", "account", token, data);
       await $updateUser(newUser);
-      await Toast.show({ text: "Успешно обновлён профиль" });
-      await navigation.goBack();
+      Toast.show({ text: "Успешно обновлён профиль" });
+      navigation.goBack();
     } catch (e) {
-      await Toast.show({ text: e || "Ошибка" });
+      Toast.show({ text: e.message || "Ошибка" });
     } finally {
-      $globalSpinnerOff();
+      await $globalSpinnerOff();
     }
   };
 
   renderItemInput = (item) => {
     const { onInput } = this;
     const value = this.state.data[item.key];
+    const genders = [
+      { label: "Не указан", key: "UNKNOWN" },
+      { label: "Мужской", key: "MALE" },
+      { label: "Женский", key: "FEMALE" }
+    ];
+    if (item.type === "select") {
+      return (
+        <Picker
+          key={item.key}
+          mode="dropdown"
+          iosHeader="Select your SIM"
+          iosIcon={<Icon name="ios-arrow-down-outline"/>}
+          style={{ width: deviceWidth, marginTop: 3 }}
+          selectedValue={value}
+          placeholder={"Пол"}
+          value={value}
+          onValueChange={value => this.onInput("gender", value)}
+        >
+          {genders.map(item => (
+            <Picker.Item label={item.label} key={item.key} value={item.key}/>
+          ))}
+        </Picker>
+      );
+    }
     return (
       <Item floatingLabel key={item.key}>
         <Label style={{ paddingTop: 4 }}>{item.label}</Label>
@@ -95,6 +132,7 @@ class Main extends Component {
         <Content>
           <Form>
             {fields.map(this.renderItemInput)}
+
           </Form>
           <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.updateProfile}>
             <Text>Сохранить</Text>

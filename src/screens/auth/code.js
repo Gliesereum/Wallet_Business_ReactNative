@@ -1,8 +1,22 @@
 import React from "react";
-import {TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Dimensions } from "react-native";
 import { Text, Button, Input, Form, Item, Content } from "native-base";
 
 import { Timer } from "../../components";
+
+const deviceHeight = Dimensions.get("window").height;
+
+const styles = {
+  container: {
+    flex: 1,
+    paddingTop: deviceHeight / 3.5
+  },
+  submitButton: {
+    marginTop: 15,
+    marginLeft: 5,
+    marginRight: 5,
+  }
+};
 
 
 class Code extends React.Component {
@@ -22,10 +36,9 @@ class Code extends React.Component {
   };
 
   renderScreen = () => {
-    const { navigation } = this.props;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <Content>
+        <Content style={styles.container}>
           <Form>
             <Item>
               <Input
@@ -37,13 +50,16 @@ class Code extends React.Component {
           </Form>
           <Text style={{ textAlign: "center" }}>
             <Timer time={180000} onTimeOver={e => {
-              console.log("Done");
+              this.props.navigation.goBack();
             }}/>
           </Text>
           <Button
+            style={styles.submitButton}
             disabled={(this.state.value.length !== 6)}
             onPress={this.submitHandler}
             buttonStyle={{ width: "100%" }}
+            block
+            full
           >
             <Text>Войти</Text>
           </Button>

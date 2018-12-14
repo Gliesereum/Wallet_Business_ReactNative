@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard } from "react-native";
-import { CheckBox, Button, Text, View, Toast } from "native-base";
+import { CheckBox, Button, Text, View, Toast, ListItem, Body } from "native-base";
 
 import PhoneInput from "react-native-phone-input";
 
@@ -70,7 +70,7 @@ class Phone extends Component {
     const { url } = this.getCodeConfig();
     await this.props.$globalSpinnerOn();
     try {
-      await asyncRequestTest(url, "GET");
+      await asyncRequestTest(url, "GET", "account");
       this.props.navigation.navigate("Code", {
         code: this.state.code,
         onSubmit: this.sendCodeHandler
@@ -89,10 +89,9 @@ class Phone extends Component {
     await this.props.$globalSpinnerOn();
     try {
       const { url, body } = this.sendCodeConfig(code);
-      const request = await asyncRequest(url, "POST", body);
+      const request = await asyncRequestTest(url, "POST", 'account', null, body );
       await this.props.$loginUser(request.tokenInfo);
       this.props.navigation.navigate("Loading");
-      Toast.show({ text: "Welcome, Developer!" });
     } catch (e) {
       Toast.show({ text: e.message || "Ошибка" });
     } finally {
@@ -117,16 +116,23 @@ class Phone extends Component {
             />
           </View>
           <View style={styles.checkboxContainer}>
-            <CheckBox
-              checked={this.state.isNew}
-              onPress={e => this.inputHandler("isNew", !this.state.isNew)}
-            />
-            <Text>Новое Юр. Лицо</Text>
+            <ListItem>
+              <CheckBox
+                checked={this.state.isNew}
+                onPress={e => this.inputHandler("isNew", !this.state.isNew)}
+              />
+              <Body>
+              <Text>Новое Юр. Лицо</Text>
+              </Body>
+            </ListItem>
+
           </View>
           <View style={styles.submitContainer}>
             <Button
               disabled={!validPhone()}
               onPress={getCodeHandler}
+              block
+              full
             >
               <Text>Получить код</Text>
             </Button>

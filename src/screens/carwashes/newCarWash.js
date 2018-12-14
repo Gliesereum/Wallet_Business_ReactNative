@@ -1,18 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Container, Content, Icon, Form, Label, Input, Item } from "native-base";
+import { Button, Container, Content, Icon, Form, Label, Input, Item, Text, Toast } from "native-base";
 
 import { HeaderLayout } from "../../components/Layout";
 import { asyncRequestTest } from "../../utils";
 
-const days = [
-  {}
-];
+import appActions from '../../redux/app/actions';
+import washActions from '../../redux/washes/actions';
 
 
 const fields = [
   { label: "Название", key: "name" },
-  { label: "Количество боксов, число", key: "name", type: "numeric" },
+  { label: "Количество боксов, число", key: "countBox", type: "numeric" },
   { label: "Описание", key: "description" },
   { label: "Адрес", key: "address" },
   { label: "Долгота, -180 - 180", key: "latitude" },
@@ -32,12 +31,20 @@ class NewCarWash extends Component {
   };
 
   onSubmit = async () => {
-    const url = "";
-    const token = this.props.auth.token;
+    const url = "carwash";
+    const {$addWash} = this.props;
+    const { token } = this.props.auth;
     try {
-      const newWash = await asyncRequestTest(url, "POST", token);
+      this.props.$globalSpinnerOn();
+      const newWash = await asyncRequestTest(url, "POST", "karma", token, this.state.data);
+      await $addWash(newWash);
+      await this.props.navigation.goBack();
+      Toast.show({ text: "Успешно создана мойка!" });
     } catch (e) {
-
+      Toast.show({ text: e.message || 'Ошибка'});
+    }
+    finally {
+      this.props.$globalSpinnerOff();
     }
   };
 
@@ -69,8 +76,15 @@ class NewCarWash extends Component {
         />
         <Content>
           <Form>
-            {fields.map(item => this.renderItemInput)}
+            {fields.map(this.renderItemInput)}
           </Form>
+          <Button
+            style={{marginLeft: 5, marginRight: 5, marginTop: 10}}
+            onPress={() => this.onSubmit()}
+            full
+            block
+          ><Text>Создать</Text>
+          </Button>
         </Content>
       </Container>
     );
@@ -83,4 +97,4 @@ class NewCarWash extends Component {
 }
 
 
-export default connect(state => state)(NewCarWash);
+export default connect(state => state, ({...appActions, ...washActions}))(NewCarWash);

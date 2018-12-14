@@ -13,6 +13,7 @@ import MainProfile from "../../screens/profile/main";
 import NewCarWash from '../../screens/carwashes/newCarWash';
 
 import SideBar from "../../screens/sidebar";
+import InfoCarWash from '../../screens/carwashes/infoCarWash';
 
 
 const Drawer = createDrawerNavigator({
@@ -37,7 +38,8 @@ const AppNavigator = createStackNavigator({
     IndividualProfile: { screen: IndividualProfile },
     EmailProfile: { screen: EmailProfile },
 
-    NewCarWash: {screen: NewCarWash}
+    NewCarWash: {screen: NewCarWash},
+    InfoCarWash: {screen: InfoCarWash}
   },
   {
     initialRouteName: "Drawer",

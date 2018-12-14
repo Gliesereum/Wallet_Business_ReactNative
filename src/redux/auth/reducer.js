@@ -22,6 +22,13 @@ const appReducer = createReducer(initialState, {
     };
   },
 
+  [actions.AUTH_TOKEN]: (state, payload) => {
+    return {
+      ...state,
+      token: payload
+    }
+  },
+
   [actions.AUTH_USER]: (state, payload) => {
     return {
       ...state,
