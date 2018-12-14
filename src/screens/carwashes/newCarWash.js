@@ -106,7 +106,7 @@ class NewCarWash extends Component {
           body={"Новая мойка"}
         />
         <Content>
-          {verifiedStatus ? this.renderForm() : this.renderNotAllowedCreateCarWash()}
+          {verifiedStatus === 'VERIFIED' ? this.renderForm() : this.renderNotAllowedCreateCarWash()}
         </Content>
       </Container>
     );

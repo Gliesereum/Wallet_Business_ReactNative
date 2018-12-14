@@ -1,3 +1,3 @@
 export default {
-  url: 'http://192.168.0.107:8200/api/',
+  url: 'http://207.154.239.122:8200/api/',
 };

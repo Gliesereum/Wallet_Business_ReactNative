@@ -26,7 +26,7 @@ const appReducer = createReducer(initialState, {
     return {
       ...state,
       token: payload
-    }
+    };
   },
 
   [actions.AUTH_USER]: (state, payload) => {
@@ -62,7 +62,11 @@ const appReducer = createReducer(initialState, {
   [actions.ADD_EMAIL]: (state, payload) => {
     return {
       ...state,
-      emails: [...state.emails, payload]
+      emails: [...state.emails, payload],
+      user: {
+        ...state.user,
+        verifiedStatus: 'VERIFIED'
+      }
     };
   },
   [actions.SIGN_OUT]: state => {
