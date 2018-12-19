@@ -30,14 +30,14 @@ class CarWashes extends Component {
   }
 
   initScreen = async () => {
-    const url = "carwash";
+    const url = "carwash/byUser";
     const { $globalSpinnerOn, $globalSpinnerOff, $getWashes } = this.props;
     await $globalSpinnerOn();
     try {
-      const data = await asyncRequestTest(url);
+      const data = await asyncRequestTest(url, 'GET', 'karma', this.props.auth.token);
       await $getWashes(data);
     } catch (e) {
-
+      await console.log('error', e);
     } finally {
       await $globalSpinnerOff();
     }

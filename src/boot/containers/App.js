@@ -11,6 +11,7 @@ import IndividualProfile from "../../screens/profile/individual";
 import MainProfile from "../../screens/profile/main";
 
 import NewCarWash from '../../screens/carwashes/newCarWash';
+import UpdateCarWash from '../../screens/carwashes/updateCarWash';
 
 import SideBar from "../../screens/sidebar";
 import InfoCarWash from '../../screens/carwashes/infoCarWash';
@@ -39,6 +40,7 @@ const AppNavigator = createStackNavigator({
     EmailProfile: { screen: EmailProfile },
 
     NewCarWash: {screen: NewCarWash},
+    UpdateCarWash: {screen: UpdateCarWash},
     InfoCarWash: {screen: InfoCarWash}
   },
   {

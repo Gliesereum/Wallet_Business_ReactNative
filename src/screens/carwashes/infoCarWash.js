@@ -7,7 +7,7 @@ import { HeaderLayout } from "../../components/Layout";
 
 const InfoCarWash = props => {
   const { navigation } = props;
-  const data = navigation.getParam('carWash');
+  const data = navigation.getParam("carWash");
   return (
     <Container>
       <HeaderLayout
@@ -17,6 +17,14 @@ const InfoCarWash = props => {
           </Button>
         )}
         body={"Информация"}
+        right={(
+          <Button
+            onPress={() => navigation.navigate("UpdateCarWash", { carWash: data })}
+            transparent
+          >
+            <Text>Ред.</Text>
+          </Button>
+        )}
       />
       <Content>
         <View><Text>Название: {data.name}</Text></View>

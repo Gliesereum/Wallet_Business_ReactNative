@@ -22,7 +22,15 @@ const washesReducer = createReducer(initialState, {
       ...state,
       washes: [...state.washes, payload]
     };
-  }
+  },
+
+  [actions.UPDATE_WASH]: (state, payload) => {
+    const newArray = state.washes.filter(wash=>wash.id !== payload.id);
+    return {
+      ...state,
+      washes: [...newArray, payload]
+    };
+  },
 
 });
 

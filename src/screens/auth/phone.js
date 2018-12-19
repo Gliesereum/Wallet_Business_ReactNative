@@ -116,7 +116,7 @@ class Phone extends Component {
             />
           </View>
           <View style={styles.checkboxContainer}>
-            <ListItem>
+            <ListItem onPress={e => this.inputHandler("isNew", !this.state.isNew)}>
               <CheckBox
                 checked={this.state.isNew}
                 onPress={e => this.inputHandler("isNew", !this.state.isNew)}
