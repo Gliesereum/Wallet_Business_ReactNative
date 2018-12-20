@@ -8,11 +8,8 @@ import {
   Left,
   Right,
   Icon,
-  Header,
   Container,
-  Title,
   Button,
-  Body
 } from "native-base";
 
 import { HeaderLayout } from "../../components/Layout";

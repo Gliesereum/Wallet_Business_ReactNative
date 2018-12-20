@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dimensions, StyleSheet } from "react-native";
-import { Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View } from "native-base";
+import { Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View, SwipeRow } from "native-base";
 
-import { asyncRequestTest } from "../../utils";
+import {asyncRequestAuth } from "../../utils";
 import washActions from "../../redux/washes/actions";
 import appActions from "../../redux/app/actions";
 
@@ -34,7 +34,7 @@ class CarWashes extends Component {
     const { $globalSpinnerOn, $globalSpinnerOff, $getWashes } = this.props;
     await $globalSpinnerOn();
     try {
-      const data = await asyncRequestTest(url, 'GET', 'karma', this.props.auth.token);
+      const data = await asyncRequestAuth(url);
       await $getWashes(data);
     } catch (e) {
       await console.log('error', e);
@@ -55,6 +55,7 @@ class CarWashes extends Component {
       <List
         dataArray={washes}
         renderRow={data =>
+
           <ListItem
             button
             onPress={() => this.props.navigation.navigate("InfoCarWash", {

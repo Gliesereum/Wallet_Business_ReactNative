@@ -8,10 +8,6 @@ import { asyncRequestTest } from "../../utils";
 
 import appActions from "../../redux/app/actions";
 import washActions from "../../redux/washes/actions";
-import { Dimensions } from "react-native";
-
-
-const deviceHeight = Dimensions.get("window").height;
 
 
 class UpdateCarWash extends Component {
@@ -34,6 +30,7 @@ class UpdateCarWash extends Component {
   };
 
   renderScreen = () => {
+    const data = this.props.navigation.getParam('carWashData');
     return (
       <Container>
         <HeaderLayout
@@ -45,7 +42,7 @@ class UpdateCarWash extends Component {
           body={"Обновить"}
         />
         <Content>
-          <CarWashForm onSubmit={this.onSubmit} type={"update"}/>
+          <CarWashForm onSubmit={this.onSubmit} type={"update"} carWashData={data}/>
         </Content>
       </Container>
     );

@@ -3,28 +3,29 @@ import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 
 import Profile from "../../screens/profile";
 import DashBoard from "../../screens/dashboard";
-import CarWashes from '../../screens/carwashes';
-import LogOut from '../../screens/logout';
+import CarWashes from "../../screens/carwashes";
+import LogOut from "../../screens/logout";
 
 import EmailProfile from "../../screens/profile/email";
 import IndividualProfile from "../../screens/profile/individual";
 import MainProfile from "../../screens/profile/main";
 
-import NewCarWash from '../../screens/carwashes/newCarWash';
-import UpdateCarWash from '../../screens/carwashes/updateCarWash';
+import NewCarWash from "../../screens/carwashes/newCarWash";
+import UpdateCarWash from "../../screens/carwashes/updateCarWash";
+import ScheduleCarWash from "../../screens/carwashes/scheduleCarWash";
 
 import SideBar from "../../screens/sidebar";
-import InfoCarWash from '../../screens/carwashes/infoCarWash';
+import InfoCarWash from "../../screens/carwashes/infoCarWash";
 
 
 const Drawer = createDrawerNavigator({
     DashBoard: { screen: DashBoard },
-    CarWashes: {screen: CarWashes},
+    CarWashes: { screen: CarWashes },
     Profile: { screen: Profile },
-    Logout: {screen: LogOut}
+    Logout: { screen: LogOut }
   },
   {
-    initialRouteName: "Profile",
+    initialRouteName: "CarWashes",
     contentOptions: {
       activeTintColor: "#e91e63"
     },
@@ -39,9 +40,10 @@ const AppNavigator = createStackNavigator({
     IndividualProfile: { screen: IndividualProfile },
     EmailProfile: { screen: EmailProfile },
 
-    NewCarWash: {screen: NewCarWash},
-    UpdateCarWash: {screen: UpdateCarWash},
-    InfoCarWash: {screen: InfoCarWash}
+    NewCarWash: { screen: NewCarWash },
+    UpdateCarWash: { screen: UpdateCarWash },
+    ScheduleCarWash: { screen: ScheduleCarWash },
+    InfoCarWash: { screen: InfoCarWash }
   },
   {
     initialRouteName: "Drawer",

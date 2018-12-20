@@ -1,4 +1,5 @@
 import config from "../config";
+import { AsyncStorage } from "react-native";
 
 // import {store} from '../redux/store';
 
@@ -50,11 +51,16 @@ export const asyncRequestTest = (url, method = "GET", moduleUrl = "karma", token
       const fullURL = `${config.url}${moduleUrl}/v1/${url}`;
       const _requestConfig = requestConfig(method, token, body);
       const request = await fetch(fullURL, _requestConfig);
-      const data = await request.json();
+      if (request.status === 204) {
+        clearTimeout(timer);
+        resolve();
+      }
       if (request.status >= 200 && request.status <= 300) {
+        const data = await request.json();
         clearTimeout(timer);
         resolve(data);
       }
+      const data = await request.json();
       clearTimeout(timer);
       reject(data);
     } catch (e) {
@@ -62,7 +68,33 @@ export const asyncRequestTest = (url, method = "GET", moduleUrl = "karma", token
       reject(e);
     }
   });
+};
 
+export const asyncRequestAuth = (url, method = "GET", moduleUrl = "karma", body, requestTime) => {
+  return new Promise(async (resolve, reject) => {
+    const timer = timeOut(reject, requestTime);
+    const token = JSON.parse(await AsyncStorage.getItem("token")).accessToken;
+    try {
+      const fullURL = `${config.url}${moduleUrl}/v1/${url}`;
+      const _requestConfig = requestConfig(method, token, body);
+      const request = await fetch(fullURL, _requestConfig);
+      if (request.status === 204) {
+        clearTimeout(timer);
+        resolve();
+      }
+      if (request.status >= 200 && request.status <= 300) {
+        const data = await request.json();
+        clearTimeout(timer);
+        resolve(data);
+      }
+      const data = await request.json();
+      clearTimeout(timer);
+      reject(data);
+    } catch (e) {
+      clearTimeout(timer);
+      reject(e);
+    }
+  });
 };
 
 

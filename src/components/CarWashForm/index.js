@@ -39,7 +39,7 @@ class CarWashFrom extends Component<Props, {}> {
   }
 
   fillForm = () => {
-    const carWashData = this.props.navigation.getParam('carWash');
+    const carWashData = this.props.carWashData;
     this.setState(state => ({
       ...state,
       data: {
