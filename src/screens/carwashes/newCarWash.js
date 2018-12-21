@@ -18,14 +18,14 @@ class NewCarWash extends Component {
 
   onSubmit = async (data) => {
     const url = "carwash";
-    const { $addWash } = this.props;
+    const { $addWash, navigation } = this.props;
     const { token } = this.props.auth;
     try {
       this.props.$globalSpinnerOn();
       const newWash = await asyncRequestTest(url, "POST", "karma", token, data);
       await $addWash(newWash);
-      await this.props.navigation.goBack();
-      Toast.show({ text: "Успешно создана мойка!" });
+      await Toast.show({ text: "Успешно создана мойка!" });
+      await navigation.navigate('ScheduleCarWash', {carWashData: newWash, isNew: true});
     } catch (e) {
       Toast.show({ text: e.message || "Ошибка" });
     } finally {

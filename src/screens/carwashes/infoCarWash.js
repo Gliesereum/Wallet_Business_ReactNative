@@ -37,7 +37,7 @@ const InfoCarWash = (props) => {
                   title: "Редактировать"
                 },
                 buttonIndex => {
-                  navigation.navigate(BUTTONS[buttonIndex].path, {carWashData: data});
+                  navigation.navigate(BUTTONS[buttonIndex].path, {carWashData: data, isNew: false});
                 }
               )}
           >
