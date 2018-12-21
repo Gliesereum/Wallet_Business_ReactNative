@@ -37,7 +37,6 @@ class CarWashes extends Component {
       const data = await asyncRequestAuth(url);
       await $getWashes(data);
     } catch (e) {
-      await console.log('error', e);
     } finally {
       await $globalSpinnerOff();
     }

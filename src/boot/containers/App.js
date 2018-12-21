@@ -13,6 +13,7 @@ import MainProfile from "../../screens/profile/main";
 import NewCarWash from "../../screens/carwashes/newCarWash";
 import UpdateCarWash from "../../screens/carwashes/updateCarWash";
 import ScheduleCarWash from "../../screens/carwashes/scheduleCarWash";
+import BoxesCarWash from "../../screens/carwashes/boxesCarWash";
 
 import SideBar from "../../screens/sidebar";
 import InfoCarWash from "../../screens/carwashes/infoCarWash";
@@ -43,6 +44,7 @@ const AppNavigator = createStackNavigator({
     NewCarWash: { screen: NewCarWash },
     UpdateCarWash: { screen: UpdateCarWash },
     ScheduleCarWash: { screen: ScheduleCarWash },
+    BoxesCarWash: { screen: BoxesCarWash },
     InfoCarWash: { screen: InfoCarWash }
   },
   {

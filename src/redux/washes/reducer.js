@@ -60,6 +60,34 @@ const washesReducer = createReducer(initialState, {
     };
   },
 
+  [actions.ADD_WASH]: (state, { carWashId, box }) => {
+    const updatedCarWash = state.washes.filter(item => item.id === carWashId)[0];
+    const updatedIndex = state.washes.map(item => item.id).indexOf(carWashId);
+    const newCarWash = { ...updatedCarWash, spaces: [...updatedCarWash.spaces, box] };
+    return {
+      ...state,
+      washes: [
+        ...state.washes.slice(0, updatedIndex),
+        newCarWash,
+        ...state.washes.slice(updatedIndex + 1, state.washes.length)
+      ]
+    };
+  },
+
+  [actions.REMOVE_BOX]: (state, { carWashId, boxId }) => {
+    const updatedCarWash = state.washes.filter(item => item.id === boxId)[0];
+    const updatedIndex = state.washes.map(item => item.id).indexOf(carWashId);
+    const newCarWash = { ...updatedCarWash, spaces: updatedCarWash.spaces.filter(item => item.id !== boxId) };
+    return {
+      ...state,
+      washes: [
+        ...state.washes.slice(0, updatedIndex),
+        newCarWash,
+        ...state.washes.slice(updatedIndex + 1, state.washes.length)
+      ]
+    };
+  }
+
 
 });
 
