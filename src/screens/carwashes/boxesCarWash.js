@@ -60,17 +60,18 @@ class BoxesCarWash extends Component {
     }
   };
 
-  _removeBox = async id => {
+  _removeBox = async boxId => {
     const carWash = this.props.navigation.getParam("carWashData");
     const { $globalSpinnerOn, $globalSpinnerOff, $removeBox } = this.props;
     const { boxes } = this.state;
-    const url = `working-space/${id}`;
+    const url = `working-space/${boxId}`;
     try {
       await $globalSpinnerOn();
       await asyncRequestAuth(url, "DELETE");
-      this.setState(state => ({ ...state, boxes: boxes.filter(item => item.id !== id) }));
-      $removeBox(carWash.id, id);
+      this.setState(state => ({ ...state, boxes: boxes.filter(item => item.id !== boxId) }));
+      $removeBox(carWash.id, boxId);
     } catch (e) {
+      const error = e;
       Toast.show({ text: e.message || "Ошибка" });
     } finally {
       $globalSpinnerOff();

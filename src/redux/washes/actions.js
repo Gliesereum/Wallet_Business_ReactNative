@@ -24,7 +24,7 @@ const actions = {
 
   $updateSchedule: schedule => ({ type: actions.UPDATE_SCHEDULE, payload: schedule }),
 
-  $addBox: (carWashId, box) => ({ type: actions.ADD_WASH, payload: { carWashId, box } }),
+  $addBox: (carWashId, box) => ({ type: actions.ADD_BOX, payload: { carWashId, box } }),
 
   $removeBox: (carWashId, boxId) => ({ type: actions.REMOVE_BOX, payload: { carWashId, boxId } })
 
