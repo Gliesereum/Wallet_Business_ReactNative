@@ -55,12 +55,14 @@ class scheduleCarWash extends Component {
   _submitNewSchedule = async () => {
     const url = "work-time";
     const method = "POST";
-    const { $globalSpinnerOn, $globalSpinnerOff, $addSchedule } = this.props;
+    const { $globalSpinnerOn, $globalSpinnerOff, $addSchedule, navigation } = this.props;
+    const carWashData = navigation.getParam("carWashData");
     const requests = this.state.data.map(day => this._createPromise(url, method, day));
     try {
       await $globalSpinnerOn();
       const schedule = await Promise.all(requests);
       await $addSchedule(schedule);
+      await navigation.navigate("BoxesCarWash", { carWashData: carWashData });
       await Toast.show({ text: "Успешно обновлено" });
     } catch (e) {
       const error = e;

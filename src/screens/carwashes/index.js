@@ -99,7 +99,6 @@ class CarWashes extends Component {
   };
 
   render() {
-    console.log(this.props.washes);
     return this.renderScreen();
   }
 

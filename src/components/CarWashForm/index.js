@@ -93,7 +93,6 @@ class CarWashFrom extends Component<Props, {}> {
   };
 
   render() {
-    console.log(this.state.data);
     return this.renderForm();
   }
 

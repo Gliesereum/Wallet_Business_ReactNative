@@ -67,7 +67,7 @@ class Loading extends Component {
       this.props.$authUser(user);
     } catch (e) {
       const error = e;
-      console.log("error", e);
+      //
     }
   };
 
@@ -77,7 +77,7 @@ class Loading extends Component {
       const business = await asyncRequestTest(url, "GET", "account", this.token);
       await this.props.$authBusiness(business);
     } catch (e) {
-      console.log("error", e);
+      //
     }
   };
 
@@ -87,7 +87,6 @@ class Loading extends Component {
       const email = await asyncRequestTest(url, "GET", "account", this.token);
       await this.props.$authEmail(email);
     } catch (e) {
-      console.log(e);
       this.props.navigation.navigate("Auth");
     }
   };

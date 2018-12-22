@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import { Button, Container, Content, Icon, Text, View, ActionSheet } from "native-base";
 
 
