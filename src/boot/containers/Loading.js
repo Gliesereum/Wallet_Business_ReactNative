@@ -83,7 +83,7 @@ class Loading extends Component {
 
   checkEmail = async () => {
     try {
-      const url = "email/by/user";
+      const url = "email/by-user";
       const email = await asyncRequestTest(url, "GET", "account", this.token);
       await this.props.$authEmail(email);
     } catch (e) {

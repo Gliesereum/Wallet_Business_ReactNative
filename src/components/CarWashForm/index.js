@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import { Button, Form, Input, Item, Label, Text, View } from "native-base";
+import { Button, Form, Input, Item, Label, Text, View, Icon } from "native-base";
 import { withNavigation } from "react-navigation";
 
 const styles = StyleSheet.create({});
@@ -39,7 +39,7 @@ class CarWashFrom extends Component<Props, {}> {
     }, {});
   };
 
-  state = { data: this.initEmptyForm() };
+  state = { data: this.initEmptyForm(), error: {} };
 
   componentDidMount() {
     this.fillForm();
@@ -60,8 +60,12 @@ class CarWashFrom extends Component<Props, {}> {
     this.setState(state => ({ ...state, data: { ...state.data, [key]: value } }));
   };
 
+  errorHandler = ({ additional }) => {
+    this.setState(state => ({ ...state, error: additional }));
+  };
+
   submitHandler = () => {
-    this.props.onSubmit(this.state.data);
+    this.props.onSubmit(this.state.data).then().catch(this.errorHandler);
   };
 
 
@@ -86,9 +90,9 @@ class CarWashFrom extends Component<Props, {}> {
   renderItemInput = (item) => {
     const { onInput } = this;
     const value = this.state.data[item.key];
-
+    const error = this.state.error[item.key];
     const mapField = (
-      <Item floatingLabel key={item.key}>
+      <Item floatingLabel key={item.key} error={!!error}>
         <Label style={{ paddingTop: 4 }}>{item.label}</Label>
         <Input
           value={value.toString()}
@@ -102,13 +106,14 @@ class CarWashFrom extends Component<Props, {}> {
       return mapField;
     }
     return (
-      <Item floatingLabel key={item.key}>
+      <Item floatingLabel key={item.key} error={!!error}>
         <Label style={{ paddingTop: 4 }}>{item.label}</Label>
         <Input
           value={value.toString()}
           onChangeText={text => onInput(item.key, text)}
           keyboardType={item.type || "default"}
         />
+        {error && <Icon name='close-circle' />}
       </Item>
     );
   };

@@ -20,6 +20,7 @@ class NewCarWash extends Component {
     const url = "carwash";
     const { $addWash, navigation } = this.props;
     const { token } = this.props.auth;
+    console.log(data);
     try {
       this.props.$globalSpinnerOn();
       const newWash = await asyncRequestTest(url, "POST", "karma", token, data);
@@ -28,6 +29,7 @@ class NewCarWash extends Component {
       await navigation.navigate('ScheduleCarWash', {carWashData: newWash, isNew: true});
     } catch (e) {
       Toast.show({ text: e.message || "Ошибка" });
+      throw e;
     } finally {
       this.props.$globalSpinnerOff();
     }
