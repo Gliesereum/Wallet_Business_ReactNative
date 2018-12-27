@@ -15,6 +15,8 @@ import UpdateCarWash from "../../screens/carwashes/updateCarWash";
 import ScheduleCarWash from "../../screens/carwashes/scheduleCarWash";
 import BoxesCarWash from "../../screens/carwashes/boxesCarWash";
 
+import AddressInfo from "../../screens/addressinfo";
+
 import SideBar from "../../screens/sidebar";
 import InfoCarWash from "../../screens/carwashes/infoCarWash";
 
@@ -45,7 +47,8 @@ const AppNavigator = createStackNavigator({
     UpdateCarWash: { screen: UpdateCarWash },
     ScheduleCarWash: { screen: ScheduleCarWash },
     BoxesCarWash: { screen: BoxesCarWash },
-    InfoCarWash: { screen: InfoCarWash }
+    InfoCarWash: { screen: InfoCarWash },
+    AddressInfo: { screen: AddressInfo }
   },
   {
     initialRouteName: "Drawer",

@@ -30,7 +30,7 @@ class CarWashes extends Component {
   }
 
   initScreen = async () => {
-    const url = "carwash/byUser";
+    const url = "carwash/by-user";
     const { $globalSpinnerOn, $globalSpinnerOff, $getWashes } = this.props;
     await $globalSpinnerOn();
     try {

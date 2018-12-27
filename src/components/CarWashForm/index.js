@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Button, Form, Input, Item, Label, Text, View } from "native-base";
-import {withNavigation} from 'react-navigation';
+import { withNavigation } from "react-navigation";
 
 const styles = StyleSheet.create({});
 
@@ -20,6 +20,13 @@ const fields = [
   { label: "Адрес", key: "address" },
   { label: "Долгота, -180 - 180", key: "latitude" },
   { label: "Ширина, -180 - 180", key: "longitude", type: "numeric" }
+];
+
+const fieldsRender = [
+  { label: "Название", key: "name", type: "text" },
+  { label: "Телефон", key: "phone", type: "numeric" },
+  { label: "Описание", key: "description", type: "text" },
+  { label: "Адрес", key: "address", type: "map" }
 ];
 
 
@@ -57,9 +64,43 @@ class CarWashFrom extends Component<Props, {}> {
     this.props.onSubmit(this.state.data);
   };
 
+
+  _locationSubmit = ({ location, address }) => {
+    this.onInput("latitude", location.latitude);
+    this.onInput("longitude", location.longitude);
+    this.onInput("address", address);
+  };
+
+  _openMapScreen = () => {
+    this.props.navigation.navigate("AddressInfo", {
+        address: this.state.data.address,
+        location: {
+          latitude: this.state.data.latitude,
+          longitude: this.state.data.longitude
+        },
+        onSubmit: this._locationSubmit
+      }
+    );
+  };
+
   renderItemInput = (item) => {
     const { onInput } = this;
     const value = this.state.data[item.key];
+
+    const mapField = (
+      <Item floatingLabel key={item.key}>
+        <Label style={{ paddingTop: 4 }}>{item.label}</Label>
+        <Input
+          value={value.toString()}
+          onChangeText={text => onInput(item.key, text)}
+          keyboardType={item.type || "default"}
+          onFocus={this._openMapScreen}
+        />
+      </Item>
+    );
+    if (item.type === "map") {
+      return mapField;
+    }
     return (
       <Item floatingLabel key={item.key}>
         <Label style={{ paddingTop: 4 }}>{item.label}</Label>
@@ -72,8 +113,9 @@ class CarWashFrom extends Component<Props, {}> {
     );
   };
 
+
   renderForm = () => {
-    const fieldsForm = fields.map(this.renderItemInput);
+    const fieldsForm = fieldsRender.map(this.renderItemInput);
     const submitButtonTitle = this.props.type === "new" ? "Создать" : "Сохранить";
     return (
       <View>
