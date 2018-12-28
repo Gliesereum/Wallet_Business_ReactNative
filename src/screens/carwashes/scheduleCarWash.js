@@ -26,14 +26,17 @@ import washActions from "../../redux/washes/actions";
 
 const styles = StyleSheet.create({});
 
+const initStartDay = 946706400000;
+const initEndDay = 946749600000;
+
 const weekDays = [
-  { dayOfWeek: "MONDAY", label: "Понедельник", from: "00:00", to: "00:00", isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "TUESDAY", label: "Вторник", from: "00:00", to: "00:00", isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "WEDNESDAY", label: "Среда", from: "00:00", to: "00:00", isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "THURSDAY", label: "Четверг", from: "00:00", to: "00:00", isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "FRIDAY", label: "Пятница", from: "00:00", to: "00:00", isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "SATURDAY", label: "Суббота", from: "00:00", to: "00:00", isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "SUNDAY", label: "Воскресенье", from: "00:00", to: "00:00", isWork: false, carServiceType: "CAR_WASH" }
+  { dayOfWeek: "MONDAY", label: "Понедельник", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
+  { dayOfWeek: "TUESDAY", label: "Вторник", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
+  { dayOfWeek: "WEDNESDAY", label: "Среда", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
+  { dayOfWeek: "THURSDAY", label: "Четверг", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
+  { dayOfWeek: "FRIDAY", label: "Пятница", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
+  { dayOfWeek: "SATURDAY", label: "Суббота", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
+  { dayOfWeek: "SUNDAY", label: "Воскресенье", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" }
 ];
 
 

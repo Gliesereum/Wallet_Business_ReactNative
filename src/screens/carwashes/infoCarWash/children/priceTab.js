@@ -34,6 +34,7 @@ const PriceTab = ({ services }) => {
   };
 
   return services.length ? renderList() : renderEmptyList();
+
 };
 
 

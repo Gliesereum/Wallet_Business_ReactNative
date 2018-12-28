@@ -17,11 +17,16 @@ class TimePicker extends Component<Props, {}> {
   };
 
   _stringToDate = (str) => {
-    return moment(str, "HH:mm").toDate();
+    return new Date(str);
+  };
+
+  _strToLabel = date => {
+    return moment(date).format("HH:mm");
   };
 
   _dateToString = (date) => {
-    return moment(date).format("HH:mm");
+    // return moment(date).format("HH:mm");
+    return date.getTime();
   };
 
   _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -36,7 +41,7 @@ class TimePicker extends Component<Props, {}> {
 
   renderTimePicker = () => {
     const value = this._stringToDate(this.props.time);
-    const label = this.props.time;
+    const label = this._strToLabel(this.props.time);
     return (
       <View style={{ flex: 1 }}>
         <TouchableOpacity onPress={this._showDateTimePicker}>
@@ -48,7 +53,7 @@ class TimePicker extends Component<Props, {}> {
           onCancel={this._hideDateTimePicker}
           minuteInterval={1}
           date={value}
-          mode={'time'}
+          mode={"time"}
         />
       </View>
     );
