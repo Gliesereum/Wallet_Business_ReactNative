@@ -6,11 +6,12 @@ import DashBoard from "../../screens/dashboard";
 import CarWashes from "../../screens/carwashes";
 import LogOut from "../../screens/logout";
 
-import EmailProfile from "../../screens/profile/email";
-import IndividualProfile from "../../screens/profile/individual";
-import IndividualForm from '../../screens/profile/individualForm';
-import IndividualList from '../../screens/profile/individualList';
+import Email from '../../screens/profile/Email';
 import MainProfile from "../../screens/profile/main";
+
+import BusinessList from '../../screens/profile/BusinessList';
+import NewBusiness from '../../screens/profile/NewBusiness';
+import UpdateBusiness from '../../screens/profile/UpdateBusiness';
 
 import NewCarWash from "../../screens/carwashes/newCarWash";
 import UpdateCarWash from "../../screens/carwashes/updateCarWash";
@@ -42,9 +43,11 @@ const AppNavigator = createStackNavigator({
     Drawer: { screen: Drawer },
 
     MainProfile: { screen: MainProfile },
-    IndividualForm: { screen: IndividualForm },
-    IndividualList: { screen: IndividualList },
-    EmailProfile: { screen: EmailProfile },
+    EmailProfile: { screen: Email },
+
+    BusinessList: { screen: BusinessList },
+    NewBusiness: {screen: NewBusiness},
+    UpdateBusiness: {screen: UpdateBusiness},
 
     NewCarWash: { screen: NewCarWash },
     UpdateCarWash: { screen: UpdateCarWash },

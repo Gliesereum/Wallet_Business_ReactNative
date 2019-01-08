@@ -34,7 +34,7 @@ class AddressInfo extends Component {
     const formValid = this._formValid();
     const onSubmit = this.props.navigation.getParam("onSubmit");
     if (!formValid) {
-      Alert.alert("Выберите точку на карте или укажите адрес");
+      Alert.alert("Выберите точку на карте или выберите адрес из списка");
       return;
     }
     onSubmit(this.state);

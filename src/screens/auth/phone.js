@@ -57,7 +57,7 @@ class Phone extends Component {
     const { phone } = this.state;
     const phoneNumber = phone.replace("+", "");
     const url = `auth/signin`;
-    const body = { "code": code, type: "PHONE", value: phoneNumber, userType: "BUSINESS" };
+    const body = { "code": code, type: "PHONE", value: phoneNumber };
     return { url, body };
   };
 

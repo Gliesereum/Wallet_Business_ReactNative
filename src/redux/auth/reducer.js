@@ -52,19 +52,40 @@ const appReducer = createReducer(initialState, {
       user: payload
     };
   },
-  [actions.UPDATE_BUSINESS]: (state, payload) => {
+
+  [actions.ADD_BUSINESS]: (state, payload) => {
     return {
       ...state,
-      business: payload
+      user: {
+        ...state.user,
+        business: [...state.user.business, payload]
+      }
     };
   },
+
+  [actions.UPDATE_BUSINESS]: (state, payload) => {
+    const indexChangedBusiness = state.user.business.findIndex(item => item.id === payload.id);
+    const newBusinesses = state.user.business.slice();
+    newBusinesses[indexChangedBusiness] = payload;
+    if (indexChangedBusiness === -1) {
+      return state;
+    }
+    return {
+      ...state,
+      user: {
+        ...state.user,
+        business: newBusinesses
+      }
+    };
+  },
+
   [actions.ADD_EMAIL]: (state, payload) => {
     return {
       ...state,
       email: payload,
       user: {
         ...state.user,
-        verifiedStatus: 'VERIFIED'
+        verifiedStatus: "VERIFIED"
       }
     };
   },

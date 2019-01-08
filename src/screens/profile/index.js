@@ -9,7 +9,7 @@ import {
   Right,
   Icon,
   Container,
-  Button,
+  Button
 } from "native-base";
 
 import { HeaderLayout } from "../../components/Layout";
@@ -17,7 +17,7 @@ import { HeaderLayout } from "../../components/Layout";
 
 const subroutes = [
   { route: "MainProfile", text: "Основная Информация" },
-  { route: "IndividualList", text: "Компании" },
+  { route: "BusinessList", text: "Компании" },
   { route: "EmailProfile", text: "Электронная почта" }
 ];
 

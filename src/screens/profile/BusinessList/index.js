@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Text } from "react-native";
-import { HeaderLayout } from "../../components/Layout";
+import { HeaderLayout } from "../../../components/Layout";
 import { Button, Container, Content, Icon, Left, List, ListItem, Right } from "native-base";
 
 
-const IndividualList = props => {
+const BusinessList = props => {
+  const {navigation} = props;
   const {business} = props.user;
   return (
     <Container>
@@ -16,6 +17,11 @@ const IndividualList = props => {
           </Button>
         )}
         body={"Компании"}
+        right={(
+          <Button transparent onPress={()=>navigation.navigate('NewBusiness')}>
+            <Icon name="plus" type={"Feather"}/>
+          </Button>
+        )}
       />
       <Content>
         <List
@@ -23,8 +29,8 @@ const IndividualList = props => {
           renderRow={data =>
             <ListItem
               button
-              onPress={() => props.navigation.navigate("InfoCarWash", {
-                carWash: data
+              onPress={() => props.navigation.navigate("UpdateBusiness", {
+                business: data
               })}
             >
               <Left>
@@ -43,4 +49,4 @@ const IndividualList = props => {
 };
 
 
-export default connect(state => ({ user: state.auth.user }))(IndividualList);
+export default connect(state => ({ user: state.auth.user }))(BusinessList);

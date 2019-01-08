@@ -15,12 +15,12 @@ import {
   ListItem,
   Body
 } from "native-base";
-import { asyncRequest, asyncRequestTest } from "../../utils";
+import { asyncRequestTest, asyncRequestAuth } from "../../../utils";
 
-import { HeaderLayout } from "../../components/Layout";
+import { HeaderLayout } from "../../../components/Layout";
 
-import appActions from "../../redux/app/actions";
-import authActions from "../../redux/auth/actions";
+import appActions from "../../../redux/app/actions";
+import authActions from "../../../redux/auth/actions";
 
 class Email extends Component {
 
@@ -49,14 +49,13 @@ class Email extends Component {
 
   sendCode = async () => {
     const { $addEmail, navigation } = this.props;
-    const { token } = this.props.auth;
     const { code, email } = this.state;
     const url = `email`;
     const body = { code, email };
     const { $globalSpinnerOn, $globalSpinnerOff } = this.props;
     try {
       $globalSpinnerOn();
-      const newEmail = await asyncRequestTest(url, "POST", "account", token, body);
+      const newEmail = await asyncRequestAuth(url, "POST", "account", body);
       await $addEmail(newEmail);
       await Toast.show({ text: "Успешно добавлена почта" });
       navigation.goBack();
