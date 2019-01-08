@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TextInput, Alert } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 
 
 import GoogleAddressAutoComplete from "./children/addressAutocomplete";
 import Map from "./children/map";
+import config from '../../config';
 
 
 const styles = StyleSheet.create({
@@ -63,30 +64,32 @@ class AddressForm extends Component {
   };
 
   _getPlaceInfo = async id => {
-    const URL = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&fields=geometry&key=AIzaSyD1fazwx_8e7n_eyy_Qohk1EJCaR5dS_uE`;
+    const {GOOGLE_KEY} = config;
+    const URL = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&fields=geometry&key=${GOOGLE_KEY}`;
     const request = await fetch(URL);
     return await request.json();
   };
 
   _onSelectFromInput = async address => {
-    const {onChangeLocation} = this.props;
+    const { onChangeLocation } = this.props;
     this._onInput("address")(address.description);
     const { result: { geometry: { location: { lat, lng } } } } = await this._getPlaceInfo(address.place_id);
     this._onInput("location")({ latitude: lat, longitude: lng });
-    const location = {latitude: lat, longitude: lng};
-    onChangeLocation({location: location, address: address.description});
+    const location = { latitude: lat, longitude: lng };
+    onChangeLocation({ location: location, address: address.description });
   };
 
   _onSelectFromMap = async ({ coordinate }) => {
-    const {onChangeLocation} = this.props;
+    const { onChangeLocation } = this.props;
+    const {GOOGLE_KEY} = config;
     const { latitude, longitude } = coordinate;
     this._onInput("location")({ latitude, longitude });
-    const URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&sensor=true&key=AIzaSyA9DTVrbpRls1UVZFTd-z0Mb8aSo7bZBB0`;
+    const URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&sensor=true&key=${GOOGLE_KEY}`;
     const request = await fetch(URL);
     const { results } = await request.json();
     const address = results[0];
     this._onInput("address")(address.formatted_address);
-    onChangeLocation({location: {latitude, longitude}, address: address.formatted_address});
+    onChangeLocation({ location: { latitude, longitude }, address: address.formatted_address });
   };
 
   _confirm = fn => argv => {
@@ -102,7 +105,7 @@ class AddressForm extends Component {
   };
 
   renderMap = () => {
-    const {address, location} = this.props;
+    const { address, location } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.input}>

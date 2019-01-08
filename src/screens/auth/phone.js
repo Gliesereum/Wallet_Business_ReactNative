@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard } from "react-native";
-import { CheckBox, Button, Text, View, Toast, ListItem, Body } from "native-base";
+import { Button, Text, View, Toast } from "native-base";
 
 import PhoneInput from "react-native-phone-input";
 
@@ -20,23 +20,19 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   phoneInputContainer: {
-    width: width,
-    padding: 25
-  },
-  checkboxContainer: {
-    width: width,
-    padding: 25
+    width: "100%",
+    padding: 15
   },
   submitContainer: {
-    width: width,
-    padding: 25
+    width: "100%",
+    padding: 15
   }
 });
 
 
 class Phone extends Component {
 
-  state = { phone: "+380", isNew: false, code: "" };
+  state = { phone: "+380", code: "" };
 
   inputHandler = (key, value) => {
     this.setState(state => ({
@@ -51,17 +47,16 @@ class Phone extends Component {
   };
 
   getCodeConfig = () => {
-    const { phone, isNew } = this.state;
+    const { phone } = this.state;
     const phoneNumber = phone.replace("+", "");
-    const url = `phone/code?phone=${phoneNumber}&isNew=${isNew}`;
+    const url = `phone/code?phone=${phoneNumber}`;
     return { url };
   };
 
   sendCodeConfig = (code) => {
-    const { isNew, phone } = this.state;
-    const authType = isNew ? "signup" : "signin";
+    const { phone } = this.state;
     const phoneNumber = phone.replace("+", "");
-    const url = `auth/${authType}`;
+    const url = `auth/signin`;
     const body = { "code": code, type: "PHONE", value: phoneNumber, userType: "BUSINESS" };
     return { url, body };
   };
@@ -89,7 +84,7 @@ class Phone extends Component {
     await this.props.$globalSpinnerOn();
     try {
       const { url, body } = this.sendCodeConfig(code);
-      const request = await asyncRequestTest(url, "POST", 'account', null, body );
+      const request = await asyncRequestTest(url, "POST", "account", null, body);
       await this.props.$loginUser(request.tokenInfo);
       this.props.navigation.navigate("Loading");
     } catch (e) {
@@ -115,18 +110,7 @@ class Phone extends Component {
               onChangePhoneNumber={number => this.inputHandler("phone", number)}
             />
           </View>
-          <View style={styles.checkboxContainer}>
-            <ListItem onPress={e => this.inputHandler("isNew", !this.state.isNew)}>
-              <CheckBox
-                checked={this.state.isNew}
-                onPress={e => this.inputHandler("isNew", !this.state.isNew)}
-              />
-              <Body>
-              <Text>Новое Юр. Лицо</Text>
-              </Body>
-            </ListItem>
 
-          </View>
           <View style={styles.submitContainer}>
             <Button
               disabled={!validPhone()}

@@ -8,6 +8,8 @@ import LogOut from "../../screens/logout";
 
 import EmailProfile from "../../screens/profile/email";
 import IndividualProfile from "../../screens/profile/individual";
+import IndividualForm from '../../screens/profile/individualForm';
+import IndividualList from '../../screens/profile/individualList';
 import MainProfile from "../../screens/profile/main";
 
 import NewCarWash from "../../screens/carwashes/newCarWash";
@@ -40,7 +42,8 @@ const AppNavigator = createStackNavigator({
     Drawer: { screen: Drawer },
 
     MainProfile: { screen: MainProfile },
-    IndividualProfile: { screen: IndividualProfile },
+    IndividualForm: { screen: IndividualForm },
+    IndividualList: { screen: IndividualList },
     EmailProfile: { screen: EmailProfile },
 
     NewCarWash: { screen: NewCarWash },

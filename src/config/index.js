@@ -3,4 +3,5 @@ const VetalIP = 'http://192.168.0.100:8200/api/';
 
 export default {
   url: serverIP,
+  GOOGLE_KEY: 'AIzaSyA9DTVrbpRls1UVZFTd-z0Mb8aSo7bZBB0'
 };

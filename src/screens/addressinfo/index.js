@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import {Alert} from 'react-native';
+import { Alert } from "react-native";
 
 import { AddressForm } from "../../components";
 import { HeaderLayout } from "../../components/Layout";
-import { Button, Container, Icon, Text } from "native-base";
+import { Button, Container, Text } from "native-base";
 
 
 class AddressInfo extends Component {
@@ -18,31 +18,23 @@ class AddressInfo extends Component {
     const { navigation } = this.props;
     const location = navigation.getParam("location");
     const address = navigation.getParam("address");
-    this.setState(state => ({
-      ...state,
-      location,
-      address
-    }));
+    this.setState(state => ({ ...state, location, address }));
   };
 
   _changeLocation = ({ address, location }) => {
-    this.setState(state => ({
-      ...state,
-      address,
-      location
-    }));
+    this.setState(state => ({ ...state, address, location }));
   };
 
   _formValid = () => {
-    const {address, location} = this.state;
+    const { address, location } = this.state;
     return !!address.length;
   };
 
   _submitHandler = () => {
     const formValid = this._formValid();
-    const onSubmit = this.props.navigation.getParam('onSubmit');
+    const onSubmit = this.props.navigation.getParam("onSubmit");
     if (!formValid) {
-      Alert.alert('Выберите точку на карте или укажите адрес');
+      Alert.alert("Выберите точку на карте или укажите адрес");
       return;
     }
     onSubmit(this.state);

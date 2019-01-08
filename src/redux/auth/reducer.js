@@ -6,9 +6,8 @@ import actions from "./actions";
 const initialState = {
   authenticated: true,
   token: null,
-  user: null,
-  business: null,
-  emails: []
+  user: {},
+  email: null
 };
 
 
@@ -62,7 +61,7 @@ const appReducer = createReducer(initialState, {
   [actions.ADD_EMAIL]: (state, payload) => {
     return {
       ...state,
-      emails: [...state.emails, payload],
+      email: payload,
       user: {
         ...state.user,
         verifiedStatus: 'VERIFIED'

@@ -29,7 +29,6 @@ class Loading extends Component {
       if (this.token) {
         await this.props.$authToken(this.token);
         await this.checkUser();
-        await this.checkBusiness();
         await this.checkEmail();
         await this.props.navigation.navigate("App");
       }
@@ -65,17 +64,6 @@ class Loading extends Component {
       const url = "user/me";
       const user = await asyncRequestTest(url, "GET", "account", this.token);
       this.props.$authUser(user);
-    } catch (e) {
-      const error = e;
-      //
-    }
-  };
-
-  checkBusiness = async () => {
-    try {
-      const url = "user/business";
-      const business = await asyncRequestTest(url, "GET", "account", this.token);
-      await this.props.$authBusiness(business);
     } catch (e) {
       //
     }

@@ -20,7 +20,6 @@ class NewCarWash extends Component {
     const url = "carwash";
     const { $addWash, navigation } = this.props;
     const { token } = this.props.auth;
-    console.log(data);
     try {
       this.props.$globalSpinnerOn();
       const newWash = await asyncRequestTest(url, "POST", "karma", token, data);
@@ -39,7 +38,7 @@ class NewCarWash extends Component {
     return (
       <View style={{ paddingTop: deviceHeight / 2.5 }}>
         <Text style={{ textAlign: "center" }}>
-          Аккаунт не верифицирован. Добавьте личную информацию и электронную почту.
+          Аккаунт не верифицирован. Добавьте личную информацию, компанию и электронную почту.
         </Text>
       </View>
     );
@@ -50,7 +49,7 @@ class NewCarWash extends Component {
   };
 
   renderScreen = () => {
-    const { verifiedStatus } = this.props.auth.user;
+    const userVerified = this.props.auth.user.business.length;
     return (
       <Container>
         <HeaderLayout
@@ -62,7 +61,7 @@ class NewCarWash extends Component {
           body={"Новая мойка"}
         />
         <Content>
-          {verifiedStatus === "VERIFIED" ? this.renderForm() : this.renderNotAllowedCreateCarWash()}
+          {userVerified ? this.renderForm() : this.renderNotAllowedCreateCarWash()}
         </Content>
       </Container>
     );

@@ -36,7 +36,7 @@ class CarWashFrom extends Component<Props, {}> {
     return fields.reduce((form, field) => {
       form[field.key] = "";
       return form;
-    }, {});
+    }, {businessId: 'ae10e02d-fb6a-4440-b781-29812dfa9122'});
   };
 
   state = { data: this.initEmptyForm(), error: {} };
@@ -60,14 +60,16 @@ class CarWashFrom extends Component<Props, {}> {
     this.setState(state => ({ ...state, data: { ...state.data, [key]: value } }));
   };
 
-  errorHandler = ({ additional }) => {
+  errorHandler = (e) => {
+    const {additional} = e
+    const error = e;
+    debugger
     this.setState(state => ({ ...state, error: additional }));
   };
 
   submitHandler = () => {
     this.props.onSubmit(this.state.data).then().catch(this.errorHandler);
   };
-
 
   _locationSubmit = ({ location, address }) => {
     this.onInput("latitude", location.latitude);

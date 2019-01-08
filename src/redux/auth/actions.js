@@ -25,12 +25,8 @@ const actions = {
       await dispatch({ type: actions.AUTH_USER, payload: user });
     },
 
-    $authBusiness: (business) => async dispatch => {
-      await dispatch({ type: actions.AUTH_BUSINESS, payload: business });
-    },
-
     $authEmail: (email) => async dispatch => {
-      await dispatch({ type: actions.ADD_EMAIL, payload: email });
+      await dispatch({ type: actions.AUTH_EMAIL, payload: email });
     },
 
     $authToken: token => async dispatch => {

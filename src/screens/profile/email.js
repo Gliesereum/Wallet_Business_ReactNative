@@ -1,6 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, Container, Content, Icon, Button, Toast, View, Form, Input, Label, Item, ListItem, Body } from "native-base";
+import {
+  Text,
+  Container,
+  Content,
+  Icon,
+  Button,
+  Toast,
+  View,
+  Form,
+  Input,
+  Label,
+  Item,
+  ListItem,
+  Body
+} from "native-base";
 import { asyncRequest, asyncRequestTest } from "../../utils";
 
 import { HeaderLayout } from "../../components/Layout";
@@ -18,7 +32,7 @@ class Email extends Component {
     const url = `email/code?email=${email}&isNew=true`;
     try {
       $globalSpinnerOn();
-      const request = await asyncRequestTest(url, 'GET', 'account');
+      const request = await asyncRequestTest(url, "GET", "account");
       this.setState(state => ({ ...state, gotCode: true }));
       Toast.show({ text: "Введите код отправленный на указаную почту" });
     } catch (e) {
@@ -26,6 +40,11 @@ class Email extends Component {
     } finally {
       $globalSpinnerOff();
     }
+  };
+
+  emailValid = () => {
+    const emailRe = new RegExp("^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
+    return emailRe.test(this.state.email);
   };
 
   sendCode = async () => {
@@ -37,7 +56,7 @@ class Email extends Component {
     const { $globalSpinnerOn, $globalSpinnerOff } = this.props;
     try {
       $globalSpinnerOn();
-      const newEmail = await asyncRequestTest(url, "POST", 'account', token, body);
+      const newEmail = await asyncRequestTest(url, "POST", "account", token, body);
       await $addEmail(newEmail);
       await Toast.show({ text: "Успешно добавлена почта" });
       navigation.goBack();
@@ -53,20 +72,14 @@ class Email extends Component {
   };
 
   renderEmailsList = () => {
-    const {emails} = this.props.auth
+    const { email } = this.props.auth;
     return (
       <View>
-        {emails.map(item=>(
-          <ListItem key={item.id}><Body><Text>{item.email}</Text></Body></ListItem>
-        ))}
+        <ListItem><Body><Text>{email.email}</Text></Body></ListItem>
       </View>
     );
   };
 
-  emailValid = () => {
-    const emailRe = new RegExp("^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
-    return emailRe.test(this.state.email);
-  };
 
   renderCodeForm = () => {
     const { onInput, sendCode } = this;
@@ -125,7 +138,7 @@ class Email extends Component {
   };
 
   renderScreen = () => {
-    const { emails } = this.props.auth;
+    const { email } = this.props.auth;
     return (
       <Container>
         <HeaderLayout
@@ -137,7 +150,7 @@ class Email extends Component {
           body={("Электронная почта")}
         />
         <Content>
-          {emails.length ? this.renderEmailsList() : this.renderEmailForm()}
+          {email ? this.renderEmailsList() : this.renderEmailForm()}
         </Content>
       </Container>
     );

@@ -34,7 +34,7 @@ class CarWashes extends Component {
     const { $globalSpinnerOn, $globalSpinnerOff, $getWashes } = this.props;
     await $globalSpinnerOn();
     try {
-      const data = await asyncRequestAuth(url);
+      const data = await asyncRequestAuth(url) || [];
       await $getWashes(data);
     } catch (e) {
     } finally {
