@@ -11,7 +11,6 @@ class NewPrice extends Component {
 
   _createHandler = body => {
     const url = "price";
-    console.log("Body from form", body);
     return asyncRequestAuth(url, "POST", "karma", body);
   };
 
@@ -29,7 +28,11 @@ class NewPrice extends Component {
           body={"Добавить Услугу"}
         />
         <Content>
-          <ServiceForm onSubmit={this._createHandler} isNew businessServiceId={carWash.id}/>
+          <ServiceForm
+            onFullSubmit={navigation.goBack}
+            onSubmit={this._createHandler} isNew
+            businessServiceId={carWash.id}
+          />
         </Content>
       </Container>
     );

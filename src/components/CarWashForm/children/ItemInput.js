@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
 
 const fields = {
-  'text': (field) =>
-};
+  "text": (field) => null
+}
+;
 
 const Field = field => {
 

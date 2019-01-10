@@ -31,7 +31,7 @@ const NumberField = ({ inputKey, label, value, type, error, onChange }) => {
     <Item fixedLabel key={inputKey}>
       <Label style={{ paddingTop: 4 }}>{label}</Label>
       <Input
-        value={value}
+        value={String(value)}
         onChangeText={text => onChange(inputKey, text)}
         keyboardType={"numeric"}
       />
@@ -62,7 +62,7 @@ const SelectField = ({ inputKey, label, value, type, options, onChange }) => {
 const TimeField = ({ name, label, value, type, onChange }) => {
   return (
     <View key={name}>
-      {/*<Label style={{ paddingTop: 4 }}>{label}</Label>*/}
+      <Label style={{ paddingTop: 4 }}>{label}</Label>
       <TimePicker
         time={10}
         onChange={e => console.log("Time Picker")}

@@ -37,7 +37,7 @@ const tabs = [
   { label: "Основная", node: MainTab },
   { label: "Локация", node: LocationTab },
   { label: "Услуги", node: PriceTab },
-  { label: "Рассписание", node: ScheduleTab },
+  { label: "Рассписание", node: ScheduleTab }
 ];
 
 
@@ -78,12 +78,17 @@ class InfoCarWash extends Component {
     );
   };
 
+  _onServicePriceSelect = (servicePrice) => {
+    const carWash = this.props.navigation.getParam("carWash");
+    this.props.navigation.navigate("UpdatePrice", { servicePrice, carWash });
+  };
+
   renderTabItem = item => {
     const data = this.props.navigation.getParam("carWash");
-    const carWash = {...data, services: this.state.services};
+    const carWash = { ...data, services: this.state.services };
     return (
       <Tab key={item.label} heading={item.label}>
-        <item.node {...carWash}/>
+        <item.node {...carWash} onItemSelect={this._onServicePriceSelect}/>
       </Tab>
     );
   };

@@ -7,9 +7,7 @@ const styles = StyleSheet.create({
   emptyList: { flex: 1, justifyContent: "center", alignItems: "center" }
 });
 
-const PriceTab = ({ services,  }) => {
-
-  console.log(services);
+const PriceTab = ({ services, onItemSelect }) => {
 
   const renderEmptyList = () => {
     return (
@@ -21,7 +19,10 @@ const PriceTab = ({ services,  }) => {
 
   const renderItemPrice = item => {
     return (
-      <ListItem key={item.id} onPress={e => alert("go to form")}>
+      <ListItem
+        key={item.id}
+        onPress={() => onItemSelect(item)}
+      >
         <Text>{item.name}</Text>
       </ListItem>
     );

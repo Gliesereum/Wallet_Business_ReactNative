@@ -7,6 +7,7 @@ import { View, Button, Text } from "native-base";
 import { asyncRequestAuth } from "../../utils";
 
 import PriceInput from "./children/Input";
+import ClassForm from "./children/ClassForm";
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   onSubmit: Function,
+  onFullSubmit: Function,
   servicePrice?: Object,
   businessServiceId: String,
   isNew?: Boolean
@@ -88,6 +90,7 @@ class ServicePrice extends Component<Props, {}> {
   componentDidMount() {
     this._initForm();
     this._loadServices();
+    this._loadClasses();
   }
 
   _initForm = () => {
@@ -100,7 +103,7 @@ class ServicePrice extends Component<Props, {}> {
       this.setState(({ data }) => ({ data: { ...this.objToStateObj(renderFields), ...data } }));
       return;
     }
-    this.setState(({ data }) => ({ data: servicePrice }));
+    this.setState(({ data }) => ({ data: { ...this.objToStateObj(renderFields), ...servicePrice } }));
   };
 
   _loadServices = async () => {
@@ -114,6 +117,52 @@ class ServicePrice extends Component<Props, {}> {
         }
       }));
     } catch (e) {
+
+    }
+  };
+
+  _loadClasses = async () => {
+    const url = "class";
+    try {
+      const classOptions = await asyncRequestAuth(url) || [];
+      this.setState(({ options }) => ({
+        options: {
+          ...this.state.options,
+          serviceClass: classOptions
+        }
+      }));
+    } catch (e) {
+
+    }
+  };
+
+  _pushClassToPriceHandler = async priceClass => {
+    const url = "price/class";
+    const body = { priceId: this.state.data.id, serviceClassId: priceClass.id };
+    try {
+      const newPriceClass = await asyncRequestAuth(url, "POST", "karma", body);
+      await this.setState(({ data }) => ({
+        data: { ...data, serviceClass: [...data.serviceClass, priceClass] }
+      }));
+    } catch (e) {
+      const error = e;
+
+    }
+  };
+
+  _removeClassFromPriceHandler = async priceClass => {
+    const { id: servicePriceId } = this.state.data;
+    const url = `price/class/${servicePriceId}/${priceClass.id}`;
+    this.setState(({ data }) => ({
+      data: {
+        ...data,
+        serviceClass: data.serviceClass.filter(item => item.id !== priceClass.id)
+      }
+    }));
+    try {
+      await asyncRequestAuth(url, "DELETE");
+    } catch (e) {
+      const error = e;
 
     }
   };
@@ -132,11 +181,19 @@ class ServicePrice extends Component<Props, {}> {
   _onSubmit = async () => {
     try {
       const newPrice = await this.props.onSubmit(this.state.data);
-      debugger;
+      await this.setState(({ data }) => ({ data: newPrice }));
+      await this.setState(({ showClassForm }) => ({ showClassForm: true }));
+      // debugger;
     } catch (e) {
       const error = e;
       debugger;
     }
+  };
+
+  _fullSubmitHandler = () => {
+    // this.setState(({ showClassForm }) => ({ showClassForm: !showClassForm }));
+    this.setState(({ showClassForm }) => ({ showClassForm: false }));
+    this.props.onFullSubmit(this.state.data);
   };
 
   renderItemInput = key => {
@@ -162,11 +219,20 @@ class ServicePrice extends Component<Props, {}> {
       <View style={styles.container}>
         {keys.map(this.renderItemInput)}
         <Button
-          style={{ width: "100%", marginTop: 8 }}
+          style={{ width: "100%", marginTop: 12, justifyContent: "center" }}
           onPress={this._onSubmit}
         >
-          <Text style={{ textAlign: "center" }}>Сохранить</Text>
+          <Text>Далее</Text>
         </Button>
+        <ClassForm
+          isOpen={this.state.showClassForm}
+          onModalClosed={e => console.log("Close Form")}
+          onAddClassToPrice={this._pushClassToPriceHandler}
+          onRemoveClassFromPrice={this._removeClassFromPriceHandler}
+          servicePrice={this.state.data}
+          serviceClass={this.state.options["serviceClass"]}
+          onFullSubmit={this._fullSubmitHandler}
+        />
       </View>
     );
   }
