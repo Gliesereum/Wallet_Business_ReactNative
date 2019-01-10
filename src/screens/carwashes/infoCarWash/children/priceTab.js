@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import { View, Text } from "native-base";
+import { View, Text, List, ListItem } from "native-base";
 
 
 const styles = StyleSheet.create({
-  emptyList: {flex: 1, justifyContent: 'center', alignItems: 'center'}
+  emptyList: { flex: 1, justifyContent: "center", alignItems: "center" }
 });
 
-const PriceTab = ({ services }) => {
+const PriceTab = ({ services,  }) => {
+
+  console.log(services);
 
   const renderEmptyList = () => {
     return (
@@ -19,17 +21,17 @@ const PriceTab = ({ services }) => {
 
   const renderItemPrice = item => {
     return (
-      <View key={item.id}>
-        <Text>{item.id}</Text>
-      </View>
+      <ListItem key={item.id} onPress={e => alert("go to form")}>
+        <Text>{item.name}</Text>
+      </ListItem>
     );
   };
 
   const renderList = () => {
     return (
-      <View>
+      <List>
         {services.map(renderItemPrice)}
-      </View>
+      </List>
     );
   };
 

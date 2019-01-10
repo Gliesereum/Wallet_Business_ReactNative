@@ -63,7 +63,6 @@ class CarWashFrom extends Component<Props, {}> {
   errorHandler = (e) => {
     const {additional} = e
     const error = e;
-    debugger
     this.setState(state => ({ ...state, error: additional }));
   };
 

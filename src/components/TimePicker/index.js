@@ -54,6 +54,7 @@ class TimePicker extends Component<Props, {}> {
           minuteInterval={1}
           date={value}
           mode={"time"}
+          is24Hour={true}
         />
       </View>
     );

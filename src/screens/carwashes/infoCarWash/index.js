@@ -27,15 +27,17 @@ const BUTTONS = [
   { text: "Основная информация", path: "UpdateCarWash" },
   { text: "Рассписание", path: "ScheduleCarWash" },
   { text: "Боксы", path: "BoxesCarWash" },
+  { text: "Добавить Услугу", path: "NewPrice" },
+  { text: "Добавить Пакет", path: "BoxesCarWash" },
   { text: "Отмена", path: "" }
 ];
-const CANCEL_INDEX = 3;
+const CANCEL_INDEX = 5;
 
 const tabs = [
   { label: "Основная", node: MainTab },
   { label: "Локация", node: LocationTab },
-  { label: "Цены", node: PriceTab },
-  { label: "Рассписание", node: ScheduleTab }
+  { label: "Услуги", node: PriceTab },
+  { label: "Рассписание", node: ScheduleTab },
 ];
 
 

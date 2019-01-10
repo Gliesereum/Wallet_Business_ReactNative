@@ -96,7 +96,7 @@ class Main extends Component {
         <Picker
           key={item.key}
           mode="dropdown"
-          iosHeader="Select your SIM"
+          iosHeader="Пол"
           iosIcon={<Icon name="ios-arrow-down-outline"/>}
           style={{ width: deviceWidth, marginTop: 3 }}
           selectedValue={value}
