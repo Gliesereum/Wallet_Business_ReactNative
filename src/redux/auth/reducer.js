@@ -34,18 +34,14 @@ const appReducer = createReducer(initialState, {
       user: payload
     };
   },
-  [actions.AUTH_BUSINESS]: (state, payload) => {
-    return {
-      ...state,
-      business: payload
-    };
-  },
+
   [actions.AUTH_EMAIL]: (state, payload) => {
     return {
       ...state,
       email: payload
     };
   },
+
   [actions.UPDATE_USER]: (state, payload) => {
     return {
       ...state,
@@ -58,14 +54,14 @@ const appReducer = createReducer(initialState, {
       ...state,
       user: {
         ...state.user,
-        business: [...state.user.business, payload]
+        corporation: [...state.user.corporation, payload]
       }
     };
   },
 
   [actions.UPDATE_BUSINESS]: (state, payload) => {
-    const indexChangedBusiness = state.user.business.findIndex(item => item.id === payload.id);
-    const newBusinesses = state.user.business.slice();
+    const indexChangedBusiness = state.user.corporation.findIndex(item => item.id === payload.id);
+    const newBusinesses = state.user.corporation.slice();
     newBusinesses[indexChangedBusiness] = payload;
     if (indexChangedBusiness === -1) {
       return state;
@@ -74,7 +70,7 @@ const appReducer = createReducer(initialState, {
       ...state,
       user: {
         ...state.user,
-        business: newBusinesses
+        corporation: newBusinesses
       }
     };
   },

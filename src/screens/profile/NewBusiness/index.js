@@ -12,7 +12,7 @@ import authActions from "../../../redux/auth/actions";
 class NewBusiness extends Component {
 
   createBusiness = async data => {
-    const url = `business`;
+    const url = `corporation`;
     const { $addBusiness, $globalSpinnerOn, $globalSpinnerOff, navigation } = this.props;
     try {
       $globalSpinnerOn();

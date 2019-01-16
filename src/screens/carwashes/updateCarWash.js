@@ -31,6 +31,7 @@ class UpdateCarWash extends Component {
 
   renderScreen = () => {
     const data = this.props.navigation.getParam('carWashData');
+    const {corporation} = this.props.auth.user;
     return (
       <Container>
         <HeaderLayout
@@ -42,7 +43,12 @@ class UpdateCarWash extends Component {
           body={"Обновить"}
         />
         <Content>
-          <CarWashForm onSubmit={this.onSubmit} type={"update"} carWashData={data}/>
+          <CarWashForm
+            onSubmit={this.onSubmit}
+            type={"update"}
+            carWashData={data}
+            corporation={corporation}
+          />
         </Content>
       </Container>
     );

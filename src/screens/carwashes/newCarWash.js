@@ -49,7 +49,7 @@ class NewCarWash extends Component {
   };
 
   renderScreen = () => {
-    const userVerified = this.props.auth.user.business.length;
+    const userVerified = this.props.auth.user.corporation.length;
     return (
       <Container>
         <HeaderLayout

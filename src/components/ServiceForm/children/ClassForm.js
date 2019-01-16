@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Modal } from "react-native";
-import { Body, Button, Container, Content, Icon, Left, ListItem, Right, Switch, Text, List } from "native-base";
+import { Body, Button, Container, Content, ListItem, Right, Switch, Text } from "native-base";
 import { HeaderLayout } from "../../Layout";
 
 

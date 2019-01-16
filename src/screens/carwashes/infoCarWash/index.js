@@ -51,7 +51,7 @@ class InfoCarWash extends Component {
 
   _initScreen = async () => {
     const carWash = this.props.navigation.getParam("carWash");
-    const servicesURL = `price/by-business-service/${carWash.id}`;
+    const servicesURL = `price/by-corporation-service/${carWash.id}`;
     try {
       const services = await asyncRequestAuth(servicesURL);
       this._onInput("services", services || []);

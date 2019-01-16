@@ -7,7 +7,7 @@ import { Button, Container, Content, Icon, Left, List, ListItem, Right } from "n
 
 const BusinessList = props => {
   const {navigation} = props;
-  const {business} = props.user;
+  const {corporation} = props.user;
   return (
     <Container>
       <HeaderLayout
@@ -25,7 +25,7 @@ const BusinessList = props => {
       />
       <Content>
         <List
-          dataArray={business}
+          dataArray={corporation}
           renderRow={data =>
             <ListItem
               button
