@@ -1,6 +1,18 @@
 // @flow
 import React from "react";
-import { Icon, Input, Item, Label, Picker, View } from "native-base";
+import {
+  Icon,
+  Input,
+  Item,
+  Label,
+  Picker,
+  View,
+  Accordion,
+  ListItem,
+  CheckBox,
+  Body,
+  Text
+} from "native-base";
 
 import TimePicker from "../../../components/TimePicker";
 
@@ -71,21 +83,46 @@ const TimeField = ({ name, label, value, type, onChange }) => {
   );
 };
 
-const ArrayField = ({ inputKey, label, value, type, error, onChange }) => {
+const ArrayField = ({ inputKey, label, value, type, options, error, onChange }) => {
 
-  const onArrayInput = text => {
-    onChange(inputKey, text.replace(" ", "").split(","));
+  const checked = key => value.includes(key);
+
+  const onInput = key => () => {
+    const hasInclude = checked(key);
+    const newValue = hasInclude ? value.filter(item => item !== key) : [...value, key];
+    onChange(inputKey, newValue);
   };
 
-  const ValueParse = () => (value ? value.join() : "");
+  const content = options.map(item => {
+    const key = Object.keys(item)[0];
+    const title = item[key];
+    return (
+      <ListItem style={{ flex: 1 }} onPress={onInput(key)}>
+        <CheckBox checked={checked(key)} onPress={onInput(key)}/>
+        <Body>
+        <Text>{title}</Text>
+        </Body>
+      </ListItem>
+    );
+  });
+
+  const dataArray = [{ title: label }];
 
   return (
-    <Item fixedLabel key={inputKey}>
-      <Label style={{ paddingTop: 4 }}>{label}</Label>
-      <Input
-        value={ValueParse()}
-        onChangeText={onArrayInput}
-        keyboardType={"string"}
+    <Item
+      fixedLabel
+      key={inputKey}
+      style={{
+        paddingTop: 4
+      }}
+    >
+      <Accordion
+        dataArray={dataArray}
+        icon="add"
+        expandedIcon="remove"
+        renderContent={() => content}
+        textStyle={{ color: "green" }}
+        headerStyle={{ backgroundColor: "#fff" }}
       />
     </Item>
   );

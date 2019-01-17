@@ -61,7 +61,7 @@ const carBodies = [
 ];
 
 const renderFields = {
-  businessServiceId: { label: "Бизнес:", type: "string", defaultValue: "", render: false },
+  corporationServiceId: { label: "Бизнес:", type: "string", defaultValue: "", render: false },
   serviceId: { label: "Вид Услуги:", type: "select", defaultValue: "", render: true },
   name: { label: "Название:", key: "name", type: "string", defaultValue: "", render: true },
   description: { label: "Описание:", type: "string", defaultValue: "", render: true },
@@ -94,9 +94,9 @@ class ServicePrice extends Component<Props, {}> {
   }
 
   _initForm = () => {
-    const { isNew, servicePrice, businessServiceId } = this.props;
+    const { isNew, servicePrice, corporationServiceId } = this.props;
     this.setState((state) => ({
-      data: { ...this.state.data, businessServiceId },
+      data: { ...this.state.data, corporationServiceId },
       options: { ...this.state.options, carBodies, interiorTypes }
     }));
     if (isNew) {
@@ -186,7 +186,7 @@ class ServicePrice extends Component<Props, {}> {
       // debugger;
     } catch (e) {
       const error = e;
-      debugger;
+      //
     }
   };
 
@@ -214,12 +214,11 @@ class ServicePrice extends Component<Props, {}> {
 
   render() {
     const keys = Object.keys(renderFields);
-    console.log(this.state);
     return (
       <View style={styles.container}>
         {keys.map(this.renderItemInput)}
         <Button
-          style={{ width: "100%", marginTop: 12, justifyContent: "center" }}
+          style={{ width: "100%", marginTop: 4, justifyContent: "center" }}
           onPress={this._onSubmit}
         >
           <Text>Далее</Text>

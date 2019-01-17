@@ -31,7 +31,7 @@ class NewPrice extends Component {
           <ServiceForm
             onFullSubmit={navigation.goBack}
             onSubmit={this._createHandler} isNew
-            businessServiceId={carWash.id}
+            corporationServiceId={carWash.id}
           />
         </Content>
       </Container>

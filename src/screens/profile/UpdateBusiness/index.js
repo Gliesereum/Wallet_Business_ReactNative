@@ -22,6 +22,7 @@ class UpdateBusiness extends Component {
       await Toast.show({ text: "Успешно обвновлена компания" });
       await navigation.goBack();
     } catch (e) {
+      const error = e;
       await Toast.show({ text: e.message || "Ошибка" });
     } finally {
       $globalSpinnerOff();

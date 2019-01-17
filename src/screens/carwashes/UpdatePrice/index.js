@@ -33,7 +33,7 @@ class UpdatePrice extends Component {
           <ServiceForm
             onSubmit={this._updateHandler}
             onFullSubmit={navigation.goBack}
-            businessServiceId={carWash.id}
+            corporationServiceId={carWash.id}
             servicePrice={servicePrice}
           />
         </Content>

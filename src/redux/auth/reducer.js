@@ -85,9 +85,11 @@ const appReducer = createReducer(initialState, {
       }
     };
   },
+
   [actions.SIGN_OUT]: state => {
     return initialState;
   }
+
 });
 
 
