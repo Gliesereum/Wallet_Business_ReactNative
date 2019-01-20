@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dimensions, StyleSheet } from "react-native";
 import { Button, Container, Content, Icon, Text, View, SwipeRow, Toast } from "native-base";
-import { HeaderLayout } from "../../components/Layout";
+import { HeaderLayout } from "../../../components/Layout";
 
-import { asyncRequestAuth } from "../../utils";
+import { asyncRequestAuth } from "../../../utils";
 
-import appActions from "../../redux/app/actions";
-import washActions from "../../redux/washes/actions";
+import appActions from "../../../redux/app/actions";
+import washActions from "../../../redux/washes/actions";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 
-class BoxesCarWash extends Component {
+class Index extends Component {
 
   state = {
     boxes: []
@@ -143,4 +143,4 @@ class BoxesCarWash extends Component {
 }
 
 
-export default connect(state => state, { ...appActions, ...washActions })(BoxesCarWash);
+export default connect(state => state, { ...appActions, ...washActions })(Index);

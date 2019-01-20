@@ -2,23 +2,22 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, Content, Icon, Toast } from "native-base";
 
-import { HeaderLayout } from "../../components/Layout";
-import { CarWashForm } from "../../components";
-import { asyncRequestTest } from "../../utils";
+import { HeaderLayout } from "../../../components/Layout";
+import { CarWashForm } from "../../../components";
+import { asyncRequestAuth } from "../../../utils";
 
-import appActions from "../../redux/app/actions";
-import washActions from "../../redux/washes/actions";
+import appActions from "../../../redux/app/actions";
+import washActions from "../../../redux/washes/actions";
 
 
-class UpdateCarWash extends Component {
+class Index extends Component {
 
   onSubmit = async (data) => {
     const url = "carwash";
     const { $updateWash } = this.props;
-    const { token } = this.props.auth;
     try {
       this.props.$globalSpinnerOn();
-      const newWash = await asyncRequestTest(url, "PUT", "karma", token, data);
+      const newWash = await asyncRequestAuth(url, 'PUT', 'karma', data);
       await $updateWash(newWash);
       await this.props.navigation.navigate('CarWashes');
       Toast.show({ text: "Успешно обвновлено!" });
@@ -61,4 +60,4 @@ class UpdateCarWash extends Component {
 }
 
 
-export default connect(state => state, ({ ...appActions, ...washActions }))(UpdateCarWash);
+export default connect(state => state, ({ ...appActions, ...washActions }))(Index);

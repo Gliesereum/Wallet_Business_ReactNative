@@ -71,22 +71,8 @@ const SelectField = ({ inputKey, label, value, type, options, onChange }) => {
   );
 };
 
-const TimeField = ({ name, label, value, type, onChange }) => {
-  return (
-    <View key={name}>
-      <Label style={{ paddingTop: 4 }}>{label}</Label>
-      <TimePicker
-        time={10}
-        onChange={e => console.log("Time Picker")}
-      />
-    </View>
-  );
-};
-
 const ArrayField = ({ inputKey, label, value, type, options, error, onChange }) => {
-
   const checked = key => value.includes(key);
-
   const onInput = key => () => {
     const hasInclude = checked(key);
     const newValue = hasInclude ? value.filter(item => item !== key) : [...value, key];
@@ -128,12 +114,24 @@ const ArrayField = ({ inputKey, label, value, type, options, error, onChange }) 
   );
 };
 
+const TimeField = ({ name, label, value, type, onChange }) => {
+  return (
+    <View key={name}>
+      <Label style={{ paddingTop: 4 }}>{label}</Label>
+      <TimePicker
+        time={10}
+        onChange={e => console.log("Time Picker")}
+      />
+    </View>
+  );
+};
+
 
 const fields = {
   string: StringField,
   number: NumberField,
   select: SelectField,
-  time: TimeField,
+  // time: TimeField,
   array: ArrayField
 };
 

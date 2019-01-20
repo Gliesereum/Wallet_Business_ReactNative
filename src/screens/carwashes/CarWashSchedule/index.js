@@ -16,12 +16,12 @@ import {
   Toast
 } from "native-base";
 
-import { TimePicker } from "../../components";
-import HeaderLayout from "../../components/Layout/Header";
-import { asyncRequestAuth } from "../../utils";
+import { TimePicker } from "../../../components";
+import HeaderLayout from "../../../components/Layout/Header";
+import { asyncRequestAuth } from "../../../utils";
 
-import appActions from "../../redux/app/actions";
-import washActions from "../../redux/washes/actions";
+import appActions from "../../../redux/app/actions";
+import washActions from "../../../redux/washes/actions";
 
 
 const styles = StyleSheet.create({});
@@ -40,7 +40,7 @@ const weekDays = [
 ];
 
 
-class scheduleCarWash extends Component {
+class index extends Component {
 
   state = { data: weekDays };
 
@@ -215,4 +215,4 @@ class scheduleCarWash extends Component {
 }
 
 
-export default connect(state => state, ({ ...appActions, ...washActions }))(scheduleCarWash);
+export default connect(state => state, ({ ...appActions, ...washActions }))(index);

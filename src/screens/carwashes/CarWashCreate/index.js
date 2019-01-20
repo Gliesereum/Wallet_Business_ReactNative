@@ -2,19 +2,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, Content, Icon, Text, Toast, View } from "native-base";
 
-import { HeaderLayout } from "../../components/Layout";
-import { CarWashForm } from "../../components";
-import { asyncRequestTest } from "../../utils";
+import { HeaderLayout } from "../../../components/Layout";
+import { CarWashForm } from "../../../components";
+import { asyncRequestTest } from "../../../utils";
 
-import appActions from "../../redux/app/actions";
-import washActions from "../../redux/washes/actions";
+import appActions from "../../../redux/app/actions";
+import washActions from "../../../redux/washes/actions";
 import { Dimensions } from "react-native";
 
 
 const deviceHeight = Dimensions.get("window").height;
 
 
-class NewCarWash extends Component {
+class Index extends Component {
 
   onSubmit = async (data) => {
     const url = "carwash";
@@ -45,7 +45,14 @@ class NewCarWash extends Component {
   };
 
   renderForm = () => {
-    return <CarWashForm onSubmit={this.onSubmit} type={"new"}/>;
+    const {corporation} = this.props.auth.user;
+    return (
+      <CarWashForm
+        onSubmit={this.onSubmit}
+        type={"new"}
+        corporation={corporation}
+      />
+    );
   };
 
   renderScreen = () => {
@@ -74,4 +81,4 @@ class NewCarWash extends Component {
 }
 
 
-export default connect(state => state, ({ ...appActions, ...washActions }))(NewCarWash);
+export default connect(state => state, ({ ...appActions, ...washActions }))(Index);

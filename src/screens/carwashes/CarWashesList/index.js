@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 import { Dimensions, StyleSheet } from "react-native";
 import { Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View, SwipeRow } from "native-base";
 
-import {asyncRequestAuth } from "../../utils";
-import washActions from "../../redux/washes/actions";
-import appActions from "../../redux/app/actions";
+import {asyncRequestAuth } from "../../../utils";
+import washActions from "../../../redux/washes/actions";
+import appActions from "../../../redux/app/actions";
 
 
 const deviceHeight = Dimensions.get("window").height;
 
 
-import { HeaderLayout } from "../../components/Layout";
+import { HeaderLayout } from "../../../components/Layout";
 
 const styles = StyleSheet.create({
   emptyListContainer: {

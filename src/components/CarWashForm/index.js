@@ -12,7 +12,7 @@ type Props = {
   onSubmit: Function,
   type: "new" | "update",
   carWashData?: Object,
-  corporations: Array
+  corporation: Array
 };
 
 
