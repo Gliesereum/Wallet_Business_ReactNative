@@ -4,7 +4,9 @@ import actions from "./actions";
 
 
 const initialState = {
-  washes: []
+  washes: [],
+  servicePrices: {},                  // Object with corporationKey (from washes list) and array of service prices as value
+  servicePackages: {}                 // Object with corporationKey (from washes list) and array of service packages as value
 };
 
 
@@ -14,6 +16,34 @@ const washesReducer = createReducer(initialState, {
     return {
       ...state,
       washes: payload
+    };
+  },
+
+  [actions.GET_SERVICE_PRICE]: (state, payload) => {
+    if (payload.length === 0) {
+      return state;
+    }
+    const corporationServiceId = payload[0].corporationServiceId;
+    return {
+      ...state,
+      servicePrices: {
+        ...state.servicePrices,
+        [corporationServiceId]: payload
+      }
+    };
+  },
+
+  [actions.GET_SERVICE_PACKAGES]: (state, payload) => {
+    if (payload.length === 0) {
+      return state;
+    }
+    const corporationServiceId = payload[0].corporationServiceId;
+    return {
+      ...state,
+      servicePackages: {
+        ...state.servicePackages,
+        [corporationServiceId]: payload
+      }
     };
   },
 

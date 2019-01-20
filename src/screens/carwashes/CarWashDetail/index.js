@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Dimensions } from "react-native";
 import {
   Button,
@@ -39,7 +40,7 @@ const tabs = [
   { label: "Локация", node: LocationTab },
   { label: "Услуги", node: PriceTab },
   { label: "Пакет Услуг", node: PackageTab },
-  { label: "Рассписание", node: ScheduleTab },
+  { label: "Рассписание", node: ScheduleTab }
 ];
 
 
@@ -90,8 +91,10 @@ class InfoCarWash extends Component {
 
   renderTabItem = tab => {
     const { label, node: Node } = tab;
-    const data = this.props.navigation.getParam("carWash");
-    const { services, packages } = this.state;
+    const carWashID = this.props.navigation.getParam("carWashID");
+    const data = this.props.washes.washes.filter(item => item.id === carWashID)[0];
+    const services = this.props.washes.services[carWashID];
+    const packages = this.props.washes.packages[carWashID];
     const carWash = { ...data, services, packages };
     return (
       <Tab key={label} heading={label}>
@@ -134,4 +137,4 @@ class InfoCarWash extends Component {
 }
 
 
-export default InfoCarWash;
+export default connect(state => state)(InfoCarWash);

@@ -1,6 +1,16 @@
+import { asyncRequestAuth } from "../../utils";
+
+import appActions from "../app/actions";
+
+const { $globalSpinnerOn, $globalSpinnerOff } = appActions;
+
 const actions = {
 
   GET_WASHES: "GET_WASHES",
+
+  GET_SERVICE_PRICE: "GET_SERVICE_PRICE",
+
+  GET_SERVICE_PACKAGES: "GET_SERVICE_PACKAGES",
 
   ADD_WASH: "ADD_WASH",
 
@@ -14,7 +24,39 @@ const actions = {
 
   REMOVE_BOX: "REMOVE_BOX",
 
-  $getWashes: (washes) => ({ type: actions.GET_WASHES, payload: washes }),
+  $getWashes: () => async dispatch => {
+    const url = "carwash/by-user";
+    await dispatch($globalSpinnerOn());
+    try {
+      const data = await asyncRequestAuth(url) || [];
+      await dispatch({ type: actions.GET_WASHES, payload: data });
+    } catch (e) {
+    } finally {
+      await dispatch($globalSpinnerOff());
+    }
+  },
+
+
+  $getPriceService: corporationServiceId => async dispatch => {
+    const servicesURL = `price/by-corporation-service/${corporationServiceId}`;
+    try {
+      const data = await asyncRequestAuth(servicesURL);
+      await dispatch({ type: actions.GET_SERVICE_PRICE, payload: data });
+    } catch (e) {
+      const error = e;
+    }
+  },
+
+  $getServicePackages: corporationServiceId => async dispatch => {
+    const packagesURL = `package/by-corporation-service/${corporationServiceId}`;
+    try {
+      const data = await asyncRequestAuth(packagesURL);
+      await dispatch({ type: actions.GET_SERVICE_PACKAGES, payload: data });
+    } catch (e) {
+      const error = e;
+    }
+  },
+
 
   $addWash: wash => ({ type: actions.ADD_WASH, payload: wash }),
 

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dimensions, StyleSheet } from "react-native";
-import { Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View, SwipeRow } from "native-base";
+import { Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View } from "native-base";
 
-import {asyncRequestAuth } from "../../../utils";
 import washActions from "../../../redux/washes/actions";
 import appActions from "../../../redux/app/actions";
 
@@ -30,16 +29,11 @@ class CarWashes extends Component {
   }
 
   initScreen = async () => {
-    const url = "carwash/by-user";
-    const { $globalSpinnerOn, $globalSpinnerOff, $getWashes } = this.props;
-    await $globalSpinnerOn();
-    try {
-      const data = await asyncRequestAuth(url) || [];
-      await $getWashes(data);
-    } catch (e) {
-    } finally {
-      await $globalSpinnerOff();
-    }
+    const { $getPriceService, $getServicePackages } = this.props;
+    await this.props.$getWashes();
+    const { washes } = this.props.washes;
+    Promise.all(washes.map(item => $getPriceService(item.id)));
+    Promise.all(washes.map(item => $getServicePackages(item.id)));
   };
 
   renderEmptyList = () => {
@@ -58,7 +52,8 @@ class CarWashes extends Component {
           <ListItem
             button
             onPress={() => this.props.navigation.navigate("InfoCarWash", {
-              carWash: data
+              carWash: data,
+              carWashID: data.id
             })}
           >
             <Left>
