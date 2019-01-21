@@ -149,7 +149,40 @@ const washesReducer = createReducer(initialState, {
         [corporationServiceId]: newServicesArray
       }
     }
-  }
+  },
+
+
+  [actions.ADD_PACKAGE_SERVICES]: (state, payload) => {
+    const {corporationServiceId} = payload;
+    const updatedPackages = [...state.servicePackages[corporationServiceId], payload];
+    return {
+      ...state,
+      servicePackages: {
+        ...state.servicePackages,
+        [corporationServiceId]: updatedPackages
+      }
+    }
+  },
+
+  [actions.UPDATE_PACKAGE_SERVICES]: (state, payload) => {
+    const {corporationServiceId, id} = payload;
+    const updatedPackage = state.servicePackages[corporationServiceId];
+    const updatedPackageIndex = servicePackages.findIndex(item => item.id === id);
+    const newPackagesArray = [
+      ...updatedPackage.slice(0, updatedPackageIndex),
+      payload,
+      ...updatedPackage.slice(updatedPackageIndex + 1),
+
+    ];
+    return {
+      ...state,
+      servicePackages: {
+        ...state.servicePackages,
+        [corporationServiceId]: newPackagesArray
+      }
+    }
+  },
+
 
 });
 

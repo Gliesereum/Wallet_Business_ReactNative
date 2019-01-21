@@ -29,7 +29,7 @@ const BUTTONS = [
   { text: "Рассписание", path: "ScheduleCarWash" },
   { text: "Боксы", path: "BoxesCarWash" },
   { text: "Добавить Услугу", path: "NewPrice" },
-  { text: "Добавить Пакет", path: "BoxesCarWash" },
+  { text: "Добавить Пакет", path: "CreatePackage" },
   { text: "Отмена", path: "" }
 ];
 const CANCEL_INDEX = 5;
@@ -71,6 +71,8 @@ class InfoCarWash extends Component {
     const services = this.props.washes.servicePrices[carWashID];
     const packages = this.props.washes.servicePackages[carWashID];
     const carWash = { ...data, services, packages };
+    console.log(carWash);
+    debugger
     return (
       <Tab key={label} heading={label}>
         <Node {...carWash} onItemSelect={this._onServicePriceSelect}/>

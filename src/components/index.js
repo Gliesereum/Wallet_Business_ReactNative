@@ -3,6 +3,7 @@ import GlobalLoader from './GlobalLoader';
 import Timer from './Timer';
 import TimePicker from './TimePicker';
 import AddressForm from './AddressForm';
+import PackageForm from './PackageForm'
 
 
 export {
@@ -10,5 +11,6 @@ export {
   Timer,
   CarWashForm,
   TimePicker,
-  AddressForm
+  AddressForm,
+  PackageForm
 };

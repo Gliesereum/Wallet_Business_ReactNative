@@ -28,6 +28,10 @@ const actions = {
 
   UPDATE_SERVICE_PRICE: "UPDATE_SERVICE_PRICE",
 
+  ADD_PACKAGE_SERVICES: "ADD_PACKAGE_SERVICES",
+
+  UPDATE_PACKAGE_SERVICES: "UPDATE_PACKAGE_SERVICES",
+
   $getWashes: () => async dispatch => {
     const url = "carwash/by-user";
     await dispatch($globalSpinnerOn());
@@ -75,6 +79,10 @@ const actions = {
   $addServicePrice: servicePrice => ({type: actions.ADD_SERVICE_PRICE, payload: servicePrice}),
 
   $updateServicePrice: servicePrice => ({type: actions.UPDATE_SERVICE_PRICE, payload: servicePrice}),
+
+  $addPackageService: packageServices => ({type: actions.ADD_PACKAGE_SERVICES, payload: packageServices}),
+
+  $updatePackageService: packageServices => ({type: actions.UPDATE_SERVICE_PRICE, payload: packageServices}),
 
 };
 

@@ -17,8 +17,11 @@ import UpdateCarWash from "../../screens/carwashes/CarWashUpdate";
 import ScheduleCarWash from "../../screens/carwashes/CarWashSchedule";
 import BoxesCarWash from "../../screens/carwashes/CarWashBoxes";
 
-import NewPrice from '../../screens/carwashes/NewPrice';
-import UpdatePrice from '../../screens/carwashes/UpdatePrice';
+import NewPrice from '../../screens/carwashes/CarWashNewServicePrice';
+import UpdatePrice from '../../screens/carwashes/CarWashUpdateServicePrice';
+
+import CarWashCreatePackage from '../../screens/carwashes/CarWashCreatePackage';
+import CarWashUpdatePackage from '../../screens/carwashes/CarWashUpdatePackage';
 
 import AddressInfo from "../../screens/addressinfo";
 
@@ -58,6 +61,9 @@ const AppNavigator = createStackNavigator({
 
     NewPrice: {screen: NewPrice},
     UpdatePrice: {screen: UpdatePrice},
+
+    CreatePackage: {screen: CarWashCreatePackage},
+    UpdatePackage: {screen: CarWashUpdatePackage},
 
     AddressInfo: { screen: AddressInfo }
   },
