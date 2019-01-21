@@ -93,7 +93,7 @@ const ScheduleTab = ({ workTimes }) => {
     const { from, to, label, isWork } = item;
     const workTimeSTR = isWork ? `${timeTemplate(from)} - ${timeTemplate(to)}` : "Выходной";
     return (
-      <ListItem>
+      <ListItem key={item.dayOfWeek}>
         <Left style={{ flex: 1 }}>
           <Text>
             {label}

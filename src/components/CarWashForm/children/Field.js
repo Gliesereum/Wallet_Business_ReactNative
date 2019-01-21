@@ -18,7 +18,7 @@ const StringField = ({ inputKey, label, value, type, error, onChange }) => {
       <Input
         value={value}
         onChangeText={text => onChange(inputKey, text)}
-        keyboardType={"string"}
+        keyboardType={"default"}
       />
     </Item>
   );

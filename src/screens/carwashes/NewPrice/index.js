@@ -1,10 +1,13 @@
-import React, { Component } from "react";
-import { HeaderLayout } from "../../../components/Layout";
-import { Button, Container, Content, Icon } from "native-base";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 
-import { asyncRequestAuth } from "../../../utils";
+import {HeaderLayout} from "../../../components/Layout";
+import {Button, Container, Content, Icon} from "native-base";
+
+import {asyncRequestAuth} from "../../../utils";
 
 import ServiceForm from "../../../components/ServiceForm";
+import actions from '../../../redux/washes/actions';
 
 
 class NewPrice extends Component {
@@ -14,8 +17,12 @@ class NewPrice extends Component {
     return asyncRequestAuth(url, "POST", "karma", body);
   };
 
+  _onFullSubmit = carWash => {
+    this.props.$addServicePrice(carWash)
+  };
+
   render() {
-    const { navigation } = this.props;
+    const {navigation} = this.props;
     const carWash = navigation.getParam("carWashData");
     return (
       <Container>
@@ -29,9 +36,10 @@ class NewPrice extends Component {
         />
         <Content>
           <ServiceForm
-            onFullSubmit={navigation.goBack}
-            onSubmit={this._createHandler} isNew
+            onFullSubmit={this._onFullSubmit}
+            onSubmit={this._createHandler}
             corporationServiceId={carWash.id}
+            isNew
           />
         </Content>
       </Container>
@@ -41,4 +49,4 @@ class NewPrice extends Component {
 }
 
 
-export default NewPrice;
+export default connect(state => state, {...actions})(NewPrice);

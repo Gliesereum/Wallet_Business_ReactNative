@@ -21,7 +21,7 @@ class ClassForm extends Component {
   renderPriceClassItem = item => {
     const switched = this._classSwitched(item);
     return (
-      <ListItem>
+      <ListItem key={item.id}>
         <Body>
         <Text>{item.name}</Text>
         </Body>

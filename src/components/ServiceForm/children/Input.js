@@ -32,7 +32,7 @@ const StringField = ({ inputKey, label, value, type, error, onChange }) => {
       <Input
         value={value}
         onChangeText={text => onChange(inputKey, text)}
-        keyboardType={"string"}
+        keyboardType={"default"}
       />
     </Item>
   );
@@ -109,6 +109,7 @@ const ArrayField = ({ inputKey, label, value, type, options, error, onChange }) 
         renderContent={() => content}
         textStyle={{ color: "green" }}
         headerStyle={{ backgroundColor: "#fff" }}
+        key={inputKey}
       />
     </Item>
   );

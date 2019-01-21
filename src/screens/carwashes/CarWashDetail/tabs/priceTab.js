@@ -36,7 +36,7 @@ const PriceTab = ({ services, onItemSelect }) => {
     );
   };
 
-  return services.length ? renderList() : renderEmptyList();
+  return services ? renderList() : renderEmptyList();
 
 };
 

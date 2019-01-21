@@ -65,7 +65,7 @@ class Index extends Component {
               <Icon name="arrow-back"/>
             </Button>
           )}
-          body={"Новая мойка"}
+          body={"Новая мойка!"}
         />
         <Content>
           {userVerified ? this.renderForm() : this.renderNotAllowedCreateCarWash()}

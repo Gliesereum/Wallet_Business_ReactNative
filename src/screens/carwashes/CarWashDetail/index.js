@@ -13,14 +13,13 @@ import {
   ScrollableTab
 } from "native-base";
 
-import MainTab from "./children/mainTab";
-import LocationTab from "./children/locationTab";
-import PriceTab from "./children/priceTab";
-import ScheduleTab from "./children/scheduleTab";
-import PackageTab from "./children/packagesTab";
+import MainTab from "./tabs/mainTab";
+import LocationTab from "./tabs/locationTab";
+import PriceTab from "./tabs/priceTab";
+import ScheduleTab from "./tabs/scheduleTab";
+import PackageTab from "./tabs/packagesTab";
 
 import { HeaderLayout } from "../../../components/Layout";
-import { asyncRequestAuth } from "../../../utils";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -46,30 +45,6 @@ const tabs = [
 
 class InfoCarWash extends Component {
 
-  state = { services: [], packages: [] };
-
-  componentDidMount() {
-    this._initScreen();
-  }
-
-  _initScreen = async () => {
-    const carWash = this.props.navigation.getParam("carWash");
-    const servicesURL = `price/by-corporation-service/${carWash.id}`;
-    const packagesURL = `package/by-corporation-service/${carWash.id}`;
-    try {
-      const services = await asyncRequestAuth(servicesURL);
-      const packages = await asyncRequestAuth(packagesURL);
-      this._onInput("services", services || []);
-      this._onInput("packages", packages || []);
-    } catch (e) {
-      const error = e;
-    }
-  };
-
-  _onInput = (key, value) => {
-    this.setState(state => ({ ...state, [key]: value }));
-  };
-
   _openSheetHandler = () => {
     const data = this.props.navigation.getParam("carWash");
     ActionSheet.show(
@@ -93,8 +68,8 @@ class InfoCarWash extends Component {
     const { label, node: Node } = tab;
     const carWashID = this.props.navigation.getParam("carWashID");
     const data = this.props.washes.washes.filter(item => item.id === carWashID)[0];
-    const services = this.props.washes.services[carWashID];
-    const packages = this.props.washes.packages[carWashID];
+    const services = this.props.washes.servicePrices[carWashID];
+    const packages = this.props.washes.servicePackages[carWashID];
     const carWash = { ...data, services, packages };
     return (
       <Tab key={label} heading={label}>

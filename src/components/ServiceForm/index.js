@@ -1,10 +1,10 @@
 // @flow
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { StyleSheet } from "react-native";
-import { View, Button, Text } from "native-base";
+import React, {Component} from "react";
+import {StyleSheet} from "react-native";
+import {View, Button, Text, Toast} from "native-base";
+import {withNavigation} from 'react-navigation';
 
-import { asyncRequestAuth } from "../../utils";
+import {asyncRequestAuth} from "../../utils";
 
 import PriceInput from "./children/Input";
 import ClassForm from "./children/ClassForm";
@@ -20,7 +20,7 @@ type Props = {
   onSubmit: Function,
   onFullSubmit: Function,
   servicePrice?: Object,
-  businessServiceId: String,
+  corporationServiceId: String,
   isNew?: Boolean
 };
 
@@ -29,7 +29,7 @@ type Price = {
   description: String,
   price: Number,
   serviceId: String,            // UUID
-  businessServiceId: String,    // UUID
+  corporationServiceId: String,    // UUID
   duration: Number,             // Minutes
   serviceClass: Array<String>,  // UUID
   interiorTypes: Array<String>, //
@@ -38,42 +38,42 @@ type Price = {
 
 
 const interiorTypes = [
-  { SUEDE: "Замша" },
-  { TEXTILE: "Текстиль" },
-  { LEATHER: "Кожа" },
-  { ARTIFICIAL_LEATHER: "Искусственная кожа" },
-  { ALCANTARA: "Алькантара" },
-  { TASKANA: "Таскана" },
-  { VELOURS: "Велюр" }
+  {SUEDE: "Замша"},
+  {TEXTILE: "Текстиль"},
+  {LEATHER: "Кожа"},
+  {ARTIFICIAL_LEATHER: "Искусственная кожа"},
+  {ALCANTARA: "Алькантара"},
+  {TASKANA: "Таскана"},
+  {VELOURS: "Велюр"}
 ];
 
 const carBodies = [
-  { SEDAN: "Седан" },
-  { WAGON: "Универсал" },
-  { HATCHBACK: "Хетчбек" },
-  { LIFTBACK: "Лифтбек" },
-  { LIMOUSINE: "Лимузин" },
-  { MINIVAN: "Минивен" },
-  { COUPE: "Купе" },
-  { CABRIOLET: "Кабриолет" },
-  { CROSSOVER: "Кроссовер" },
-  { SUV: "Джип" }
+  {SEDAN: "Седан"},
+  {WAGON: "Универсал"},
+  {HATCHBACK: "Хетчбек"},
+  {LIFTBACK: "Лифтбек"},
+  {LIMOUSINE: "Лимузин"},
+  {MINIVAN: "Минивен"},
+  {COUPE: "Купе"},
+  {CABRIOLET: "Кабриолет"},
+  {CROSSOVER: "Кроссовер"},
+  {SUV: "Джип"}
 ];
 
 const renderFields = {
-  corporationServiceId: { label: "Бизнес:", type: "string", defaultValue: "", render: false },
-  serviceId: { label: "Вид Услуги:", type: "select", defaultValue: "", render: true },
-  name: { label: "Название:", key: "name", type: "string", defaultValue: "", render: true },
-  description: { label: "Описание:", type: "string", defaultValue: "", render: true },
-  price: { label: "Цена, ГРН:", type: "number", defaultValue: "", render: true },
-  duration: { label: "Продолжительность, минуты:", type: "number", defaultValue: "", render: true },
-  interiorTypes: { label: "Салон:", type: "array", defaultValue: [], render: true },
-  carBodies: { label: "Кузов:", type: "array", defaultValue: [], render: true },
-  serviceClass: { label: "Класс обслуживания:", type: "string", defaultValue: [], render: false }
+  corporationServiceId: {label: "Бизнес:", type: "string", defaultValue: "", render: false},
+  serviceId: {label: "Вид Услуги:", type: "select", defaultValue: "", render: true},
+  name: {label: "Название:", key: "name", type: "string", defaultValue: "", render: true},
+  description: {label: "Описание:", type: "string", defaultValue: "", render: true},
+  price: {label: "Цена, ГРН:", type: "number", defaultValue: "", render: true},
+  duration: {label: "Продолжительность, минуты:", type: "number", defaultValue: "", render: true},
+  interiorTypes: {label: "Салон:", type: "array", defaultValue: [], render: true},
+  carBodies: {label: "Кузов:", type: "array", defaultValue: [], render: true},
+  serviceClass: {label: "Класс обслуживания:", type: "string", defaultValue: [], render: false}
 };
 
 
-class ServicePrice extends Component<Props, {}> {
+class ServicePriceForm extends Component<Props, {}> {
 
   state = {
     data: {},
@@ -94,23 +94,23 @@ class ServicePrice extends Component<Props, {}> {
   }
 
   _initForm = () => {
-    const { isNew, servicePrice, corporationServiceId } = this.props;
+    const {isNew, servicePrice, corporationServiceId} = this.props;
     this.setState((state) => ({
-      data: { ...this.state.data, corporationServiceId },
-      options: { ...this.state.options, carBodies, interiorTypes }
+      data: {...this.state.data, corporationServiceId},
+      options: {...this.state.options, carBodies, interiorTypes}
     }));
     if (isNew) {
-      this.setState(({ data }) => ({ data: { ...this.objToStateObj(renderFields), ...data } }));
+      this.setState(({data}) => ({data: {...this.objToStateObj(renderFields), ...data}}));
       return;
     }
-    this.setState(({ data }) => ({ data: { ...this.objToStateObj(renderFields), ...servicePrice } }));
+    this.setState(({data}) => ({data: {...this.objToStateObj(renderFields), ...servicePrice}}));
   };
 
   _loadServices = async () => {
     const url = "service";
     try {
       const servicesOptions = await asyncRequestAuth(url) || [];
-      this.setState(({ options }) => ({
+      this.setState(({options}) => ({
         options: {
           ...this.state.options,
           serviceId: servicesOptions
@@ -125,7 +125,7 @@ class ServicePrice extends Component<Props, {}> {
     const url = "class";
     try {
       const classOptions = await asyncRequestAuth(url) || [];
-      this.setState(({ options }) => ({
+      this.setState(({options}) => ({
         options: {
           ...this.state.options,
           serviceClass: classOptions
@@ -138,11 +138,11 @@ class ServicePrice extends Component<Props, {}> {
 
   _pushClassToPriceHandler = async priceClass => {
     const url = "price/class";
-    const body = { priceId: this.state.data.id, serviceClassId: priceClass.id };
+    const body = {priceId: this.state.data.id, serviceClassId: priceClass.id};
     try {
       const newPriceClass = await asyncRequestAuth(url, "POST", "karma", body);
-      await this.setState(({ data }) => ({
-        data: { ...data, serviceClass: [...data.serviceClass, priceClass] }
+      await this.setState(({data}) => ({
+        data: {...data, serviceClass: [...data.serviceClass, priceClass]}
       }));
     } catch (e) {
       const error = e;
@@ -151,9 +151,9 @@ class ServicePrice extends Component<Props, {}> {
   };
 
   _removeClassFromPriceHandler = async priceClass => {
-    const { id: servicePriceId } = this.state.data;
+    const {id: servicePriceId} = this.state.data;
     const url = `price/class/${servicePriceId}/${priceClass.id}`;
-    this.setState(({ data }) => ({
+    this.setState(({data}) => ({
       data: {
         ...data,
         serviceClass: data.serviceClass.filter(item => item.id !== priceClass.id)
@@ -175,15 +175,14 @@ class ServicePrice extends Component<Props, {}> {
   };
 
   onInput = (key, value) => {
-    this.setState(({ data }) => ({ data: { ...data, [key]: value } }));
+    this.setState(({data}) => ({data: {...data, [key]: value}}));
   };
 
   _onSubmit = async () => {
     try {
       const newPrice = await this.props.onSubmit(this.state.data);
-      await this.setState(({ data }) => ({ data: newPrice }));
-      await this.setState(({ showClassForm }) => ({ showClassForm: true }));
-      // debugger;
+      await this.setState(({data}) => ({data: newPrice}));
+      await this.setState(({showClassForm}) => ({showClassForm: true}));
     } catch (e) {
       const error = e;
       //
@@ -191,13 +190,14 @@ class ServicePrice extends Component<Props, {}> {
   };
 
   _fullSubmitHandler = () => {
-    // this.setState(({ showClassForm }) => ({ showClassForm: !showClassForm }));
-    this.setState(({ showClassForm }) => ({ showClassForm: false }));
+    this.setState(({showClassForm}) => ({showClassForm: !showClassForm}));
+    this.props.navigation.goBack();
     this.props.onFullSubmit(this.state.data);
+    Toast.show({text: 'Успешно обновлено'})
   };
 
   renderItemInput = key => {
-    const { data, options, errors } = this.state;
+    const {data, options, errors} = this.state;
     const field = renderFields[key];
     return field.render && (
       <PriceInput
@@ -208,17 +208,18 @@ class ServicePrice extends Component<Props, {}> {
         value={data[key]}
         options={options[key]}
         error={errors[key]}
+        key={key}
       />
     );
   };
 
   render() {
-    const keys = Object.keys(renderFields);
+    const keys = Object.keys(renderFields)
     return (
       <View style={styles.container}>
         {keys.map(this.renderItemInput)}
         <Button
-          style={{ width: "100%", marginTop: 4, justifyContent: "center" }}
+          style={{width: "100%", marginTop: 4, justifyContent: "center"}}
           onPress={this._onSubmit}
         >
           <Text>Далее</Text>
@@ -239,4 +240,4 @@ class ServicePrice extends Component<Props, {}> {
 }
 
 
-export default connect(state => ({ business: state.auth.user.business }))(ServicePrice);
+export default withNavigation(ServicePriceForm);

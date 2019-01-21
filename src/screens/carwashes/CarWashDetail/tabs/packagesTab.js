@@ -35,7 +35,7 @@ const PackageTab = ({ packages }) => {
   };
 
 
-  return packages.length ? renderPackagesList() : renderEmptyList();
+  return packages ? renderPackagesList() : renderEmptyList();
 };
 
 

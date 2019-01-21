@@ -1,10 +1,11 @@
 // @flow
-import React, { Component } from "react";
-import { StyleSheet } from "react-native";
-import { Button, Form, Input, Item, Label, Text, View } from "native-base";
-import { withNavigation } from "react-navigation";
+import React, {Component} from "react";
+import {StyleSheet} from "react-native";
+import {Button, Form, Input, Item, Label, Text, View} from "native-base";
+import {withNavigation} from "react-navigation";
 
 import Field from "./children/Field";
+import Toast from "../../theme/components/Toast";
 
 const styles = StyleSheet.create({});
 
@@ -17,13 +18,13 @@ type Props = {
 
 
 const fields = {
-  corporationId: { key: "corporationId", label: "Компания", type: "select", render: true, defaultValue: "" },
-  name: { key: "name", label: "Название:", type: "string", render: true, defaultValue: "" },
-  phone: { key: "phone", label: "Телефон:", type: "number", render: true, defaultValue: "" },
-  description: { key: "description", label: "Описание:", type: "string", render: true, defaultValue: "" },
-  address: { key: "address", label: "Адрес", type: "map", render: true, defaultValue: "" },
-  latitude: { key: "latitude", label: "Название", type: "string", render: false, defaultValue: "" },
-  longitude: { key: "longitude", label: "Название", type: "string", render: false, defaultValue: "" }
+  corporationId: {key: "corporationId", label: "Компания", type: "select", render: true, defaultValue: ""},
+  name: {key: "name", label: "Название:", type: "string", render: true, defaultValue: ""},
+  phone: {key: "phone", label: "Телефон:", type: "number", render: true, defaultValue: ""},
+  description: {key: "description", label: "Описание:", type: "string", render: true, defaultValue: ""},
+  address: {key: "address", label: "Адрес", type: "map", render: true, defaultValue: ""},
+  latitude: {key: "latitude", label: "Название", type: "string", render: false, defaultValue: ""},
+  longitude: {key: "longitude", label: "Название", type: "string", render: false, defaultValue: ""}
 };
 
 
@@ -37,7 +38,7 @@ class CarWashFrom extends Component<Props, {}> {
     }, {});
   };
 
-  state = { data: this.initEmptyForm(), error: {} };
+  state = {data: this.initEmptyForm(), error: {}};
 
   componentDidMount() {
     this.fillForm();
@@ -55,20 +56,21 @@ class CarWashFrom extends Component<Props, {}> {
   };
 
   onInput = (key, value) => {
-    this.setState(state => ({ ...state, data: { ...state.data, [key]: value } }));
+    this.setState(state => ({...state, data: {...state.data, [key]: value}}));
   };
 
   errorHandler = (e) => {
-    const { additional } = e;
+    const {additional} = e;
     const error = e;
-    this.setState(state => ({ ...state, error: additional }));
+    Toast.show({test: 'Заполните все поля'});
+    this.setState(state => ({...state, error: additional}));
   };
 
   submitHandler = () => {
     this.props.onSubmit(this.state.data).then().catch(this.errorHandler);
   };
 
-  _locationSubmit = ({ location, address }) => {
+  _locationSubmit = ({location, address}) => {
     this.onInput("latitude", location.latitude);
     this.onInput("longitude", location.longitude);
     this.onInput("address", address);
@@ -87,18 +89,18 @@ class CarWashFrom extends Component<Props, {}> {
   };
 
   renderItemInput = key => {
-    const { onInput } = this;
+    const {onInput} = this;
     const field = fields[key];
     const value = this.state.data[field.key];
     const error = this.state.error[field.key];
     const options = field.key === "corporationId" ? this.props.corporation : null;
     const mapField = (
       <Item fixedLabel key={key} error={!!error}>
-        <Label style={{ paddingTop: 4 }}>{field.label}</Label>
+        <Label style={{paddingTop: 4}}>{field.label}</Label>
         <Input
           value={value.toString()}
           onChangeText={text => onInput(field.key, text)}
-          keyboardType={field.type || "default"}
+          keyboardType={"default"}
           onFocus={this._openMapScreen}
         />
       </Item>
@@ -108,6 +110,7 @@ class CarWashFrom extends Component<Props, {}> {
     }
     return field.render && (
       <Field
+        key={key}
         type={field.type}
         label={field.label}
         inputKey={field.key}
@@ -128,7 +131,7 @@ class CarWashFrom extends Component<Props, {}> {
           {fieldsForm}
         </Form>
         <Button
-          style={{ marginLeft: 5, marginRight: 5, marginTop: 10 }}
+          style={{marginLeft: 5, marginRight: 5, marginTop: 10}}
           onPress={() => this.submitHandler()}
           full
           block
@@ -140,7 +143,6 @@ class CarWashFrom extends Component<Props, {}> {
   };
 
   render() {
-    console.log(this.state);
     return this.renderForm();
   }
 
