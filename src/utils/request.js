@@ -74,6 +74,7 @@ export const asyncRequestAuth = (url, method = "GET", moduleUrl = "karma", body,
   return new Promise(async (resolve, reject) => {
     const timer = timeOut(reject, requestTime);
     const token = JSON.parse(await AsyncStorage.getItem("token")).accessToken;
+    console.log("body epta", body);
     try {
       const fullURL = `${config.url}${moduleUrl}/v1/${url}`;
       const _requestConfig = requestConfig(method, token, body);

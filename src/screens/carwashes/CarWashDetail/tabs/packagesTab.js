@@ -1,42 +1,44 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import { View, Text } from "react-native";
+import { View, Text, List, ListItem } from "native-base";
 
 
 const styles = StyleSheet.create({
-  emptyList: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  }
+  emptyList: { flex: 1, justifyContent: "center", alignItems: "center" }
 });
 
-
-const PackageTab = ({ packages }) => {
+const PriceTab = ({ packages, onItemSelect }) => {
 
   const renderEmptyList = () => {
     return (
       <View style={styles.emptyList}>
-        <Text>Пустой Список</Text>
+        <Text>Пустой список</Text>
       </View>
     );
   };
 
-  const renderPackageItem = item => {
+  const renderItemPackage = item => {
     return (
-      <View key={item.id}>
+      <ListItem
+        key={item.id}
+        onPress={() => onItemSelect(item)}
+      >
         <Text>{item.name}</Text>
-      </View>
+      </ListItem>
     );
   };
 
-  const renderPackagesList = () => {
-    return packages.map(renderPackageItem);
+  const renderList = () => {
+    return (
+      <List>
+        {packages.map(renderItemPackage)}
+      </List>
+    );
   };
 
+  return packages ? renderList() : renderEmptyList();
 
-  return packages ? renderPackagesList() : renderEmptyList();
 };
 
 
-export default PackageTab;
+export default PriceTab;

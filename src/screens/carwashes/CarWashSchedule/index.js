@@ -69,7 +69,6 @@ class index extends Component {
       await Toast.show({ text: "Успешно обновлено" });
     } catch (e) {
       const error = e;
-      debugger
     } finally {
       await $globalSpinnerOff();
     }
@@ -89,7 +88,6 @@ class index extends Component {
       await Toast.show({ text: "Успешно обновлено" });
     } catch (e) {
       const error = e;
-      debugger
     } finally {
       await $globalSpinnerOff();
     }

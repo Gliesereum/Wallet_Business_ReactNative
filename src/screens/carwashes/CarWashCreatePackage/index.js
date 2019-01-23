@@ -1,13 +1,21 @@
-import React, {Component} from 'react';
-import {View, Text, Container, Button, Icon, Content} from 'native-base';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Container, Button, Icon, Content } from "native-base";
 
-import {HeaderLayout} from "../../../components/Layout";
-import {PackageForm} from '../../../components'
+import { HeaderLayout } from "../../../components/Layout";
+import { PackageForm } from "../../../components";
 
 
 class CarWashCreatePackage extends Component {
 
-  render() {
+  _onSubmit = (data) => {
+    console.log(data);
+  };
+
+  renderScreen = () => {
+    const { navigation } = this.props;
+    const carWash = this.props.navigation.getParam("carWash");
+    const servicePrices = this.props.washes.servicePrices[carWash.id];
     return (
       <Container>
         <HeaderLayout
@@ -19,13 +27,21 @@ class CarWashCreatePackage extends Component {
           body={"Создать пакет услуг"}
         />
         <Content>
-          <PackageForm/>
+          <PackageForm
+            services={servicePrices}
+            onSubmit={this._onSubmit}
+            corporationServiceId={carWash.id}
+          />
         </Content>
       </Container>
-    )
+    );
+  };
+
+  render() {
+    return this.renderScreen();
   }
 
 }
 
 
-export default CarWashCreatePackage;
+export default connect(state => state)(CarWashCreatePackage);

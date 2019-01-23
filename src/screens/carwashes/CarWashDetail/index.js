@@ -35,11 +35,11 @@ const BUTTONS = [
 const CANCEL_INDEX = 5;
 
 const tabs = [
-  { label: "Основная", node: MainTab },
-  { label: "Локация", node: LocationTab },
-  { label: "Услуги", node: PriceTab },
-  { label: "Пакет Услуг", node: PackageTab },
-  { label: "Рассписание", node: ScheduleTab }
+  { label: "Основная", key: "main", node: MainTab },
+  { label: "Локация", "key": "location", node: LocationTab },
+  { label: "Услуги", key: "services", node: PriceTab },
+  { label: "Пакет Услуг", key: "packages", node: PackageTab },
+  { label: "Рассписание", key: "schedule", node: ScheduleTab }
 ];
 
 
@@ -64,6 +64,11 @@ class InfoCarWash extends Component {
     this.props.navigation.navigate("UpdatePrice", { servicePrice, carWash });
   };
 
+  _onPackagePricesSelect = packageServices => {
+    const carWash = this.props.navigation.getParam("carWash");
+    this.props.navigation.navigate("UpdatePackage", { packageServices, carWash });
+  };
+
   renderTabItem = tab => {
     const { label, node: Node } = tab;
     const carWashID = this.props.navigation.getParam("carWashID");
@@ -71,11 +76,10 @@ class InfoCarWash extends Component {
     const services = this.props.washes.servicePrices[carWashID];
     const packages = this.props.washes.servicePackages[carWashID];
     const carWash = { ...data, services, packages };
-    console.log(carWash);
-    debugger
+    const onSelectItem = tab.key === "services" ? this._onServicePriceSelect : this._onPackagePricesSelect;
     return (
       <Tab key={label} heading={label}>
-        <Node {...carWash} onItemSelect={this._onServicePriceSelect}/>
+        <Node {...carWash} onItemSelect={onSelectItem}/>
       </Tab>
     );
   };
