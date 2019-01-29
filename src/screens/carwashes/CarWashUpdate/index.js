@@ -22,6 +22,8 @@ class Index extends Component {
       await this.props.navigation.navigate('CarWashes');
       Toast.show({ text: "Успешно обвновлено!" });
     } catch (e) {
+      const error = e;
+      debugger
       Toast.show({ text: e.message || "Ошибка" });
     } finally {
       this.props.$globalSpinnerOff();

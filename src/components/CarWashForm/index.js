@@ -23,8 +23,9 @@ const fields = {
   phone: {key: "phone", label: "Телефон:", type: "number", render: true, defaultValue: ""},
   description: {key: "description", label: "Описание:", type: "string", render: true, defaultValue: ""},
   address: {key: "address", label: "Адрес", type: "map", render: true, defaultValue: ""},
-  latitude: {key: "latitude", label: "Название", type: "string", render: false, defaultValue: ""},
-  longitude: {key: "longitude", label: "Название", type: "string", render: false, defaultValue: ""}
+  latitude: {key: "latitude", label: "Широта", type: "string", render: false, defaultValue: ""},
+  longitude: {key: "longitude", label: "Долгота", type: "string", render: false, defaultValue: ""},
+  serviceType: {key: 'serviceType', label: 'Тип сервиса', type: 'string', render: false, defaultValue: 'CAR_WASH'}
 };
 
 

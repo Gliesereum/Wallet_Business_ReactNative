@@ -17,7 +17,7 @@ const deviceHeight = Dimensions.get("window").height;
 class Index extends Component {
 
   onSubmit = async (data) => {
-    const url = "carwash";
+    const url = "business";
     const { $addWash, navigation } = this.props;
     const { token } = this.props.auth;
     try {
@@ -27,6 +27,8 @@ class Index extends Component {
       await Toast.show({ text: "Успешно создана мойка!" });
       await navigation.navigate('ScheduleCarWash', {carWashData: newWash, isNew: true});
     } catch (e) {
+      const error = e;
+      debugger;
       Toast.show({ text: e.message || "Ошибка" });
       throw e;
     } finally {

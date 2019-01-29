@@ -13,7 +13,8 @@ import {
   Right,
   Body,
   CheckBox,
-  Toast
+  Toast,
+  View
 } from "native-base";
 
 import { TimePicker } from "../../../components";
@@ -30,13 +31,13 @@ const initStartDay = 946706400000;
 const initEndDay = 946749600000;
 
 const weekDays = [
-  { dayOfWeek: "MONDAY", label: "Понедельник", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "TUESDAY", label: "Вторник", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "WEDNESDAY", label: "Среда", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "THURSDAY", label: "Четверг", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "FRIDAY", label: "Пятница", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "SATURDAY", label: "Суббота", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" },
-  { dayOfWeek: "SUNDAY", label: "Воскресенье", from: initStartDay, to: initEndDay, isWork: false, carServiceType: "CAR_WASH" }
+  { dayOfWeek: "MONDAY", label: "Понедельник", from: initStartDay, to: initEndDay, isWork: false, serviceType: "" },
+  { dayOfWeek: "TUESDAY", label: "Вторник", from: initStartDay, to: initEndDay, isWork: false, serviceType: "" },
+  { dayOfWeek: "WEDNESDAY", label: "Среда", from: initStartDay, to: initEndDay, isWork: false, serviceType: "" },
+  { dayOfWeek: "THURSDAY", label: "Четверг", from: initStartDay, to: initEndDay, isWork: false, serviceType: "" },
+  { dayOfWeek: "FRIDAY", label: "Пятница", from: initStartDay, to: initEndDay, isWork: false, serviceType: "" },
+  { dayOfWeek: "SATURDAY", label: "Суббота", from: initStartDay, to: initEndDay, isWork: false, serviceType: "" },
+  { dayOfWeek: "SUNDAY", label: "Воскресенье", from: initStartDay, to: initEndDay, isWork: false, serviceType: "" }
 ];
 
 
@@ -69,6 +70,7 @@ class index extends Component {
       await Toast.show({ text: "Успешно обновлено" });
     } catch (e) {
       const error = e;
+      debugger;
     } finally {
       await $globalSpinnerOff();
     }
@@ -94,8 +96,8 @@ class index extends Component {
   };
 
   _createPromise = (url, method, day) => {
-    const carWashData = this.props.navigation.getParam("carWashData");
-    const body = { ...day, corporationServiceId: carWashData.id };
+    const businessData = this.props.navigation.getParam("carWashData");
+    const body = { ...day, objectId: businessData.id, serviceType: businessData.serviceType };
     return asyncRequestAuth(url, method, "karma", body);
   };
 
@@ -153,20 +155,21 @@ class index extends Component {
     const { _timeHandler, _checkHandler } = this;
     return (
       <ListItem>
-        <Left style={{ flex: 1 }}>
-          <CheckBox
-            checked={item.isWork}
-            onPress={() => _checkHandler(item)}
-          />
+        <Left style={{ flex: 2 }}>
+          <View style={{ flex: 1, flexDirection: "row", justifyContent: 'flex-start' }}>
+            <CheckBox
+              checked={item.isWork}
+              onPress={() => _checkHandler(item)}
+              style={{marginRight: 24}}
+            />
+            <Text>
+              {item.label}
+            </Text>
+          </View>
         </Left>
-        <Body style={{ flex: 2 }}>
-        <Text>
-          {item.label}
-        </Text>
-        </Body>
-        <Right style={{ flex: 2, justifyContent: "space-around", flexDirection: "row" }}>
+        <Right style={{ flex: 1, justifyContent: "space-between", flexDirection: "row" }}>
           <TimePicker time={item.from} onChange={time => _timeHandler(item, "from", time)}/>
-          <Text> - </Text>
+          <Text>-</Text>
           <TimePicker time={item.to} onChange={time => _timeHandler(item, "to", time)}/>
         </Right>
       </ListItem>

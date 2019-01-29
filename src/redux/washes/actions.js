@@ -33,7 +33,7 @@ const actions = {
   UPDATE_PACKAGE_SERVICES: "UPDATE_PACKAGE_SERVICES",
 
   $getWashes: () => async dispatch => {
-    const url = "carwash/by-user";
+    const url = "business/by-user";
     await dispatch($globalSpinnerOn());
     try {
       const data = await asyncRequestAuth(url) || [];
@@ -45,17 +45,18 @@ const actions = {
   },
 
   $getPriceService: corporationServiceId => async dispatch => {
-    const servicesURL = `price/by-corporation-service/${corporationServiceId}`;
+    const servicesURL = `price/by-business/${corporationServiceId}`;
     try {
       const data = await asyncRequestAuth(servicesURL);
       await dispatch({type: actions.GET_SERVICE_PRICE, payload: data});
+      console.log(data);
     } catch (e) {
       const error = e;
     }
   },
 
   $getServicePackages: corporationServiceId => async dispatch => {
-    const packagesURL = `package/by-corporation-service/${corporationServiceId}`;
+    const packagesURL = `package/by-business/${corporationServiceId}`;
     try {
       const data = await asyncRequestAuth(packagesURL);
       await dispatch({type: actions.GET_SERVICE_PACKAGES, payload: data});

@@ -23,12 +23,12 @@ const washesReducer = createReducer(initialState, {
     if (payload.length === 0) {
       return state;
     }
-    const corporationServiceId = payload[0].corporationServiceId;
+    const businessId = payload[0].businessId;
     return {
       ...state,
       servicePrices: {
         ...state.servicePrices,
-        [corporationServiceId]: payload
+        [businessId]: payload
       }
     };
   },
@@ -63,7 +63,7 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.ADD_SCHEDULE]: (state, payload) => {
-    const updatedCarWash = state.washes.filter(item => item.id === payload[0].corporationServiceId)[0];
+    const updatedCarWash = state.washes.filter(item => item.id === payload[0].businessId)[0];
     const updatedCarWashIndex = state.washes.map(item => item.id).indexOf(updatedCarWash.id);
     const newCarWash = {...updatedCarWash, workTimes: payload};
     return {
@@ -77,7 +77,7 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.UPDATE_SCHEDULE]: (state, payload) => {
-    const updatedCarWash = state.washes.filter(item => item.id === payload[0].corporationServiceId)[0];
+    const updatedCarWash = state.washes.filter(item => item.id === payload[0].businessId)[0];
     const updatedCarWashIndex = state.washes.map(item => item.id).indexOf(updatedCarWash.id);
     const newCarWash = {...updatedCarWash, workTimes: payload};
     return {

@@ -97,7 +97,7 @@ class Main extends Component {
           key={item.key}
           mode="dropdown"
           iosHeader="Пол"
-          iosIcon={<Icon name="ios-arrow-down-outline"/>}
+          iosIcon={<Icon name="ios-arrow-down"/>}
           style={{ width: deviceWidth, marginTop: 3 }}
           selectedValue={value}
           placeholder={"Пол"}
@@ -111,7 +111,7 @@ class Main extends Component {
       );
     }
     return (
-      <Item floatingLabel key={item.key}>
+      <Item fixedLabel key={item.key}>
         <Label style={{ paddingTop: 4 }}>{item.label}</Label>
         <Input value={value} onChangeText={text => onInput(item.key, text)}/>
       </Item>
@@ -132,7 +132,6 @@ class Main extends Component {
         <Content>
           <Form>
             {fields.map(this.renderItemInput)}
-
           </Form>
           <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.updateProfile}>
             <Text>Сохранить</Text>

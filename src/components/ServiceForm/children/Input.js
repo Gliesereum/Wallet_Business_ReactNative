@@ -53,14 +53,13 @@ const NumberField = ({ inputKey, label, value, type, error, onChange }) => {
 
 const SelectField = ({ inputKey, label, value, type, options, onChange }) => {
   return (
-    <Item>
+    <Item fixedLabel key={inputKey}>
       <Label style={{ paddingTop: 4 }}>{label}</Label>
       <Picker
         key={inputKey}
         mode="dropdown"
         iosHeader={label}
-        iosIcon={<Icon name="ios-arrow-down-outline"/>}
-        style={{ width: "100%", marginTop: 3 }}
+        style={{ marginTop: 3 }}
         selectedValue={value}
         value={value}
         onValueChange={value => onChange(inputKey, value)}

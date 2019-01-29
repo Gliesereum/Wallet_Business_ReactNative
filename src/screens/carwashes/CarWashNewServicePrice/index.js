@@ -1,13 +1,13 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import {HeaderLayout} from "../../../components/Layout";
-import {Button, Container, Content, Icon} from "native-base";
+import { HeaderLayout } from "../../../components/Layout";
+import { Button, Container, Content, Icon } from "native-base";
 
-import {asyncRequestAuth} from "../../../utils";
+import { asyncRequestAuth } from "../../../utils";
 
 import ServiceForm from "../../../components/ServiceForm";
-import actions from '../../../redux/washes/actions';
+import actions from "../../../redux/washes/actions";
 
 
 class NewPrice extends Component {
@@ -18,12 +18,12 @@ class NewPrice extends Component {
   };
 
   _onFullSubmit = carWash => {
-    this.props.$addServicePrice(carWash)
+    this.props.$addServicePrice(carWash);
   };
 
   render() {
-    const {navigation} = this.props;
-    const carWash = navigation.getParam("carWashData");
+    const { navigation } = this.props;
+    const business = navigation.getParam("carWashData");
     return (
       <Container>
         <HeaderLayout
@@ -38,7 +38,7 @@ class NewPrice extends Component {
           <ServiceForm
             onFullSubmit={this._onFullSubmit}
             onSubmit={this._createHandler}
-            corporationServiceId={carWash.id}
+            business={business}
             isNew
           />
         </Content>
@@ -49,4 +49,4 @@ class NewPrice extends Component {
 }
 
 
-export default connect(state => state, {...actions})(NewPrice);
+export default connect(state => state, { ...actions })(NewPrice);

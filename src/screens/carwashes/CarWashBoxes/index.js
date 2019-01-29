@@ -47,7 +47,7 @@ class Index extends Component {
     const carWash = this.props.navigation.getParam("carWashData");
     const url = "working-space";
     const indexNumber = boxes.length ? boxes[boxes.length - 1].indexNumber + 1 : 1;
-    const body = {indexNumber, corporationServiceId: carWash.id, carServiceType: "CAR_WASH"};
+    const body = {indexNumber, businessId: carWash.id, serviceType: "CAR_WASH"};
     try {
       await $globalSpinnerOn();
       const newBox = await asyncRequestAuth(url, "POST", "karma", body);
