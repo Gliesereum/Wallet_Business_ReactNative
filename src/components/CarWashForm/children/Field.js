@@ -45,13 +45,19 @@ const SelectField = ({ inputKey, label, value, type, options = [], onChange }) =
         key={inputKey}
         mode="dropdown"
         iosHeader={label}
-        iosIcon={<Icon name="ios-arrow-down-outline"/>}
-        style={{ width: "100%", marginTop: 3 }}
+        iosIcon={<Icon name="ios-arrow-down"/>}
+        style={{ width: "100%", marginTop: 3, backgroundColor: "red" }}
         selectedValue={value}
         value={value}
         onValueChange={value => onChange(inputKey, value)}
       >
-        {options.map(item => (<Picker.Item label={item.name} key={item.id} value={item.id}/>))}
+        {options.map(item => (
+          <Picker.Item
+            label={item.name}
+            key={item.id}
+            value={item.id}
+          />
+        ))}
       </Picker>
     </Item>
   );

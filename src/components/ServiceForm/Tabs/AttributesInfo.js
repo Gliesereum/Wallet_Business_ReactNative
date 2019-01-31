@@ -1,41 +1,34 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 
+import ServiceInput from "../children/Input";
+
 
 class AttributesInfo extends Component {
 
-  filterIncludes = id => {
-    const { attributes } = this.props.service;
-    const foundedIndex = attributes.findIndex(item => item.id === id);
-    return foundedIndex !== -1;
-  };
-
-  renderFilterCategoryItem = filter => {
-    const include = this.filterIncludes(filter.id);
-    return (
-      <View key={filter.id}>
-        <Text>
-          {filter.title}
-        </Text>
-      </View>
-    );
+  _pushRemoveFilterHandler = (checked, filter) => {
+    if (checked) {
+      this.props.onRemoveFilter(filter);
+      return;
+    }
+    this.props.onAddFilter(filter);
   };
 
   renderFilterCategory = category => {
-    const filtersList = category.attributes.map(this.renderFilterCategoryItem);
+    const { service } = this.props;
     return (
-      <View key={category.id}>
-        <Text>
-          {category.title}
-        </Text>
-        {filtersList}
-      </View>
+      <ServiceInput
+        type={"array"}
+        label={category.title}
+        key={category.title}
+        value={service.attributes}
+        onChange={this._pushRemoveFilterHandler}
+        options={category.attributes}
+      />
     );
   };
 
-  renderFiltersList = () => {
-    return this.props.filters.map(this.renderFilterCategory);
-  };
+  renderFiltersList = () => this.props.filters.map(this.renderFilterCategory);
 
   renderEmptyList = () => {
     return (

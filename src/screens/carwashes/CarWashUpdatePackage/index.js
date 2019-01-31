@@ -12,7 +12,6 @@ class CarWashUpdatePackage extends Component {
 
   _onSubmit = async data => {
     const url = "package";
-    console.log("data", data);
     try {
       await asyncRequestAuth(url, "PUT", "karma", data);
       this.props.navigation.goBack();

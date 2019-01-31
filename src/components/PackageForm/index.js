@@ -105,7 +105,6 @@ class PackageForm extends Component<Props, {}> {
 
   renderPriceInfo = () => {
     const price = this.priceValue();
-    console.log(price);
     return (
       <ListItem>
         <Left><Text>Общая стоимость:</Text></Left>
@@ -153,7 +152,6 @@ class PackageForm extends Component<Props, {}> {
   };
 
   render() {
-    // console.log(this.state);
     return this.props.services ? this.renderForm() : this.renderEmptyList();
   }
 

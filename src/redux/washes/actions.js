@@ -49,7 +49,6 @@ const actions = {
     try {
       const data = await asyncRequestAuth(servicesURL);
       await dispatch({type: actions.GET_SERVICE_PRICE, payload: data});
-      console.log(data);
     } catch (e) {
       const error = e;
     }

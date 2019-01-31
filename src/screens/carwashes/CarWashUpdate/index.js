@@ -13,7 +13,7 @@ import washActions from "../../../redux/washes/actions";
 class Index extends Component {
 
   onSubmit = async (data) => {
-    const url = "carwash";
+    const url = "business";
     const { $updateWash } = this.props;
     try {
       this.props.$globalSpinnerOn();
@@ -23,8 +23,7 @@ class Index extends Component {
       Toast.show({ text: "Успешно обвновлено!" });
     } catch (e) {
       const error = e;
-      debugger
-      Toast.show({ text: e.message || "Ошибка" });
+      Toast.show({ text: e.message || "Заполните все поля" });
     } finally {
       this.props.$globalSpinnerOff();
     }

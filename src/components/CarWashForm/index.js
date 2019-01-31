@@ -16,9 +16,8 @@ type Props = {
   corporation: Array
 };
 
-
 const fields = {
-  corporationId: {key: "corporationId", label: "Компания", type: "select", render: true, defaultValue: ""},
+  corporationId: {key: "corporationId", label: "Компания:", type: "select", render: true, defaultValue: ""},
   name: {key: "name", label: "Название:", type: "string", render: true, defaultValue: ""},
   phone: {key: "phone", label: "Телефон:", type: "number", render: true, defaultValue: ""},
   description: {key: "description", label: "Описание:", type: "string", render: true, defaultValue: ""},

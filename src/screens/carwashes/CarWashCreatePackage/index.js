@@ -9,7 +9,6 @@ import { PackageForm } from "../../../components";
 class CarWashCreatePackage extends Component {
 
   _onSubmit = (data) => {
-    console.log(data);
   };
 
   renderScreen = () => {

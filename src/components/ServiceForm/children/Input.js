@@ -53,39 +53,56 @@ const NumberField = ({ inputKey, label, value, type, error, onChange }) => {
 
 const SelectField = ({ inputKey, label, value, type, options, onChange }) => {
   return (
-    <Item fixedLabel key={inputKey}>
+    <Item key={inputKey}>
       <Label style={{ paddingTop: 4 }}>{label}</Label>
       <Picker
+        iosIcon={<Icon name="ios-arrow-down"/>}
+        style={{ width: "100%", marginTop: 3 }}
         key={inputKey}
         mode="dropdown"
         iosHeader={label}
-        style={{ marginTop: 3 }}
         selectedValue={value}
         value={value}
         onValueChange={value => onChange(inputKey, value)}
       >
-        {options.map(item => (<Picker.Item label={item.name} key={item.id} value={item.id}/>))}
+        {options.map(item => (
+          <Picker.Item
+            label={item.name}
+            key={item.id}
+            value={item.id}
+          />
+        ))}
       </Picker>
     </Item>
   );
 };
 
 const ArrayField = ({ inputKey, label, value, type, options, error, onChange }) => {
-  const checked = key => value.includes(key);
-  const onInput = key => () => {
-    const hasInclude = checked(key);
-    const newValue = hasInclude ? value.filter(item => item !== key) : [...value, key];
-    onChange(inputKey, newValue);
+
+  const checked = filterId => {
+    const foundIndex = value.findIndex(item => item.id === filterId);
+    return foundIndex !== -1;
+  };
+
+  const onInput = filter => () => {
+    const checkedFilter = checked(filter.id);
+
+    onChange(checkedFilter, filter);
   };
 
   const content = options.map(item => {
-    const key = Object.keys(item)[0];
-    const title = item[key];
     return (
-      <ListItem style={{ flex: 1 }} onPress={onInput(key)}>
-        <CheckBox checked={checked(key)} onPress={onInput(key)}/>
+      <ListItem
+        style={{ flex: 1 }}
+        onPress={onInput(item)}
+        key={item.id}
+      >
+        <CheckBox
+          checked={checked(item.id)}
+          onPress={onInput(item)}
+        />
         <Body>
-        <Text>{title}</Text>
+        <Text>{item.title}</Text>
         </Body>
       </ListItem>
     );
@@ -114,29 +131,16 @@ const ArrayField = ({ inputKey, label, value, type, options, error, onChange }) 
   );
 };
 
-const TimeField = ({ name, label, value, type, onChange }) => {
-  return (
-    <View key={name}>
-      <Label style={{ paddingTop: 4 }}>{label}</Label>
-      <TimePicker
-        time={10}
-        onChange={e => console.log("Time Picker")}
-      />
-    </View>
-  );
-};
-
 
 const fields = {
   string: StringField,
   number: NumberField,
   select: SelectField,
-  // time: TimeField,
   array: ArrayField
 };
 
 
-const PriceInput = (props: FieldProps) => {
+const ServiceInput = (props: FieldProps) => {
   if (!fields[props.type]) {
     return fields["string"](props);
   }
@@ -144,4 +148,4 @@ const PriceInput = (props: FieldProps) => {
 };
 
 
-export default PriceInput;
+export default ServiceInput;

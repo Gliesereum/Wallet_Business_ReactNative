@@ -79,7 +79,7 @@ class CarWashes extends Component {
               <Icon name="menu"/>
             </Button>
           )}
-          body={"Мойки"}
+          body={"Сервисы"}
           right={(
             <Button onPress={() => this.props.navigation.navigate("NewCarWash")} transparent>
               <Icon name="plus" type={"Feather"}/>

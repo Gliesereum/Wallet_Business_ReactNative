@@ -17,7 +17,7 @@ const drawerCover = require("../../../assets/drawer-cover.jpg");
 const drawerImage = require("../../../assets/logo.svg");
 const datas = [
   {
-    name: "Мои мойки",
+    name: "Мои сервисы",
     route: "CarWashes",
     icon: "paper",
     bg: "#48525D"

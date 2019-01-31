@@ -36,7 +36,9 @@ const renderFields = {
   // description: { label: "Описание:", type: "string", defaultValue: "", render: true },
   price: { label: "Цена, ГРН:", type: "number", defaultValue: "", render: true },
   duration: { label: "Продолжительность, минуты:", type: "number", defaultValue: "", render: true },
-  serviceClass: { label: "Класс обслуживания:", type: "string", defaultValue: [], render: false }
+  serviceClass: { label: "Класс обслуживания:", type: "string", defaultValue: [], render: false },
+  attributes: { label: "Фильтра:", type: "array", defaultValue: [], render: false }
+
 };
 
 
@@ -49,7 +51,8 @@ class ServicePriceForm extends Component<Props, {}> {
       serviceClass: []
     },
     errors: {},
-    filters: []
+    filters: [],
+    pageTab: 0
   };
 
   componentDidMount() {
@@ -124,26 +127,59 @@ class ServicePriceForm extends Component<Props, {}> {
       await this.setState(({ data }) => ({
         data: { ...data, serviceClass: [...data.serviceClass, priceClass] }
       }));
+      await Toast.show({ text: "Успешно обновлено" });
     } catch (e) {
       const error = e;
-
+      console.log(e);
+      await Toast.show({ text: "Ошибка" });
     }
   };
 
   _removeClassFromPriceHandler = async priceClass => {
     const { id: servicePriceId } = this.state.data;
     const url = `price/class/${servicePriceId}/${priceClass.id}`;
-    this.setState(({ data }) => ({
+    await this.setState(({ data }) => ({
       data: {
         ...data,
         serviceClass: data.serviceClass.filter(item => item.id !== priceClass.id)
       }
     }));
+    await Toast.show({ text: "Успешно обновлено" });
     try {
       await asyncRequestAuth(url, "DELETE");
     } catch (e) {
       const error = e;
+      debugger;
+      await Toast.show({ text: "Ошибка" });
+    }
+  };
 
+  _pushFilterToPriceHandler = async filter => {
+    const { id, attributes } = this.state.data;
+    const url = `price/filter-attribute/${id}/${filter.id}`;
+    const newFilters = [...attributes, filter];
+    try {
+      const newServicePrice = await asyncRequestAuth(url, "POST");
+      await Toast.show({ text: "Успешно обновлено" });
+      await this.setState(({ data }) => ({ data: { ...data, attributes: newFilters } }));
+    } catch (e) {
+      const error = e;
+      await Toast.show({ text: "Ошибка" });
+    }
+  };
+
+  _removeFilterFromPriceHandler = async filter => {
+    const { id, attributes } = this.state.data;
+    const url = `price/remove/filter-attribute/${id}/${filter.id}`;
+    const newAttritubes = attributes.filter(item => item.id !== filter.id);
+    try {
+      await asyncRequestAuth(url, "DELETE");
+      this.setState(({ data }) => ({ data: { ...data, attributes: newAttritubes } }));
+      await Toast.show({ text: "Успешно обновлено" });
+    } catch (e) {
+      const error = e;
+      await Toast.show({ text: "Ошибка" });
+      //
     }
   };
 
@@ -176,10 +212,10 @@ class ServicePriceForm extends Component<Props, {}> {
   };
 
   renderTabs = () => {
-    const { data, options, errors, filters } = this.state;
+    const { data, options, errors, filters, pageTab } = this.state;
     return (
       <View>
-        <Tabs>
+        <Tabs page={pageTab}>
           <Tab heading="Основная Информация">
             <MainInfo
               data={data}
@@ -189,7 +225,12 @@ class ServicePriceForm extends Component<Props, {}> {
             />
           </Tab>
           <Tab heading="Дополнительно">
-            <AttributesInfo filters={filters} service={this.state.data}/>
+            <AttributesInfo
+              filters={filters}
+              service={this.state.data}
+              onAddFilter={this._pushFilterToPriceHandler}
+              onRemoveFilter={this._removeFilterFromPriceHandler}
+            />
           </Tab>
           <Tab heading="Класс обслуживания">
             <ClassInfo
@@ -197,6 +238,7 @@ class ServicePriceForm extends Component<Props, {}> {
               onRemoveClassFromPrice={this._removeClassFromPriceHandler}
               serviceClass={options.serviceClass}
               servicePrice={data}
+              onChangeMainPage={e => this.setState({ pageTab: 0 })}
             />
           </Tab>
         </Tabs>
