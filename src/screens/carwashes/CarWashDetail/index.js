@@ -46,20 +46,6 @@ const tabs = [
 
 class InfoCarWash extends Component {
 
-
-  componentDidUpdate = () => {
-    this.deleteServiceHandler();
-  };
-
-  deleteServiceHandler = () => {
-    const carWashID = this.props.navigation.getParam("carWashID");
-    const data = this.props.washes.washes.filter(item => item.id === carWashID)[0];
-    if (!data) {
-      this.props.navigation.goBack();
-      return;
-    }
-  };
-
   _openSheetHandler = () => {
     const data = this.props.navigation.getParam("carWash");
     ActionSheet.show(

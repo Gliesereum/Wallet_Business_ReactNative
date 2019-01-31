@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 const fields = {
-  corporationServiceId: {
+  businessId: {
     inputKey: "corporationServiceId",
     label: "ID",
     defaultValue: "",
@@ -25,11 +25,11 @@ const fields = {
     type: "text"
   },
   name: { inputKey: "name", label: "Название:", defaultValue: "", render: true, type: "text" },
-  discount: { inputKey: "discount", label: "Скидка, %:", defaultValue: 0, render: true, type: "number" },
+  discount: { inputKey: "discount", label: "Скидка, %:", defaultValue: "0", render: true, type: "number" },
   duration: {
     inputKey: "duration",
     label: "Продолжительность, минуты:",
-    defaultValue: 0,
+    defaultValue: "0",
     render: true,
     type: "number"
   },
@@ -54,12 +54,18 @@ class PackageForm extends Component<Props, {}> {
   }
 
   _initForm = () => {
-    const { packageService, services, corporationServiceId } = this.props;
-    const newPackage = !packageService && services;
-    const updatePackage = packageService && services;
+    const { packageService, services, businessId } = this.props;
+    const newPackage = !!(!packageService && services);
+    const updatePackage = !!(packageService && services);
+    const dataFromFields = this.objToStateObj(fields);
     if (newPackage) {
-      const services = packageService.services.map(service => service.id);
-      this.setState(({ data }) => ({ data: { ...packageService, services } }));
+      this.setState(({ data }) => ({
+        data: {
+          ...dataFromFields,
+          businessId
+
+        }
+      }));
       return;
     }
     if (updatePackage) {
@@ -69,7 +75,7 @@ class PackageForm extends Component<Props, {}> {
       this.setState(({ data }) => ({
         data: {
           ...dataFromFields, ...packageService,
-          corporationServiceId,
+          businessId,
           services,
           servicesIds
         }
@@ -98,7 +104,7 @@ class PackageForm extends Component<Props, {}> {
       return 0;
     }
     const selectedPrices = this.state.data.servicesIds ? this.props.services.filter(item => this.state.data.servicesIds.includes(item.id)) : [];
-    const generalPrice = selectedPrices.map(item => item.price).reduce((a, b) => a + b);
+    const generalPrice = selectedPrices.map(item => item.price).reduce((a, b) => a + b, 0);
     const discountPrice = generalPrice - (generalPrice * discount / 100);
     return discountPrice;
   };
@@ -144,7 +150,7 @@ class PackageForm extends Component<Props, {}> {
       <View style={styles.container}>
         {formFields}
         {this.renderPriceInfo()}
-        <Button block style={{ margin: 15, marginTop: 25 }} onPress={this._submitHandler}>
+        <Button block style={{ margin: 8, marginTop: 16 }} onPress={this._submitHandler}>
           <Text>Сохранить</Text>
         </Button>
       </View>

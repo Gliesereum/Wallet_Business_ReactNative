@@ -273,7 +273,7 @@ class ServicePriceForm extends Component<Props, {}> {
       <Container>
         <HeaderLayout
           left={isNew && (
-            <Button transparent onPress={navigation.goBack}>
+            <Button transparent onPress={() => navigation.goBack()}>
               <Icon name="arrow-back"/>
             </Button>
           )}

@@ -1,20 +1,38 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container, Button, Icon, Content } from "native-base";
+import { Container, Button, Icon, Content, Toast } from "native-base";
 
 import { HeaderLayout } from "../../../components/Layout";
 import { PackageForm } from "../../../components";
 
+import businessActions from "../../../redux/washes/actions";
+import appActions from "../../../redux/app/actions";
+import { asyncRequestAuth } from "../../../utils";
+
 
 class CarWashCreatePackage extends Component {
 
-  _onSubmit = (data) => {
+  _onSubmit = async data => {
+    const url = "package";
+    try {
+      await this.props.$globalSpinnerOn();
+      const newPackage = await asyncRequestAuth(url, "POST", "karma", data);
+      this.props.$addPackageService(newPackage);
+      await Toast.show({ text: "Успешно создан пакет услуг" });
+      this.props.navigation.goBack();
+    } catch (e) {
+      const error = e;
+      console.log(error);
+      await Toast.show({ text: "Заполните все поля" });
+    } finally {
+      await this.props.$globalSpinnerOff();
+    }
   };
 
   renderScreen = () => {
     const { navigation } = this.props;
-    const carWash = this.props.navigation.getParam("carWash");
-    const servicePrices = this.props.washes.servicePrices[carWash.id];
+    const business = this.props.navigation.getParam("carWashData");
+    const servicePrices = this.props.washes.servicePrices[business.id];
     return (
       <Container>
         <HeaderLayout
@@ -29,7 +47,7 @@ class CarWashCreatePackage extends Component {
           <PackageForm
             services={servicePrices}
             onSubmit={this._onSubmit}
-            corporationServiceId={carWash.id}
+            businessId={business.id}
           />
         </Content>
       </Container>
@@ -43,4 +61,4 @@ class CarWashCreatePackage extends Component {
 }
 
 
-export default connect(state => state)(CarWashCreatePackage);
+export default connect(state => state, ({ ...appActions, ...businessActions }))(CarWashCreatePackage);

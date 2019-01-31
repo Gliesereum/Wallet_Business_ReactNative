@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container, Button, Icon, Content } from "native-base";
+import { Container, Button, Icon, Content, Toast } from "native-base";
 
 import { HeaderLayout } from "../../../components/Layout";
 import { PackageForm } from "../../../components";
 
 import { asyncRequestAuth } from "../../../utils";
+
+import businessActions from "../../../redux/washes/actions";
+import appActions from "../../../redux/app/actions";
 
 
 class CarWashUpdatePackage extends Component {
@@ -13,18 +16,25 @@ class CarWashUpdatePackage extends Component {
   _onSubmit = async data => {
     const url = "package";
     try {
-      await asyncRequestAuth(url, "PUT", "karma", data);
+      await this.props.$globalSpinnerOn();
+      const updatedPackage = await asyncRequestAuth(url, "PUT", "karma", data);
+      this.props.$updatePackageService(updatedPackage);
+      await Toast.show({ text: "Успешно обвновлён пакет услуг" });
       this.props.navigation.goBack();
     } catch (e) {
       const error = e;
+      console.log(error);
+      await Toast.show({ text: "Заполните все поля" });
+    } finally {
+      await this.props.$globalSpinnerOff();
     }
   };
 
   renderScreen = () => {
     const { navigation } = this.props;
-    const carWash = this.props.navigation.getParam("carWash");
+    const business = this.props.navigation.getParam("carWash");
     const packageServices = this.props.navigation.getParam("packageServices");
-    const servicePrices = this.props.washes.servicePrices[carWash.id];
+    const servicePrices = this.props.washes.servicePrices[business.id];
     return (
       <Container>
         <HeaderLayout
@@ -39,7 +49,7 @@ class CarWashUpdatePackage extends Component {
           <PackageForm
             services={servicePrices}
             onSubmit={this._onSubmit}
-            corporationServiceId={carWash.id}
+            businessId={business.id}
             packageService={packageServices}
           />
         </Content>
@@ -54,4 +64,4 @@ class CarWashUpdatePackage extends Component {
 }
 
 
-export default connect(state => state)(CarWashUpdatePackage);
+export default connect(state => state, ({ ...businessActions, ...appActions }))(CarWashUpdatePackage);

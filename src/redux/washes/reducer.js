@@ -37,12 +37,12 @@ const washesReducer = createReducer(initialState, {
     if (payload.length === 0) {
       return state;
     }
-    const corporationServiceId = payload[0].corporationServiceId;
+    const businessId = payload[0].businessId;
     return {
       ...state,
       servicePackages: {
         ...state.servicePackages,
-        [corporationServiceId]: payload
+        [businessId]: payload
       }
     };
   },
@@ -173,13 +173,25 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.ADD_PACKAGE_SERVICES]: (state, payload) => {
-    const { corporationServiceId } = payload;
-    const updatedPackages = [...state.servicePackages[corporationServiceId], payload];
+    const { businessId } = payload;
+    const updatedBusiness = state.servicePackages[businessId];
+    if (!updatedBusiness) {
+      return {
+        ...state,
+        servicePackages: {
+          ...state.servicePackages,
+          [businessId]: [payload]
+        }
+      };
+    }
     return {
       ...state,
       servicePackages: {
         ...state.servicePackages,
-        [corporationServiceId]: updatedPackages
+        [businessId]: [
+          ...state.servicePackages[businessId],
+          payload
+        ]
       }
     };
   },
@@ -202,7 +214,6 @@ const washesReducer = createReducer(initialState, {
       }
     };
   }
-
 
 });
 

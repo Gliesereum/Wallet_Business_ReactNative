@@ -26,16 +26,16 @@ import appActions from "../../redux/app/actions";
 import { Dimensions } from "react-native";
 
 const fields = [
-  { label: "Имя", key: "firstName" },
-  { label: "Фамилия", key: "lastName" },
-  { label: "Отчество", key: "middleName" },
-  { label: "Должность", key: "position" },
-  { label: "Страна Проживания", key: "country" },
-  { label: "Город Проживания", key: "city" },
-  { label: "Адресс, 8 символов", key: "address" },
-  { label: "Дополнительный Адресс, 8 символов", key: "addAddress" },
-  { label: "Аватар (URL)", key: "avatarUrl" },
-  { label: "Обложка (URL)", key: "coverUrl" },
+  { label: "Имя", key: "firstName", render: true },
+  { label: "Фамилия", key: "lastName", render: true },
+  { label: "Отчество", key: "middleName", render: true },
+  { label: "Должность", key: "position", render: true },
+  { label: "Страна Проживания", key: "country", render: true },
+  { label: "Город Проживания", key: "city", render: true },
+  { label: "Адресс, 8 символов", key: "address", render: true },
+  { label: "Дополнительный Адресс, 8 символов", key: "addAddress", render: true },
+  { label: "Аватар (URL)", key: "avatarUrl", render: false, defaultValue: "http" },
+  { label: "Обложка (URL)", key: "coverUrl", render: false, defaultValue: "http" },
   {
     label: "Пол", key: "gender", type: "select", options: [
       { label: "Не указан", key: "UNKNOWN" },
@@ -49,7 +49,7 @@ const fields = [
 class Main extends Component {
 
   state = {
-    data: {}
+    data: { avatarUrl: "http", coverUrl: "http" }
   };
 
   componentWillMount() {
@@ -58,6 +58,7 @@ class Main extends Component {
 
   initForm = () => {
     const { user } = this.props.auth;
+
     this.setState(state => ({ ...state, data: user }));
   };
 
@@ -93,24 +94,31 @@ class Main extends Component {
     ];
     if (item.type === "select") {
       return (
-        <Picker
-          key={item.key}
-          mode="dropdown"
-          iosHeader="Пол"
-          iosIcon={<Icon name="ios-arrow-down"/>}
-          style={{ width: deviceWidth, marginTop: 3 }}
-          selectedValue={value}
-          placeholder={"Пол"}
-          value={value}
-          onValueChange={value => this.onInput("gender", value)}
-        >
-          {genders.map(item => (
-            <Picker.Item label={item.label} key={item.key} value={item.key}/>
-          ))}
-        </Picker>
+
+        <Item key={item.key}>
+          <Label style={{ paddingTop: 4 }}>{item.label}</Label>
+          <Picker
+            iosIcon={<Icon name="ios-arrow-down"/>}
+            style={{ width: "100%", marginTop: 3 }}
+            key={item.key}
+            mode="dropdown"
+            iosHeader={item.label}
+            selectedValue={value}
+            value={value}
+            onValueChange={value => this.onInput("gender", value)}
+          >
+            {genders.map(item => (
+              <Picker.Item
+                label={item.label}
+                key={item.key}
+                value={item.key}
+              />
+            ))}
+          </Picker>
+        </Item>
       );
     }
-    return (
+    return item.render && (
       <Item fixedLabel key={item.key}>
         <Label style={{ paddingTop: 4 }}>{item.label}</Label>
         <Input value={value} onChangeText={text => onInput(item.key, text)}/>
@@ -133,7 +141,7 @@ class Main extends Component {
           <Form>
             {fields.map(this.renderItemInput)}
           </Form>
-          <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.updateProfile}>
+          <Button block style={{ margin: 15, marginTop: 16 }} onPress={this.updateProfile}>
             <Text>Сохранить</Text>
           </Button>
         </Content>
