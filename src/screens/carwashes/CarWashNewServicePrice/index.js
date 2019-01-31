@@ -17,32 +17,20 @@ class NewPrice extends Component {
     return asyncRequestAuth(url, "POST", "karma", body);
   };
 
-  _onFullSubmit = carWash => {
-    this.props.$addServicePrice(carWash);
+  _onSaveServicePrice = servicePrice => {
+    this.props.$addServicePrice(servicePrice);
   };
 
   render() {
     const { navigation } = this.props;
     const business = navigation.getParam("carWashData");
     return (
-      <Container>
-        <HeaderLayout
-          left={(
-            <Button transparent onPress={() => navigation.goBack()}>
-              <Icon name="arrow-back"/>
-            </Button>
-          )}
-          body={"Добавить Услугу"}
-        />
-        <Content>
-          <ServiceForm
-            onFullSubmit={this._onFullSubmit}
-            onSubmit={this._createHandler}
-            business={business}
-            isNew
-          />
-        </Content>
-      </Container>
+      <ServiceForm
+        onFullSubmit={this._onSaveServicePrice}
+        onSubmit={this._createHandler}
+        business={business}
+        isNew
+      />
     );
   }
 

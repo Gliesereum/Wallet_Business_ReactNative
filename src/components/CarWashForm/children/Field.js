@@ -55,7 +55,7 @@ const SelectField = ({ inputKey, label, value, type, options = [], onChange }) =
           <Picker.Item
             label={item.name}
             key={item.id}
-            value={item.id}
+            value={item.id ? item.id : ""}
           />
         ))}
       </Picker>

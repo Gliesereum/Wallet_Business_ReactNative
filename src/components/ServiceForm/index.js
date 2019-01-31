@@ -1,11 +1,12 @@
 // @flow
 import React, { Component } from "react";
-import { View, Toast, Tabs, Tab } from "native-base";
+import { View, Toast, Tabs, Tab, Container, Button, Icon, Content, Text } from "native-base";
 import { withNavigation } from "react-navigation";
 
 import { asyncRequestAuth } from "../../utils";
 
 import { MainInfo, AttributesInfo, ClassInfo } from "./Tabs";
+import { HeaderLayout } from "../Layout";
 
 
 type Props = {
@@ -50,8 +51,7 @@ class ServicePriceForm extends Component<Props, {}> {
       serviceClass: []
     },
     errors: {},
-    filters: [],
-    pageTab: 0
+    filters: []
   };
 
   componentDidMount() {
@@ -118,6 +118,33 @@ class ServicePriceForm extends Component<Props, {}> {
     }
   };
 
+  _createServicePrice = async () => {
+    const url = "price";
+    try {
+      const newServicePrice = await asyncRequestAuth(url, "POST", "karma", this.state.data);
+      await this.setState(({ data }) => ({ data: newServicePrice }));
+      this.tabs.goToPage(1);
+      Toast.show({ text: "Успешно добавлена услуга. Добавьте фильтра и класс облуживания." });
+    } catch (e) {
+      Toast.show({ text: "Заполните все поля" });
+    } finally {
+
+    }
+  };
+
+  _updateServicePrice = async () => {
+    const url = "price";
+    try {
+      const newServicePrice = await asyncRequestAuth(url, "PUT", "karma", this.state.data);
+      await this.setState(({ data }) => ({ data: newServicePrice }));
+      Toast.show({ text: "Успешно обвновлена услуга." });
+    } catch (e) {
+      Toast.show({ text: "Заполните все поля" });
+    } finally {
+
+    }
+  };
+
   _pushClassToPriceHandler = async priceClass => {
     const url = "price/class";
     const body = { priceId: this.state.data.id, serviceClassId: priceClass.id };
@@ -129,7 +156,6 @@ class ServicePriceForm extends Component<Props, {}> {
       await Toast.show({ text: "Успешно обновлено" });
     } catch (e) {
       const error = e;
-      console.log(e);
       await Toast.show({ text: "Ошибка" });
     }
   };
@@ -193,61 +219,80 @@ class ServicePriceForm extends Component<Props, {}> {
     this.setState(({ data }) => ({ data: { ...data, [key]: value } }));
   };
 
-  _onSubmit = async () => {
-    try {
-      const newPrice = await this.props.onSubmit(this.state.data);
-      await this.setState(({ data }) => ({ data: newPrice }));
-    } catch (e) {
-      const error = e;
-      //
-    }
-  };
-
   _fullSubmitHandler = () => {
-    this.setState(({ showClassForm }) => ({ showClassForm: !showClassForm }));
     this.props.navigation.goBack();
     this.props.onFullSubmit(this.state.data);
     Toast.show({ text: "Успешно обновлено" });
   };
 
   renderTabs = () => {
-    const { data, options, errors, filters, pageTab } = this.state;
+    const { data, options, errors, filters } = this.state;
+    const isNew = !data.id;
+    const saveMainInfoHandler = isNew ? this._createServicePrice : this._updateServicePrice;
     return (
       <View>
-        <Tabs page={pageTab}>
+        <Tabs ref={tab => this.tabs = tab}>
           <Tab heading="Основная Информация">
             <MainInfo
               data={data}
               options={options}
               errors={errors}
               onInput={this._onInput}
+              onSubmit={saveMainInfoHandler}
             />
           </Tab>
-          <Tab heading="Дополнительно">
-            <AttributesInfo
-              filters={filters}
-              service={this.state.data}
-              onAddFilter={this._pushFilterToPriceHandler}
-              onRemoveFilter={this._removeFilterFromPriceHandler}
-            />
-          </Tab>
-          <Tab heading="Класс обслуживания">
-            <ClassInfo
-              onAddClassToPrice={this._pushClassToPriceHandler}
-              onRemoveClassFromPrice={this._removeClassFromPriceHandler}
-              serviceClass={options.serviceClass}
-              servicePrice={data}
-              onChangeMainPage={e => this.setState({ pageTab: 0 })}
-            />
-          </Tab>
+
+          {!isNew && [
+            <Tab heading="Дополнительно" key="additional">
+              <AttributesInfo
+                filters={filters}
+                service={this.state.data}
+                onAddFilter={this._pushFilterToPriceHandler}
+                onRemoveFilter={this._removeFilterFromPriceHandler}
+              />
+            </Tab>,
+            <Tab heading="Класс обслуживания" key="classes">
+              <ClassInfo
+                onAddClassToPrice={this._pushClassToPriceHandler}
+                onRemoveClassFromPrice={this._removeClassFromPriceHandler}
+                serviceClass={options.serviceClass}
+                servicePrice={data}
+              />
+            </Tab>
+          ]}
         </Tabs>
       </View>
     );
   };
 
+  renderForm = () => {
+    const { data } = this.state;
+    const isNew = !data.id;
+    const { navigation } = this.props;
+    return (
+      <Container>
+        <HeaderLayout
+          left={isNew && (
+            <Button transparent onPress={navigation.goBack}>
+              <Icon name="arrow-back"/>
+            </Button>
+          )}
+          body={isNew ? "Обновить Услугу" : "Создать Услугу"}
+          right={!isNew && (
+            <Button transparent onPress={this._fullSubmitHandler}>
+              <Text>Сохранить</Text>
+            </Button>
+          )}
+        />
+        <Content>
+          {this.renderTabs()}
+        </Content>
+      </Container>
+    );
+  };
+
   render() {
-    console.log(this.state);
-    return this.renderTabs();
+    return this.renderForm();
   }
 
 }

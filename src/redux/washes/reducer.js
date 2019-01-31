@@ -129,20 +129,33 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.ADD_SERVICE_PRICE]: (state, payload) => {
-    const { corporationServiceId } = payload;
-    const updatedServices = [...state.servicePrices[corporationServiceId], payload];
+    const { businessId } = payload;
+    const updatedBusinessServicesList = state.servicePrices[businessId];
+    if (!updatedBusinessServicesList) {
+      return {
+        ...state,
+        servicePrices: {
+          ...state.servicePrices,
+          [businessId]: [payload]
+        }
+      };
+    }
     return {
       ...state,
       servicePrices: {
         ...state.servicePrices,
-        [corporationServiceId]: updatedServices
+        [businessId]: [
+          ...state.servicePrices[businessId],
+          payload
+        ]
       }
     };
+
   },
 
   [actions.UPDATE_SERVICE_PRICE]: (state, payload) => {
-    const { corporationServiceId, id } = payload;
-    const updatedServices = state.servicePrices[corporationServiceId];
+    const { businessId, id } = payload;
+    const updatedServices = state.servicePrices[businessId];
     const updatedServiceIndex = updatedServices.findIndex(item => item.id === id);
     const newServicesArray = [
       ...updatedServices.slice(0, updatedServiceIndex),
@@ -154,7 +167,7 @@ const washesReducer = createReducer(initialState, {
       ...state,
       servicePrices: {
         ...state.servicePrices,
-        [corporationServiceId]: newServicesArray
+        [businessId]: newServicesArray
       }
     };
   },

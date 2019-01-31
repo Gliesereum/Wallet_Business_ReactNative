@@ -1,6 +1,7 @@
-import React from 'react';
+// @flow
+import React from "react";
 
-import MapView, {Marker} from 'react-native-maps';
+import MapView, { Marker } from "react-native-maps";
 
 
 const defaultLocation = {
@@ -12,25 +13,39 @@ const defaultLocation = {
 
 const markerDelta = {
   latitudeDelta: 0.0025,
-  longitudeDelta: 0.0025,
+  longitudeDelta: 0.0025
 };
 
 
-const Map = ({location, style, onMapSelect}) => {
-  const locationParameters = location ? {...markerDelta, ...location} : defaultLocation;
+const Map = ({ location, style, onMapSelect }) => {
+  const locationParameters = location ? { ...markerDelta, ...location } : defaultLocation;
+  const { latitudeDelta, longitudeDelta, latitude, longitude } = locationParameters;
   return (
     <MapView
       style={style}
       provider="google"
-      region={locationParameters}
+      region={{
+        latitude: +latitude,
+        longitude: +longitude,
+        latitudeDelta: +latitudeDelta,
+        longitudeDelta: +longitudeDelta
+      }}
       onPress={e => onMapSelect(e.nativeEvent)}
-      animateCamera={{duration: 3}}
+      animateCamera={{ duration: 3 }}
     >
       {location && (
-        <Marker coordinate={location}/>)}
+        <Marker coordinate={{
+          latitude: +latitude,
+          longitude: +longitude,
+          latitudeDelta: +latitudeDelta,
+          longitudeDelta: +longitudeDelta
+        }}/>)}
     </MapView>
-  )
+  );
 };
 
 
-export default Map
+Map.defaultProps = defaultLocation;
+
+
+export default Map;

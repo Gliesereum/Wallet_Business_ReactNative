@@ -43,14 +43,15 @@ class MainInfo extends Component {
 
   renderTab = () => {
     const keys = Object.keys(renderFields);
+    const isNew = !this.props.data.id;
     return (
       <View style={styles.container}>
         {keys.map(this.renderItemInput)}
         <Button
-          style={{ width: "100%", marginTop: 4, justifyContent: "center" }}
-          onPress={this._onSubmit}
+          style={{ width: "100%", marginTop: 8, justifyContent: "center" }}
+          onPress={this.props.onSubmit}
         >
-          <Text>Далее</Text>
+          <Text>{isNew ? "Далее" : "Сохранить основную информацию"}</Text>
         </Button>
       </View>
     );

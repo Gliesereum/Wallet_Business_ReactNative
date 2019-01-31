@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import { View, Text, Item, Left, Right, Label, ListItem, Button } from "native-base";
+import { View, Text, Left, Right, ListItem, Button } from "native-base";
 
 import Field from "./children/Field";
 
