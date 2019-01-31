@@ -17,7 +17,6 @@ class CarWashUpdatePackage extends Component {
       this.props.navigation.goBack();
     } catch (e) {
       const error = e;
-      debugger;
     }
   };
 

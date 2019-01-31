@@ -27,12 +27,13 @@ const deviceHeight = Dimensions.get("window").height;
 const BUTTONS = [
   { text: "Основная информация", path: "UpdateCarWash" },
   { text: "Рассписание", path: "ScheduleCarWash" },
-  { text: "Боксы", path: "BoxesCarWash" },
+  { text: "Рабочее пространство", path: "BoxesCarWash" },
   { text: "Добавить Услугу", path: "NewPrice" },
   { text: "Добавить Пакет", path: "CreatePackage" },
   { text: "Отмена", path: "" }
 ];
-const CANCEL_INDEX = 5;
+
+const CANCEL_INDEX = 6;
 
 const tabs = [
   { label: "Основная", key: "main", node: MainTab },
@@ -44,6 +45,20 @@ const tabs = [
 
 
 class InfoCarWash extends Component {
+
+
+  componentDidUpdate = () => {
+    this.deleteServiceHandler();
+  };
+
+  deleteServiceHandler = () => {
+    const carWashID = this.props.navigation.getParam("carWashID");
+    const data = this.props.washes.washes.filter(item => item.id === carWashID)[0];
+    if (!data) {
+      this.props.navigation.goBack();
+      return;
+    }
+  };
 
   _openSheetHandler = () => {
     const data = this.props.navigation.getParam("carWash");

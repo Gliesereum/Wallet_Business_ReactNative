@@ -17,9 +17,9 @@ class Index extends Component {
     const { $updateWash } = this.props;
     try {
       this.props.$globalSpinnerOn();
-      const newWash = await asyncRequestAuth(url, 'PUT', 'karma', data);
+      const newWash = await asyncRequestAuth(url, "PUT", "karma", data);
       await $updateWash(newWash);
-      await this.props.navigation.navigate('CarWashes');
+      await this.props.navigation.navigate("CarWashes");
       Toast.show({ text: "Успешно обвновлено!" });
     } catch (e) {
       const error = e;
@@ -29,9 +29,26 @@ class Index extends Component {
     }
   };
 
+  onDelete = async () => {
+    const data = this.props.navigation.getParam("carWashData");
+    const url = `business/${data.id}`;
+    try {
+      await this.props.$globalSpinnerOn();
+      await asyncRequestAuth(url, "DELETE");
+      await this.props.$removeBusiness(data.id);
+      await this.props.navigation.navigate('CarWashes');
+      await Toast.show({ text: "Бизнес удалён" });
+    } catch (e) {
+      const error = e;
+      Toast.show({ text: e.message || "Ошибка" });
+    } finally {
+      await this.props.$globalSpinnerOff();
+    }
+  };
+
   renderScreen = () => {
-    const data = this.props.navigation.getParam('carWashData');
-    const {corporation} = this.props.auth.user;
+    const data = this.props.navigation.getParam("carWashData");
+    const { corporation } = this.props.auth.user;
     return (
       <Container>
         <HeaderLayout
@@ -45,6 +62,7 @@ class Index extends Component {
         <Content>
           <CarWashForm
             onSubmit={this.onSubmit}
+            onDelete={this.onDelete}
             type={"update"}
             carWashData={data}
             corporation={corporation}

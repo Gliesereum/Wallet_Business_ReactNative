@@ -46,7 +46,7 @@ const SelectField = ({ inputKey, label, value, type, options = [], onChange }) =
         mode="dropdown"
         iosHeader={label}
         iosIcon={<Icon name="ios-arrow-down"/>}
-        style={{ width: "100%", marginTop: 3, backgroundColor: "red" }}
+        style={{ width: "100%", marginTop: 3 }}
         selectedValue={value}
         value={value}
         onValueChange={value => onChange(inputKey, value)}

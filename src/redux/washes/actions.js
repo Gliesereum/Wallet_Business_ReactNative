@@ -1,8 +1,8 @@
-import {asyncRequestAuth} from "../../utils";
+import { asyncRequestAuth } from "../../utils";
 
 import appActions from "../app/actions";
 
-const {$globalSpinnerOn, $globalSpinnerOff} = appActions;
+const { $globalSpinnerOn, $globalSpinnerOff } = appActions;
 
 const actions = {
 
@@ -15,6 +15,8 @@ const actions = {
   ADD_WASH: "ADD_WASH",
 
   UPDATE_WASH: "UPDATE_WASH",
+
+  REMOVE_SERVICE: "REMOVE_SERVICE",
 
   ADD_SCHEDULE: "ADD_SCHEDULE",
 
@@ -37,7 +39,7 @@ const actions = {
     await dispatch($globalSpinnerOn());
     try {
       const data = await asyncRequestAuth(url) || [];
-      await dispatch({type: actions.GET_WASHES, payload: data});
+      await dispatch({ type: actions.GET_WASHES, payload: data });
     } catch (e) {
     } finally {
       await dispatch($globalSpinnerOff());
@@ -48,7 +50,7 @@ const actions = {
     const servicesURL = `price/by-business/${corporationServiceId}`;
     try {
       const data = await asyncRequestAuth(servicesURL);
-      await dispatch({type: actions.GET_SERVICE_PRICE, payload: data});
+      await dispatch({ type: actions.GET_SERVICE_PRICE, payload: data });
     } catch (e) {
       const error = e;
     }
@@ -58,31 +60,33 @@ const actions = {
     const packagesURL = `package/by-business/${corporationServiceId}`;
     try {
       const data = await asyncRequestAuth(packagesURL);
-      await dispatch({type: actions.GET_SERVICE_PACKAGES, payload: data});
+      await dispatch({ type: actions.GET_SERVICE_PACKAGES, payload: data });
     } catch (e) {
       const error = e;
     }
   },
 
-  $addWash: wash => ({type: actions.ADD_WASH, payload: wash}),
+  $addWash: wash => ({ type: actions.ADD_WASH, payload: wash }),
 
-  $updateWash: wash => ({type: actions.UPDATE_WASH, payload: wash}),
+  $updateWash: wash => ({ type: actions.UPDATE_WASH, payload: wash }),
 
-  $addSchedule: schedule => ({type: actions.ADD_SCHEDULE, payload: schedule}),
+  $removeBusiness: serviceId => ({ type: actions.REMOVE_SERVICE, payload: serviceId }),
 
-  $updateSchedule: schedule => ({type: actions.UPDATE_SCHEDULE, payload: schedule}),
+  $addSchedule: schedule => ({ type: actions.ADD_SCHEDULE, payload: schedule }),
 
-  $addBox: (carWashId, box) => ({type: actions.ADD_BOX, payload: {carWashId, box}}),
+  $updateSchedule: schedule => ({ type: actions.UPDATE_SCHEDULE, payload: schedule }),
 
-  $removeBox: (carWashId, boxId) => ({type: actions.REMOVE_BOX, payload: {carWashId, boxId}}),
+  $addBox: (carWashId, box) => ({ type: actions.ADD_BOX, payload: { carWashId, box } }),
 
-  $addServicePrice: servicePrice => ({type: actions.ADD_SERVICE_PRICE, payload: servicePrice}),
+  $removeBox: (carWashId, boxId) => ({ type: actions.REMOVE_BOX, payload: { carWashId, boxId } }),
 
-  $updateServicePrice: servicePrice => ({type: actions.UPDATE_SERVICE_PRICE, payload: servicePrice}),
+  $addServicePrice: servicePrice => ({ type: actions.ADD_SERVICE_PRICE, payload: servicePrice }),
 
-  $addPackageService: packageServices => ({type: actions.ADD_PACKAGE_SERVICES, payload: packageServices}),
+  $updateServicePrice: servicePrice => ({ type: actions.UPDATE_SERVICE_PRICE, payload: servicePrice }),
 
-  $updatePackageService: packageServices => ({type: actions.UPDATE_SERVICE_PRICE, payload: packageServices}),
+  $addPackageService: packageServices => ({ type: actions.ADD_PACKAGE_SERVICES, payload: packageServices }),
+
+  $updatePackageService: packageServices => ({ type: actions.UPDATE_SERVICE_PRICE, payload: packageServices })
 
 };
 

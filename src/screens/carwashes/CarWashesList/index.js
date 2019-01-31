@@ -48,7 +48,6 @@ class CarWashes extends Component {
       <List
         dataArray={washes}
         renderRow={data =>
-
           <ListItem
             button
             onPress={() => this.props.navigation.navigate("InfoCarWash", {

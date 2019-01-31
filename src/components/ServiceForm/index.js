@@ -28,7 +28,6 @@ type Price = {
   carBodies: Array<String>      //
 };
 
-
 const renderFields = {
   businessId: { label: "Бизнес:", type: "string", defaultValue: "", render: false },
   serviceId: { label: "Вид Услуги:", type: "select", defaultValue: "", render: true },

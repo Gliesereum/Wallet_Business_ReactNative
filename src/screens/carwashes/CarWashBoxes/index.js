@@ -125,7 +125,7 @@ class Index extends Component {
               <Icon name="arrow-back"/>
             </Button>
           )}
-          body={"Боксы"}
+          body={"Рабочее пространство"}
           right={(
             <Button onPress={() => this._addBox()} transparent>
               <Icon name="plus" type={"Feather"}/>

@@ -24,12 +24,11 @@ class Index extends Component {
       this.props.$globalSpinnerOn();
       const newWash = await asyncRequestTest(url, "POST", "karma", token, data);
       await $addWash(newWash);
-      await Toast.show({ text: "Успешно создана мойка!" });
+      await Toast.show({ text: "Успешно создан сервис" });
       await navigation.navigate('ScheduleCarWash', {carWashData: newWash, isNew: true});
     } catch (e) {
       const error = e;
-      debugger;
-      Toast.show({ text: e.message || "Ошибка" });
+      Toast.show({ text: "Заполните все поля" });
       throw e;
     } finally {
       this.props.$globalSpinnerOff();
@@ -67,7 +66,7 @@ class Index extends Component {
               <Icon name="arrow-back"/>
             </Button>
           )}
-          body={"Новая мойка!"}
+          body={"Новый бизнес"}
         />
         <Content>
           {userVerified ? this.renderForm() : this.renderNotAllowedCreateCarWash()}
