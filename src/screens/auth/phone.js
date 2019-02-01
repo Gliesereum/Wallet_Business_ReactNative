@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Image, ScrollView } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, Image, ScrollView, KeyboardAvoidingView } from "react-native";
 import { Button, Text, View, Toast } from "native-base";
+import { Header } from 'react-navigation';
 
 import PhoneInput from "react-native-phone-input";
 
@@ -89,7 +90,7 @@ class Phone extends Component {
       await this.props.$loginUser(request.tokenInfo);
       this.props.navigation.navigate("Loading");
     } catch (e) {
-      Toast.show({ text: e.message || "Ошибка" });
+      Toast.show({ text: e.message || "Не верный код", position: 'absolute'}, );
     } finally {
       await this.props.$globalSpinnerOff();
     }
@@ -100,9 +101,16 @@ class Phone extends Component {
     const { validPhone, getCodeHandler } = this;
     const requireUri = require("../../../assets/KarmaBusiness.png");
     return (
+      <KeyboardAvoidingView
+        keyboardVerticalOffset = {Header.HEIGHT + 20}
+        style = {{
+          flex: 1,
+          paddingTop: 24
+        }}
+        behavior = "padding"
+      >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView>
-
           <View style={{ width: "100%", height: 250 }}>
             <Image source={requireUri} style={{
               flex: 1,
@@ -134,6 +142,7 @@ class Phone extends Component {
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
 
     );
   };

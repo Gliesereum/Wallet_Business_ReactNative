@@ -22,7 +22,7 @@ const fields = [
   { label: "Название", key: "name" },
   { label: "Описание", key: "description" },
   { label: "ЭДРПОУ, 8 символов", key: "edrpou" },
-  { label: "Адрес", key: "address" }
+  { label: "Адрес, 8 символов", key: "address" }
 ];
 
 
@@ -68,7 +68,7 @@ class BusinessForm extends Component<Props, {}> {
     return (
       <Form>
         {fields.map(this.renderItemInput)}
-        <Button block style={{ margin: 15, marginTop: 25 }} onPress={this.submitHandler}>
+        <Button block style={{ margin: 15, marginTop: 16 }} onPress={this.submitHandler}>
           <Text>{buttonTitle}</Text>
         </Button>
       </Form>

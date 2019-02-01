@@ -23,7 +23,6 @@ class CarWashUpdatePackage extends Component {
       this.props.navigation.goBack();
     } catch (e) {
       const error = e;
-      console.log(error);
       await Toast.show({ text: "Заполните все поля" });
     } finally {
       await this.props.$globalSpinnerOff();

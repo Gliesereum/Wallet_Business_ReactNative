@@ -12,6 +12,8 @@ const actions = {
 
   GET_SERVICE_PACKAGES: "GET_SERVICE_PACKAGES",
 
+  GET_RECORD: "GET_RECORD",
+
   ADD_WASH: "ADD_WASH",
 
   UPDATE_WASH: "UPDATE_WASH",
@@ -61,6 +63,17 @@ const actions = {
     try {
       const data = await asyncRequestAuth(packagesURL);
       await dispatch({ type: actions.GET_SERVICE_PACKAGES, payload: data });
+    } catch (e) {
+      const error = e;
+    }
+  },
+
+  $getRecord: businessIds => async dispatch => {
+    const URL = `record/corporation/params`;
+    const body = { businessIds: businessIds, type: "CAR_WASH" };
+    try {
+      const data = await asyncRequestAuth(URL, "POST", "karma", body);
+      await dispatch({ type: actions.GET_RECORD, payload: data });
     } catch (e) {
       const error = e;
     }
