@@ -1,23 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Image, ScrollView } from "react-native";
 import { Button, Text, View, Toast } from "native-base";
 
 import PhoneInput from "react-native-phone-input";
 
+
 import appActions from "../../redux/app/actions";
 import authActions from "../../redux/auth/actions";
 
-import { asyncRequest, asyncRequestTest } from "../../utils";
+import { asyncRequestTest } from "../../utils";
 
-const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingTop: 24
   },
   phoneInputContainer: {
     width: "100%",
@@ -97,9 +98,19 @@ class Phone extends Component {
 
   _renderScreen = () => {
     const { validPhone, getCodeHandler } = this;
+    const requireUri = require("../../../assets/KarmaBusiness.png");
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
+        <ScrollView>
+
+          <View style={{ width: "100%", height: 250 }}>
+            <Image source={requireUri} style={{
+              flex: 1,
+              width: null,
+              height: null,
+              resizeMode: "contain"
+            }}/>
+          </View>
           <View style={styles.phoneInputContainer}>
             <PhoneInput
               initialCountry={"ua"}
@@ -121,8 +132,9 @@ class Phone extends Component {
               <Text>Получить код</Text>
             </Button>
           </View>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
+
     );
   };
 

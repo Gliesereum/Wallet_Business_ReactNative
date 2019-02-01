@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableWithoutFeedback, Keyboard, Dimensions } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, Dimensions, KeyboardAvoidingView } from "react-native";
 import { Text, Button, Input, Form, Item, Content } from "native-base";
 
 import { Timer } from "../../components";
@@ -39,6 +39,7 @@ class Code extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Content style={styles.container}>
+          <KeyboardAvoidingView behavior="padding" enabled>
           <Form>
             <Item>
               <Input
@@ -48,6 +49,7 @@ class Code extends React.Component {
               />
             </Item>
           </Form>
+          </KeyboardAvoidingView>
           <Text style={{ textAlign: "center" }}>
             <Timer time={180000} onTimeOver={e => {
               this.props.navigation.goBack();

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, KeyboardAvoidingView } from "react-native";
 import { View, Text, Left, Right, ListItem, Button } from "native-base";
 
 import Field from "./children/Field";
@@ -147,13 +147,15 @@ class PackageForm extends Component<Props, {}> {
   renderForm = () => {
     const formFields = Object.keys(fields).map(this.renderItemField);
     return (
-      <View style={styles.container}>
-        {formFields}
-        {this.renderPriceInfo()}
-        <Button block style={{ margin: 8, marginTop: 16 }} onPress={this._submitHandler}>
-          <Text>Сохранить</Text>
-        </Button>
-      </View>
+      <KeyboardAvoidingView behavior="padding">
+        <View style={styles.container}>
+          {formFields}
+          {this.renderPriceInfo()}
+          <Button block style={{ margin: 8, marginTop: 16 }} onPress={this._submitHandler}>
+            <Text>Сохранить</Text>
+          </Button>
+        </View>
+      </KeyboardAvoidingView>
     );
   };
 
