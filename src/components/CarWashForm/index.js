@@ -16,6 +16,9 @@ type Props = {
   corporation: Array
 };
 
+const currentTimeZone = -new Date().getTimezoneOffset();
+
+
 const fields = {
   corporationId: { key: "corporationId", label: "Компания:", type: "select", render: true, defaultValue: "" },
   name: { key: "name", label: "Название:", type: "string", render: true, defaultValue: "" },
@@ -24,7 +27,8 @@ const fields = {
   address: { key: "address", label: "Адрес", type: "map", render: true, defaultValue: "" },
   latitude: { key: "latitude", label: "Широта", type: "string", render: false, defaultValue: "" },
   longitude: { key: "longitude", label: "Долгота", type: "string", render: false, defaultValue: "" },
-  serviceType: { key: "serviceType", label: "Тип сервиса", type: "string", render: false, defaultValue: "CAR_WASH" }
+  serviceType: { key: "serviceType", label: "Тип сервиса", type: "string", render: false, defaultValue: "CAR_WASH" },
+  timeZone: { key: "timeZone", label: "Тайм Зона", type: "number", render: false, defaultValue: currentTimeZone }
 };
 
 
@@ -139,16 +143,16 @@ class CarWashFrom extends Component<Props, {}> {
           <Text>{submitButtonTitle}</Text>
         </Button>
         {/*{this.props.type !== "new" && (*/}
-          {/*<Button*/}
-            {/*full*/}
-            {/*block*/}
-            {/*danger*/}
-            {/*bordered*/}
-            {/*onPress={this.props.onDelete}*/}
-            {/*style={{ marginLeft: 5, marginRight: 5, marginTop: 10 }}*/}
-          {/*>*/}
-            {/*<Text>Удалить</Text>*/}
-          {/*</Button>*/}
+        {/*<Button*/}
+        {/*full*/}
+        {/*block*/}
+        {/*danger*/}
+        {/*bordered*/}
+        {/*onPress={this.props.onDelete}*/}
+        {/*style={{ marginLeft: 5, marginRight: 5, marginTop: 10 }}*/}
+        {/*>*/}
+        {/*<Text>Удалить</Text>*/}
+        {/*</Button>*/}
         {/*)}*/}
       </View>
     );

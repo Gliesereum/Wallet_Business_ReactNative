@@ -11,7 +11,6 @@ import {
   ListItem,
   Left,
   Right,
-  Body,
   CheckBox,
   Toast,
   View

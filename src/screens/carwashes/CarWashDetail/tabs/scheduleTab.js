@@ -85,8 +85,9 @@ const ScheduleTab = ({ workTimes }) => {
   };
 
   const timeTemplate = timestamp => {
-    const date = new Date(timestamp);
-    return moment(date).format("HH:mm");
+    const userOffset = new Date().getTimezoneOffset() * 60000;
+    const labelDate = timestamp + userOffset;
+    return moment(labelDate).format("HH:mm");
   };
 
   const renderDayItem = item => {

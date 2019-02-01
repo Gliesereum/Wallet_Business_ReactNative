@@ -16,17 +16,22 @@ class TimePicker extends Component<Props, {}> {
     isDateTimePickerVisible: false
   };
 
-  _stringToDate = (str) => {
-    return new Date(str);
+  _stringToDate = date => {
+    const userOffset = new Date().getTimezoneOffset() * 60000;
+    const labelDate = date + userOffset;
+    return new Date(labelDate);
   };
 
   _strToLabel = date => {
-    return moment(date).format("HH:mm");
+    const userOffset = new Date().getTimezoneOffset() * 60000;
+    const labelDate = date + userOffset;
+    return moment(labelDate).format("HH:mm");
   };
 
-  _dateToString = (date) => {
-    // return moment(date).format("HH:mm");
-    return date.getTime();
+  _dateToTimeStamp = (date) => {
+    const userTimeZone = new Date().getTimezoneOffset() * 60000;
+    const dateToServer = new Date(date.getTime() - userTimeZone).getTime();
+    return dateToServer;
   };
 
   _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -34,7 +39,7 @@ class TimePicker extends Component<Props, {}> {
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
   _handleDatePicked = (date) => {
-    const stringTime = this._dateToString(date);
+    const stringTime = this._dateToTimeStamp(date);
     this.props.onChange(stringTime);
     this._hideDateTimePicker();
   };

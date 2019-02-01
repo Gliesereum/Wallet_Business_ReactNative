@@ -25,7 +25,6 @@
     },
     "android": {
       "package": "com.belleandstone.foundz",
-      "icon": "./assets/KarmaTrackIcon.png"
     }
   }
 }
