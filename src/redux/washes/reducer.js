@@ -85,7 +85,7 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.UPDATE_SCHEDULE]: (state, payload) => {
-    const updatedCarWash = state.washes.filter(item => item.id === payload[0].businessId)[0];
+    const updatedCarWash = state.washes.filter(item => item.id === payload[0].objectId)[0];
     const updatedCarWashIndex = state.washes.map(item => item.id).indexOf(updatedCarWash.id);
     const newCarWash = { ...updatedCarWash, workTimes: payload };
     return {
