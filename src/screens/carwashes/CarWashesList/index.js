@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Dimensions, StyleSheet } from "react-native";
-import { Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View } from "native-base";
+import { Dimensions, StyleSheet, Alert } from "react-native";
+import { Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View, Toast } from "native-base";
 
 import washActions from "../../../redux/washes/actions";
 import appActions from "../../../redux/app/actions";
+
+import { asyncRequestAuth } from "../../../utils";
 
 
 const deviceHeight = Dimensions.get("window").height;
@@ -36,6 +38,36 @@ class CarWashes extends Component {
     Promise.all(washes.map(item => $getServicePackages(item.id)));
   };
 
+  _deleteBusinessHandler = async businessId => {
+    const url = `business/${businessId}`;
+    try {
+      await this.props.$globalSpinnerOn();
+      await asyncRequestAuth(url, "DELETE");
+      await this.props.$removeBusiness(businessId);
+      await Toast.show({ text: "Успешно удалено" });
+    } catch (e) {
+      Toast.show({ text: "Ошибка" });
+    } finally {
+      await this.props.$globalSpinnerOff();
+    }
+  };
+
+  _deleteAlertOpenHandler = businessId => () => {
+    Alert.alert(
+      "Удалить Бизнес?",
+      null,
+      [
+        { text: "Удалить", onPress: () => this._deleteBusinessHandler(businessId) },
+        {
+          text: "Отмена",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   renderEmptyList = () => {
     return (
       <View style={styles.emptyListContainer}><Text>Пустой список</Text></View>
@@ -54,6 +86,7 @@ class CarWashes extends Component {
               carWash: data,
               carWashID: data.id
             })}
+            onLongPress={this._deleteAlertOpenHandler(data.id)}
           >
             <Left>
               <Text>
@@ -78,7 +111,7 @@ class CarWashes extends Component {
               <Icon name="menu"/>
             </Button>
           )}
-          body={"Сервисы"}
+          body={"Бизнесы"}
           right={(
             <Button onPress={() => this.props.navigation.navigate("NewCarWash")} transparent>
               <Icon name="plus" type={"Feather"}/>

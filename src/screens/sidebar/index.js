@@ -13,11 +13,11 @@ import {
 } from "native-base";
 import styles from "./style";
 
-const drawerCover = require("../../../assets/drawer-cover.jpg");
+const drawerCover = require("../../../assets/drawer-cover.png");
 const drawerImage = require("../../../assets/logo.svg");
 const datas = [
   {
-    name: "Мои сервисы",
+    name: "Мои Бизнесы",
     route: "CarWashes",
     icon: "paper",
     bg: "#48525D"
