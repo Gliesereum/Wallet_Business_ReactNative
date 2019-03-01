@@ -48,7 +48,7 @@ class Index extends Component {
 
   renderScreen = () => {
     const data = this.props.navigation.getParam("carWashData");
-    const { corporation } = this.props.auth.user;
+    const { corporations } = this.props.auth;
     return (
       <Container>
         <HeaderLayout
@@ -65,7 +65,7 @@ class Index extends Component {
             onDelete={this.onDelete}
             type={"update"}
             carWashData={data}
-            corporation={corporation}
+            corporation={corporations}
           />
         </Content>
       </Container>

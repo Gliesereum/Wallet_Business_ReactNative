@@ -30,6 +30,7 @@ class Loading extends Component {
         await this.props.$authToken(this.token);
         await this.checkUser();
         await this.checkEmail();
+        await this.checkCorporations();
         await this.props.navigation.navigate("App");
       }
       else {
@@ -74,6 +75,16 @@ class Loading extends Component {
       const url = "email/by-user";
       const email = await asyncRequestTest(url, "GET", "account", this.token);
       await this.props.$authEmail(email);
+    } catch (e) {
+      this.props.navigation.navigate("Auth");
+    }
+  };
+
+  checkCorporations = async () => {
+    try {
+      const url = "corporation/by-user";
+      const corporations = await asyncRequestTest(url, "GET", "account", this.token);
+      await this.props.$getCorporations(corporations);
     } catch (e) {
       this.props.navigation.navigate("Auth");
     }

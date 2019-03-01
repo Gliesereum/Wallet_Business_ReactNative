@@ -6,8 +6,7 @@ import { Button, Container, Content, Icon, Left, List, ListItem, Right } from "n
 
 
 const BusinessList = props => {
-  const {navigation} = props;
-  const {corporation} = props.user;
+  const { navigation, corporations } = props;
   return (
     <Container>
       <HeaderLayout
@@ -18,14 +17,14 @@ const BusinessList = props => {
         )}
         body={"Компании"}
         right={(
-          <Button transparent onPress={()=>navigation.navigate('NewBusiness')}>
+          <Button transparent onPress={() => navigation.navigate("NewBusiness")}>
             <Icon name="plus" type={"Feather"}/>
           </Button>
         )}
       />
       <Content>
         <List
-          dataArray={corporation}
+          dataArray={corporations}
           renderRow={data =>
             <ListItem
               button
@@ -49,4 +48,4 @@ const BusinessList = props => {
 };
 
 
-export default connect(state => ({ user: state.auth.user }))(BusinessList);
+export default connect(state => ({ user: state.auth.user, corporations: state.auth.corporations }))(BusinessList);

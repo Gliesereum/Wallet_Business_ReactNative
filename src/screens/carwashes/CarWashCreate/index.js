@@ -46,18 +46,18 @@ class Index extends Component {
   };
 
   renderForm = () => {
-    const {corporation} = this.props.auth.user;
+    const {corporations} = this.props.auth;
     return (
       <CarWashForm
         onSubmit={this.onSubmit}
         type={"new"}
-        corporation={corporation}
+        corporation={corporations}
       />
     );
   };
 
   renderScreen = () => {
-    const userVerified = this.props.auth.user.corporation.length;
+    const userVerified = this.props.auth.corporations.length;
     return (
       <Container>
         <HeaderLayout

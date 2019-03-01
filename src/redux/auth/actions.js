@@ -11,6 +11,7 @@ const actions = {
     AUTH_EMAIL: "AUTH_EMAIL",
     AUTH_TOKEN: "AUTH_TOKEN",
     UPDATE_USER: "UPDATE_USER",
+    GET_CORPORATIONS: "GET_CORPORATIONS",
     ADD_BUSINESS: "ADD_BUSINESS",
     UPDATE_BUSINESS: "UPDATE_BUSINESS",
     ADD_EMAIL: "ADD_EMAIL",
@@ -32,6 +33,8 @@ const actions = {
     $authToken: token => async dispatch => {
       await dispatch({ type: actions.AUTH_TOKEN, payload: token });
     },
+
+    $getCorporations: payload => ({ type: actions.GET_CORPORATIONS, payload }),
 
     $addBusiness: payload => ({ type: actions.ADD_BUSINESS, payload }),
 

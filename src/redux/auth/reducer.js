@@ -7,7 +7,8 @@ const initialState = {
   authenticated: true,
   token: null,
   user: {},
-  email: null
+  email: null,
+  corporations: []
 };
 
 
@@ -49,29 +50,30 @@ const appReducer = createReducer(initialState, {
     };
   },
 
+  [actions.GET_CORPORATIONS]: (state, payload) => {
+    return {
+      ...state,
+      corporations: payload || []
+    };
+  },
+
   [actions.ADD_BUSINESS]: (state, payload) => {
     return {
       ...state,
-      user: {
-        ...state.user,
-        corporation: [...state.user.corporation, payload]
-      }
+      corporations: [...state.corporations, payload]
     };
   },
 
   [actions.UPDATE_BUSINESS]: (state, payload) => {
-    const indexChangedBusiness = state.user.corporation.findIndex(item => item.id === payload.id);
-    const newBusinesses = state.user.corporation.slice();
+    const indexChangedBusiness = state.corporations.findIndex(item => item.id === payload.id);
+    const newBusinesses = state.corporations.slice();
     newBusinesses[indexChangedBusiness] = payload;
     if (indexChangedBusiness === -1) {
       return state;
     }
     return {
       ...state,
-      user: {
-        ...state.user,
-        corporation: newBusinesses
-      }
+      corporations: newBusinesses
     };
   },
 
