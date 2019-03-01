@@ -227,7 +227,22 @@ const washesReducer = createReducer(initialState, {
         [corporationServiceId]: newPackagesArray
       }
     };
+  },
+
+  [actions.REMOVE_PACKAGE]: (state, { packageId, businessId }) => {
+    const changedPackage = state.servicePackages[businessId];
+    if (!changedPackage && !changedPackage.length) {
+      return state;
+    }
+    return {
+      ...state,
+      servicePackages: {
+        ...state.servicePackages,
+        [businessId]: changedPackage.filter(item => item.id !== packageId)
+      }
+    };
   }
+
 
 });
 

@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   emptyList: { flex: 1, justifyContent: "center", alignItems: "center" }
 });
 
-const PriceTab = ({ packages, onItemSelect }) => {
+const PriceTab = ({ packages, onItemSelect, onPackageDelete }) => {
 
   const renderEmptyList = () => {
     return (
@@ -22,6 +22,7 @@ const PriceTab = ({ packages, onItemSelect }) => {
       <ListItem
         key={item.id}
         onPress={() => onItemSelect(item)}
+        onLongPress={onPackageDelete(item.id)}
       >
         <Text>{item.name}</Text>
       </ListItem>

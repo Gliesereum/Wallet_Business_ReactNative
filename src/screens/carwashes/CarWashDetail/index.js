@@ -107,9 +107,42 @@ class InfoCarWash extends Component {
     );
   };
 
+  _deletePackageHandler = async packageId => {
+    const url = `package/${packageId}`;
+    const businessId = this.props.navigation.getParam("carWashID");
+    try {
+      await this.props.$globalSpinnerOn();
+      await asyncRequestAuth(url, "DELETE", "karma");
+      await this.props.$removePackage({ packageId, businessId });
+      await Toast.show({ text: "Успешно удалено" });
+    } catch (e) {
+      console.log(e);
+      Toast.show({ text: "Ошибка" });
+    } finally {
+      await this.props.$globalSpinnerOff();
+    }
+  };
+
+  _deletePackageAlertOpenHandler = packageId => () => {
+    Alert.alert(
+      "Удалить Услугу?",
+      null,
+      [
+        { text: "Удалить", onPress: () => this._deletePackageHandler(packageId) },
+        {
+          text: "Отмена",
+          onPress: () => {
+          },
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   renderTabItem = tab => {
     const { label, node: Node } = tab;
-    const { _deleteAlertOpenHandler } = this;
+    const { _deleteAlertOpenHandler, _deletePackageAlertOpenHandler } = this;
     const carWashID = this.props.navigation.getParam("carWashID");
     const data = this.props.washes.washes.filter(item => item.id === carWashID)[0];
     const services = this.props.washes.servicePrices[carWashID];
@@ -118,7 +151,12 @@ class InfoCarWash extends Component {
     const onSelectItem = tab.key === "services" ? this._onServicePriceSelect : this._onPackagePricesSelect;
     return (
       <Tab key={label} heading={label}>
-        <Node {...carWash} onItemSelect={onSelectItem} onServicePriceDelete={_deleteAlertOpenHandler}/>
+        <Node
+          {...carWash}
+          onItemSelect={onSelectItem}
+          onServicePriceDelete={_deleteAlertOpenHandler}
+          onPackageDelete={_deletePackageAlertOpenHandler}
+        />
       </Tab>
     );
   };

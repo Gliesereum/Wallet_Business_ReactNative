@@ -38,6 +38,8 @@ const actions = {
 
   UPDATE_PACKAGE_SERVICES: "UPDATE_PACKAGE_SERVICES",
 
+  REMOVE_PACKAGE: "REMOVE_PACKAGE",
+
   $getWashes: () => async dispatch => {
     const url = "business/by-user";
     await dispatch($globalSpinnerOn());
@@ -99,13 +101,15 @@ const actions = {
 
   $updateServicePrice: servicePrice => ({ type: actions.UPDATE_SERVICE_PRICE, payload: servicePrice }),
 
-  $removeServicePrice: payload => ({type: actions.REMOVE_SERVICE_PRICE, payload}),
+  $removeServicePrice: payload => ({ type: actions.REMOVE_SERVICE_PRICE, payload }),
 
   $addPackageService: packageServices => ({ type: actions.ADD_PACKAGE_SERVICES, payload: packageServices }),
 
-  $updatePackageService: packageServices => ({ type: actions.UPDATE_SERVICE_PRICE, payload: packageServices })
+  $updatePackageService: packageServices => ({ type: actions.UPDATE_SERVICE_PRICE, payload: packageServices }),
 
-};
+  $removePackage: payload => ({ type: actions.REMOVE_PACKAGE, payload }),
+
+}
 
 
 export default actions;
