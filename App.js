@@ -1,17 +1,17 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { StyleProvider, Root } from 'native-base';
-import {View, Text} from 'native-base';
+import React from "react";
+import { Provider } from "react-redux";
+import { StyleProvider, Root } from "native-base";
+import { View, Text } from "native-base";
 
-import RootApp from './src/boot';
+import RootApp from "./src/boot";
 
-import getTheme from './src/theme/components';
-import variables from './src/theme/variables/commonColor';
+import getTheme from "./src/theme/components";
+import variables from "./src/theme/variables/commonColor";
 
-import {GlobalLoader} from './src/components';
+import { GlobalLoader } from "./src/components";
 
-import { store } from './src/redux/store';
-import * as Expo from 'expo';
+import { store } from "./src/redux/store";
+import * as Expo from "expo";
 
 
 export default class App extends React.Component {
@@ -24,9 +24,9 @@ export default class App extends React.Component {
 
   async loadFonts() {
     await Expo.Font.loadAsync({
-      Roboto: require('native-base/Fonts/Roboto.ttf'),
-      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-      Ionicons: require('@expo/vector-icons/fonts/Ionicons.ttf')
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
     });
     this.setState({ isReady: true });
   }
@@ -38,11 +38,11 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <StyleProvider style={getTheme(variables)}>
-          <GlobalLoader>
-            <Root>
+          <Root>
+            <GlobalLoader>
               <RootApp/>
-            </Root>
-          </GlobalLoader>
+            </GlobalLoader>
+          </Root>
         </StyleProvider>
       </Provider>
     );
