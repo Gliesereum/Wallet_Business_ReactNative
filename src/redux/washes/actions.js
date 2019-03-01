@@ -32,6 +32,8 @@ const actions = {
 
   UPDATE_SERVICE_PRICE: "UPDATE_SERVICE_PRICE",
 
+  REMOVE_SERVICE_PRICE: "REMOVE_SERVICE_PRICE",
+
   ADD_PACKAGE_SERVICES: "ADD_PACKAGE_SERVICES",
 
   UPDATE_PACKAGE_SERVICES: "UPDATE_PACKAGE_SERVICES",
@@ -96,6 +98,8 @@ const actions = {
   $addServicePrice: servicePrice => ({ type: actions.ADD_SERVICE_PRICE, payload: servicePrice }),
 
   $updateServicePrice: servicePrice => ({ type: actions.UPDATE_SERVICE_PRICE, payload: servicePrice }),
+
+  $removeServicePrice: payload => ({type: actions.REMOVE_SERVICE_PRICE, payload}),
 
   $addPackageService: packageServices => ({ type: actions.ADD_PACKAGE_SERVICES, payload: packageServices }),
 

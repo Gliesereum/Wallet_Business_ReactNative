@@ -1,12 +1,47 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Text } from "react-native";
+import { Alert, Text } from "react-native";
 import { HeaderLayout } from "../../../components/Layout";
-import { Button, Container, Content, Icon, Left, List, ListItem, Right } from "native-base";
+import { Button, Container, Content, Icon, Left, List, ListItem, Right, Toast } from "native-base";
+import { asyncRequestAuth } from "../../../utils";
 
+import appActions from "../../../redux/app/actions";
 
 const BusinessList = props => {
   const { navigation, corporations } = props;
+
+  const _deleteCorporationHandler = async corporationId => {
+    const url = `corporation/${corporationId}`;
+    try {
+      await props.$globalSpinnerOn();
+      await asyncRequestAuth(url, "DELETE", 'account');
+      await props.$removeCorporation(corporationId);
+      await Toast.show({ text: "Успешно удалено" });
+    } catch (e) {
+      console.log(e);
+      Toast.show({ text: "Ошибка" });
+    } finally {
+      await props.$globalSpinnerOff();
+    }
+  };
+
+  const _deleteAlertOpenHandler = corporationId => () => {
+    Alert.alert(
+      "Удалить Компанию?",
+      null,
+      [
+        { text: "Удалить", onPress: () => _deleteCorporationHandler(corporationId) },
+        {
+          text: "Отмена",
+          onPress: () => {
+          },
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <Container>
       <HeaderLayout
@@ -28,6 +63,7 @@ const BusinessList = props => {
           renderRow={data =>
             <ListItem
               button
+              onLongPress={_deleteAlertOpenHandler(data.id)}
               onPress={() => props.navigation.navigate("UpdateBusiness", {
                 business: data
               })}
@@ -48,4 +84,7 @@ const BusinessList = props => {
 };
 
 
-export default connect(state => ({ user: state.auth.user, corporations: state.auth.corporations }))(BusinessList);
+export default connect(state => ({
+  user: state.auth.user,
+  corporations: state.auth.corporations
+}), ({ ...appActions }))(BusinessList);

@@ -57,6 +57,13 @@ const appReducer = createReducer(initialState, {
     };
   },
 
+  [actions.REMOVE_CORPORATION]: (state, payload) => {
+    return {
+      ...state,
+      corporations: state.corporations.filter(item => item.id !== payload)
+    };
+  },
+
   [actions.ADD_BUSINESS]: (state, payload) => {
     return {
       ...state,

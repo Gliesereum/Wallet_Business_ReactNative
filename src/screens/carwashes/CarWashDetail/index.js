@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Dimensions } from "react-native";
+import { Alert, Dimensions } from "react-native";
 import {
   Button,
   Container,
@@ -10,8 +10,11 @@ import {
   ActionSheet,
   Tabs,
   Tab,
-  ScrollableTab
+  ScrollableTab, Toast
 } from "native-base";
+
+import appActions from "../../../redux/app/actions";
+import businessActions from '../../../redux/washes/actions';
 
 import MainTab from "./tabs/mainTab";
 import LocationTab from "./tabs/locationTab";
@@ -20,6 +23,7 @@ import ScheduleTab from "./tabs/scheduleTab";
 import PackageTab from "./tabs/packagesTab";
 
 import { HeaderLayout } from "../../../components/Layout";
+import { asyncRequestAuth } from "../../../utils";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -70,8 +74,42 @@ class InfoCarWash extends Component {
     this.props.navigation.navigate("UpdatePackage", { packageServices, carWash });
   };
 
+  _deleteServicePriceHandler = async servicePriceId => {
+    const url = `price/${servicePriceId}`;
+    const businessId = this.props.navigation.getParam("carWashID");
+    try {
+      await this.props.$globalSpinnerOn();
+      await asyncRequestAuth(url, "DELETE", "karma");
+      await this.props.$removeServicePrice({ servicePriceId, businessId });
+      await Toast.show({ text: "Успешно удалено" });
+    } catch (e) {
+      console.log(e);
+      Toast.show({ text: "Ошибка" });
+    } finally {
+      await this.props.$globalSpinnerOff();
+    }
+  };
+
+  _deleteAlertOpenHandler = servicePriceId => () => {
+    Alert.alert(
+      "Удалить Услугу?",
+      null,
+      [
+        { text: "Удалить", onPress: () => this._deleteServicePriceHandler(servicePriceId) },
+        {
+          text: "Отмена",
+          onPress: () => {
+          },
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   renderTabItem = tab => {
     const { label, node: Node } = tab;
+    const { _deleteAlertOpenHandler } = this;
     const carWashID = this.props.navigation.getParam("carWashID");
     const data = this.props.washes.washes.filter(item => item.id === carWashID)[0];
     const services = this.props.washes.servicePrices[carWashID];
@@ -80,7 +118,7 @@ class InfoCarWash extends Component {
     const onSelectItem = tab.key === "services" ? this._onServicePriceSelect : this._onPackagePricesSelect;
     return (
       <Tab key={label} heading={label}>
-        <Node {...carWash} onItemSelect={onSelectItem}/>
+        <Node {...carWash} onItemSelect={onSelectItem} onServicePriceDelete={_deleteAlertOpenHandler}/>
       </Tab>
     );
   };
@@ -119,4 +157,4 @@ class InfoCarWash extends Component {
 }
 
 
-export default connect(state => state)(InfoCarWash);
+export default connect(state => state, ({ ...appActions, ...businessActions }))(InfoCarWash);

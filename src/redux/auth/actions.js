@@ -7,13 +7,21 @@ const actions = {
     SEND_CODE: "SEND_CODE",
 
     LOGIN_USER: "LOGIN_USER",
+
     AUTH_USER: "AUTH_USER",
     AUTH_EMAIL: "AUTH_EMAIL",
     AUTH_TOKEN: "AUTH_TOKEN",
+
     UPDATE_USER: "UPDATE_USER",
+
     GET_CORPORATIONS: "GET_CORPORATIONS",
+
+    REMOVE_CORPORATION: "REMOVE_CORPORATION",
+
     ADD_BUSINESS: "ADD_BUSINESS",
+
     UPDATE_BUSINESS: "UPDATE_BUSINESS",
+
     ADD_EMAIL: "ADD_EMAIL",
     SIGN_OUT: "SIGN_OUT",
 
@@ -35,6 +43,8 @@ const actions = {
     },
 
     $getCorporations: payload => ({ type: actions.GET_CORPORATIONS, payload }),
+
+    $removeCorporation: payload => ({ type: actions.REMOVE_CORPORATION, payload }),
 
     $addBusiness: payload => ({ type: actions.ADD_BUSINESS, payload }),
 

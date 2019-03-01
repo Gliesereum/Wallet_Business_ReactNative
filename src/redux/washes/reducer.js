@@ -172,6 +172,20 @@ const washesReducer = createReducer(initialState, {
     };
   },
 
+  [actions.REMOVE_SERVICE_PRICE]: (state, { servicePriceId, businessId }) => {
+    const changedServicePrice = state.servicePrices[businessId];
+    if (!changedServicePrice && !changedServicePrice.length) {
+      return state;
+    }
+    return {
+      ...state,
+      servicePrices: {
+        ...state.servicePrices,
+        [businessId]: changedServicePrice.filter(item => item.id !== servicePriceId)
+      }
+    };
+  },
+
   [actions.ADD_PACKAGE_SERVICES]: (state, payload) => {
     const { businessId } = payload;
     const updatedBusiness = state.servicePackages[businessId];

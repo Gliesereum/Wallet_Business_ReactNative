@@ -4,8 +4,6 @@ const Dimensions = require("Dimensions");
 
 const { height, width } = Dimensions.get("window");
 
-console.log(height);
-console.log(width);
 
 export default StyleSheet.create({
   container: {},

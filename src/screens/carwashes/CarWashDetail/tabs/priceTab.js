@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 import { View, Text, List, ListItem } from "native-base";
 
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   emptyList: { flex: 1, justifyContent: "center", alignItems: "center" }
 });
 
-const PriceTab = ({ services, onItemSelect }) => {
+const PriceTab = ({ services, onItemSelect, onServicePriceDelete }) => {
 
   const renderEmptyList = () => {
     return (
@@ -22,6 +22,7 @@ const PriceTab = ({ services, onItemSelect }) => {
       <ListItem
         key={item.id}
         onPress={() => onItemSelect(item)}
+        onLongPress={onServicePriceDelete(item.id)}
       >
         <Text>{item.name}</Text>
       </ListItem>
