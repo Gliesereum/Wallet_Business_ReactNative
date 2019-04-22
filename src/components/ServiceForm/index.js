@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { View, Toast, Tabs, Tab, Container, Button, Icon, Content, Text } from "native-base";
+import { View, Toast, Tabs, Tab, Container, Button, Icon, Content, Text, ScrollableTab } from "native-base";
 import { withNavigation } from "react-navigation";
 
 import { asyncRequestAuth } from "../../utils";
@@ -231,7 +231,7 @@ class ServicePriceForm extends Component<Props, {}> {
     const saveMainInfoHandler = isNew ? this._createServicePrice : this._updateServicePrice;
     return (
       <View>
-        <Tabs ref={tab => this.tabs = tab}>
+        <Tabs ref={tab => this.tabs = tab} locked={false} renderTabBar={() => <ScrollableTab/>} >
           <Tab heading="Основная Информация">
             <MainInfo
               data={data}

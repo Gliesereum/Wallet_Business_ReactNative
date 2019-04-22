@@ -59,9 +59,9 @@ class Main extends Component {
     return fields.reduce((acc, field) => {
       if (!obj[field.key] || !obj[field.key].length) {
         obj[field.key] = field.defaultValue;
-        return obj
+        return acc
       }
-      return obj
+      return acc
     }, obj)
   };
 
@@ -97,7 +97,6 @@ class Main extends Component {
     ];
     if (item.type === "select") {
       return (
-
         <Item key={item.key}>
           <Label style={{paddingTop: 4}}>{item.label}</Label>
           <Picker
