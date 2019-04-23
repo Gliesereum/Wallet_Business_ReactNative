@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { View, Text } from "react-native";
+import React, {Component, Fragment} from "react";
+import {View, Text} from "react-native";
 
 import ServiceInput from "../children/Input";
 
@@ -15,7 +15,7 @@ class AttributesInfo extends Component {
   };
 
   renderFilterCategory = category => {
-    const { service } = this.props;
+    const {service} = this.props;
     return (
       <ServiceInput
         type={"array"}
@@ -28,7 +28,15 @@ class AttributesInfo extends Component {
     );
   };
 
-  renderFiltersList = () => this.props.filters.map(this.renderFilterCategory);
+  renderFiltersList = () => {
+    const renderFilters = this.props.filters.map(this.renderFilterCategory);
+    return (
+      <View>
+        <Text style={{textAlign: 'center', paddingVertical: 8}}>Если хотите чтобы услуга была доступна всем. Оставьте пустым.</Text>
+        {renderFilters}
+      </View>
+    )
+  };
 
   renderEmptyList = () => {
     return (

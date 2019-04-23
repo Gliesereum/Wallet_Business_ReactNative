@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from "react";
-import { StyleSheet } from "react-native";
-import { Button, Form, Input, Item, Label, Text, View } from "native-base";
-import { withNavigation } from "react-navigation";
+import React, {Component} from "react";
+import {StyleSheet} from "react-native";
+import {Button, Form, Input, Item, Label, Text, View} from "native-base";
+import {withNavigation} from "react-navigation";
 
 import Field from "./children/Field";
 import Toast from "../../theme/components/Toast";
@@ -20,15 +20,15 @@ const currentTimeZone = -new Date().getTimezoneOffset();
 
 
 const fields = {
-  corporationId: { key: "corporationId", label: "Компания:", type: "select", render: true, defaultValue: "" },
-  name: { key: "name", label: "Название:", type: "string", render: true, defaultValue: "" },
-  phone: { key: "phone", label: "Телефон:", type: "number", render: true, defaultValue: "" },
-  description: { key: "description", label: "Описание:", type: "string", render: true, defaultValue: "" },
-  address: { key: "address", label: "Адрес", type: "map", render: true, defaultValue: "" },
-  latitude: { key: "latitude", label: "Широта", type: "string", render: false, defaultValue: "" },
-  longitude: { key: "longitude", label: "Долгота", type: "string", render: false, defaultValue: "" },
-  serviceType: { key: "serviceType", label: "Тип сервиса", type: "string", render: false, defaultValue: "CAR_WASH" },
-  timeZone: { key: "timeZone", label: "Тайм Зона", type: "number", render: false, defaultValue: currentTimeZone }
+  corporationId: {key: "corporationId", label: "Компания:", type: "select", render: true, defaultValue: ""},
+  name: {key: "name", label: "Название:", type: "string", render: true, defaultValue: ""},
+  phone: {key: "phone", label: "Телефон:", type: "number", render: true, defaultValue: ""},
+  description: {key: "description", label: "Описание:", type: "string", render: true, defaultValue: ""},
+  address: {key: "address", label: "Адрес", type: "map", render: true, defaultValue: ""},
+  latitude: {key: "latitude", label: "Широта", type: "string", render: false, defaultValue: ""},
+  longitude: {key: "longitude", label: "Долгота", type: "string", render: false, defaultValue: ""},
+  serviceType: {key: "serviceType", label: "Тип сервиса", type: "string", render: false, defaultValue: "CAR_WASH"},
+  timeZone: {key: "timeZone", label: "Тайм Зона", type: "number", render: false, defaultValue: currentTimeZone}
 };
 
 
@@ -42,7 +42,7 @@ class CarWashFrom extends Component<Props, {}> {
     }, {});
   };
 
-  state = { data: this.initEmptyForm(), error: {} };
+  state = {data: this.initEmptyForm(), error: {}};
 
   componentDidMount() {
     this.fillForm();
@@ -60,21 +60,29 @@ class CarWashFrom extends Component<Props, {}> {
   };
 
   onInput = (key, value) => {
-    this.setState(state => ({ ...state, data: { ...state.data, [key]: value } }));
+    this.setState(state => ({...state, data: {...state.data, [key]: value}}));
   };
 
   errorHandler = (e) => {
-    const { additional } = e;
+    const {additional} = e;
     const error = e;
-    Toast.show({ text: "Заполните все поля" });
-    this.setState(state => ({ ...state, error: additional }));
+    Toast.show({text: "Заполните все поля"});
+    this.setState(state => ({...state, error: additional}));
+  };
+
+  dataHandler = data => {
+    if (!data.corporationId) {
+      data['corporationId'] = this.props.corporation[0].id;
+      return data
+    }
+    return data
   };
 
   submitHandler = () => {
-    this.props.onSubmit(this.state.data).then().catch(this.errorHandler);
+    this.props.onSubmit(this.dataHandler(this.state.data)).then().catch(this.errorHandler);
   };
 
-  _locationSubmit = ({ location, address }) => {
+  _locationSubmit = ({location, address}) => {
     this.onInput("latitude", location.latitude);
     this.onInput("longitude", location.longitude);
     this.onInput("address", address);
@@ -93,14 +101,14 @@ class CarWashFrom extends Component<Props, {}> {
   };
 
   renderItemInput = key => {
-    const { onInput } = this;
+    const {onInput} = this;
     const field = fields[key];
     const value = this.state.data[field.key];
     const error = this.state.error[field.key];
     const options = field.key === "corporationId" ? this.props.corporation : null;
     const mapField = (
       <Item fixedLabel key={key} error={!!error}>
-        <Label style={{ paddingTop: 4 }}>{field.label}</Label>
+        <Label style={{paddingTop: 4}}>{field.label}</Label>
         <Input
           value={value.toString()}
           onChangeText={text => onInput(field.key, text)}
@@ -135,7 +143,7 @@ class CarWashFrom extends Component<Props, {}> {
           {fieldsForm}
         </Form>
         <Button
-          style={{ marginLeft: 5, marginRight: 5, marginTop: 10 }}
+          style={{marginLeft: 5, marginRight: 5, marginTop: 10}}
           onPress={() => this.submitHandler()}
           full
           block

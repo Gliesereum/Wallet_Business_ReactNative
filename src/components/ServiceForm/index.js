@@ -1,12 +1,15 @@
 // @flow
-import React, { Component } from "react";
-import { View, Toast, Tabs, Tab, Container, Button, Icon, Content, Text, ScrollableTab } from "native-base";
-import { withNavigation } from "react-navigation";
+import React, {Component} from "react";
+import {connect} from 'react-redux';
+import {View, Toast, Tabs, Tab, Container, Button, Icon, Content, Text, ScrollableTab} from "native-base";
+import {withNavigation} from "react-navigation";
 
-import { asyncRequestAuth } from "../../utils";
+import {asyncRequestAuth} from "../../utils";
 
-import { MainInfo, AttributesInfo, ClassInfo } from "./Tabs";
-import { HeaderLayout } from "../Layout";
+import {MainInfo, AttributesInfo, ClassInfo} from "./Tabs";
+import {HeaderLayout} from "../Layout";
+
+import appActions from '../../redux/app/actions';
 
 
 type Props = {
@@ -30,14 +33,14 @@ type Price = {
 };
 
 const renderFields = {
-  businessId: { label: "Бизнес:", type: "string", defaultValue: "", render: false },
-  serviceId: { label: "Вид Услуги:", type: "select", defaultValue: "", render: true },
-  name: { label: "Название:", key: "name", type: "string", defaultValue: "", render: true },
+  businessId: {label: "Бизнес:", type: "string", defaultValue: "", render: false},
+  serviceId: {label: "Вид Услуги:", type: "select", defaultValue: "", render: true},
+  name: {label: "Название:", key: "name", type: "string", defaultValue: "", render: true},
   // description: { label: "Описание:", type: "string", defaultValue: "", render: true },
-  price: { label: "Цена, ГРН:", type: "number", defaultValue: "", render: true },
-  duration: { label: "Продолжительность, минуты:", type: "number", defaultValue: "", render: true },
-  serviceClass: { label: "Класс обслуживания:", type: "string", defaultValue: [], render: false },
-  attributes: { label: "Фильтра:", type: "array", defaultValue: [], render: false }
+  price: {label: "Цена, ГРН:", type: "number", defaultValue: "", render: true},
+  duration: {label: "Продолжительность, минуты:", type: "number", defaultValue: "", render: true},
+  serviceClass: {label: "Класс обслуживания:", type: "string", defaultValue: [], render: false},
+  attributes: {label: "Фильтра:", type: "array", defaultValue: [], render: false}
 
 };
 
@@ -54,34 +57,36 @@ class ServicePriceForm extends Component<Props, {}> {
     filters: []
   };
 
-  componentDidMount() {
-    this._initForm();
-    this._loadServices();
-    this._loadClasses();
-    this._loadFilters();
+  async componentDidMount() {
+    await this.props.$globalSpinnerOn();
+    await this._initForm();
+    await this._loadServices();
+    await this._loadClasses();
+    await this._loadFilters();
+    await this.props.$globalSpinnerOff();
   }
 
   _initForm = () => {
-    const { isNew, servicePrice, business } = this.props;
+    const {isNew, servicePrice, business} = this.props;
     this.setState((state) => ({
       data: {
         ...this.state.data,
         businessId: business.id
       },
-      options: { ...this.state.options }
+      options: {...this.state.options}
     }));
     if (isNew) {
-      this.setState(({ data }) => ({ data: { ...this.objToStateObj(renderFields), ...data } }));
+      this.setState(({data}) => ({data: {...this.objToStateObj(renderFields), ...data}}));
       return;
     }
-    this.setState(({ data }) => ({ data: { ...this.objToStateObj(renderFields), ...servicePrice } }));
+    this.setState(({data}) => ({data: {...this.objToStateObj(renderFields), ...servicePrice}}));
   };
 
   _loadServices = async () => {
-    const url = "service";
+    const url = `service/get-by-type?type=${this.props.business.serviceType}`;
     try {
       const servicesOptions = await asyncRequestAuth(url) || [];
-      this.setState(({ options }) => ({
+      this.setState(({options}) => ({
         options: {
           ...this.state.options,
           serviceId: servicesOptions
@@ -93,10 +98,10 @@ class ServicePriceForm extends Component<Props, {}> {
   };
 
   _loadClasses = async () => {
-    const url = "class";
+    const url = `class/get-by-type?type=${this.props.business.serviceType}`;
     try {
       const classOptions = await asyncRequestAuth(url) || [];
-      this.setState(({ options }) => ({
+      this.setState(({options}) => ({
         options: {
           ...this.state.options,
           serviceClass: classOptions
@@ -111,24 +116,35 @@ class ServicePriceForm extends Component<Props, {}> {
     const url = `filter/by-service-type?serviceType=${this.props.business.serviceType}`;
     try {
       const filtersForm = await asyncRequestAuth(url);
-      this.setState(({ filters }) => ({ filters: filtersForm || [] }));
+      this.setState(({filters}) => ({filters: filtersForm || []}));
     } catch (e) {
       const error = e;
       //
     }
   };
 
+  dataHandler = data => {
+    if (!data['serviceId']) {
+      data['serviceId'] = this.state.options.serviceId[0].id;
+      return data
+    }
+    return data
+
+  };
+
   _createServicePrice = async () => {
     const url = "price";
+    const data = this.dataHandler(this.state.data);
     try {
-      const newServicePrice = await asyncRequestAuth(url, "POST", "karma", this.state.data);
-      await this.setState(({ data }) => ({ data: newServicePrice }));
+      await this.props.$globalSpinnerOn();
+      const newServicePrice = await asyncRequestAuth(url, "POST", "karma", data);
+      await this.setState(({data}) => ({data: newServicePrice}));
       this.tabs.goToPage(1);
-      Toast.show({ text: "Успешно добавлена услуга. Добавьте фильтра и класс облуживания." });
+      Toast.show({text: "Успешно добавлена услуга. Добавьте фильтра и класс облуживания."});
     } catch (e) {
-      Toast.show({ text: "Заполните все поля" });
+      Toast.show({text: "Заполните все поля"});
     } finally {
-
+      await this.props.$globalSpinnerOff();
     }
   };
 
@@ -136,10 +152,10 @@ class ServicePriceForm extends Component<Props, {}> {
     const url = "price";
     try {
       const newServicePrice = await asyncRequestAuth(url, "PUT", "karma", this.state.data);
-      await this.setState(({ data }) => ({ data: newServicePrice }));
-      Toast.show({ text: "Успешно обвновлена услуга." });
+      await this.setState(({data}) => ({data: newServicePrice}));
+      Toast.show({text: "Успешно обвновлена услуга."});
     } catch (e) {
-      Toast.show({ text: "Заполните все поля" });
+      Toast.show({text: "Заполните все поля"});
     } finally {
 
     }
@@ -147,63 +163,63 @@ class ServicePriceForm extends Component<Props, {}> {
 
   _pushClassToPriceHandler = async priceClass => {
     const url = "price/class";
-    const body = { priceId: this.state.data.id, serviceClassId: priceClass.id };
+    const body = {priceId: this.state.data.id, serviceClassId: priceClass.id};
     try {
       const newPriceClass = await asyncRequestAuth(url, "POST", "karma", body);
-      await this.setState(({ data }) => ({
-        data: { ...data, serviceClass: [...data.serviceClass, priceClass] }
+      await this.setState(({data}) => ({
+        data: {...data, serviceClass: [...data.serviceClass, priceClass]}
       }));
-      await Toast.show({ text: "Успешно обновлено" });
+      await Toast.show({text: "Успешно обновлено"});
     } catch (e) {
       const error = e;
-      await Toast.show({ text: "Ошибка" });
+      await Toast.show({text: "Ошибка"});
     }
   };
 
   _removeClassFromPriceHandler = async priceClass => {
-    const { id: servicePriceId } = this.state.data;
+    const {id: servicePriceId} = this.state.data;
     const url = `price/class/${servicePriceId}/${priceClass.id}`;
-    await this.setState(({ data }) => ({
+    await this.setState(({data}) => ({
       data: {
         ...data,
         serviceClass: data.serviceClass.filter(item => item.id !== priceClass.id)
       }
     }));
-    await Toast.show({ text: "Успешно обновлено" });
+    await Toast.show({text: "Успешно обновлено"});
     try {
       await asyncRequestAuth(url, "DELETE");
     } catch (e) {
       const error = e;
       debugger;
-      await Toast.show({ text: "Ошибка" });
+      await Toast.show({text: "Ошибка"});
     }
   };
 
   _pushFilterToPriceHandler = async filter => {
-    const { id, attributes } = this.state.data;
+    const {id, attributes} = this.state.data;
     const url = `price/filter-attribute/${id}/${filter.id}`;
     const newFilters = [...attributes, filter];
     try {
       const newServicePrice = await asyncRequestAuth(url, "POST");
-      await Toast.show({ text: "Успешно обновлено" });
-      await this.setState(({ data }) => ({ data: { ...data, attributes: newFilters } }));
+      await Toast.show({text: "Успешно обновлено"});
+      await this.setState(({data}) => ({data: {...data, attributes: newFilters}}));
     } catch (e) {
       const error = e;
-      await Toast.show({ text: "Ошибка" });
+      await Toast.show({text: "Ошибка"});
     }
   };
 
   _removeFilterFromPriceHandler = async filter => {
-    const { id, attributes } = this.state.data;
+    const {id, attributes} = this.state.data;
     const url = `price/remove/filter-attribute/${id}/${filter.id}`;
     const newAttritubes = attributes.filter(item => item.id !== filter.id);
     try {
       await asyncRequestAuth(url, "DELETE");
-      this.setState(({ data }) => ({ data: { ...data, attributes: newAttritubes } }));
-      await Toast.show({ text: "Успешно обновлено" });
+      this.setState(({data}) => ({data: {...data, attributes: newAttritubes}}));
+      await Toast.show({text: "Успешно обновлено"});
     } catch (e) {
       const error = e;
-      await Toast.show({ text: "Ошибка" });
+      await Toast.show({text: "Ошибка"});
       //
     }
   };
@@ -216,22 +232,22 @@ class ServicePriceForm extends Component<Props, {}> {
   };
 
   _onInput = (key, value) => {
-    this.setState(({ data }) => ({ data: { ...data, [key]: value } }));
+    this.setState(({data}) => ({data: {...data, [key]: value}}));
   };
 
   _fullSubmitHandler = () => {
     this.props.navigation.goBack();
     this.props.onFullSubmit(this.state.data);
-    Toast.show({ text: "Успешно обновлено" });
+    Toast.show({text: "Успешно обновлено"});
   };
 
   renderTabs = () => {
-    const { data, options, errors, filters } = this.state;
+    const {data, options, errors, filters} = this.state;
     const isNew = !data.id;
     const saveMainInfoHandler = isNew ? this._createServicePrice : this._updateServicePrice;
     return (
       <View>
-        <Tabs ref={tab => this.tabs = tab} locked={false} renderTabBar={() => <ScrollableTab/>} >
+        <Tabs ref={tab => this.tabs = tab} locked={false} renderTabBar={() => <ScrollableTab/>}>
           <Tab heading="Основная Информация">
             <MainInfo
               data={data}
@@ -266,9 +282,9 @@ class ServicePriceForm extends Component<Props, {}> {
   };
 
   renderForm = () => {
-    const { data } = this.state;
+    const {data, options: {serviceId}} = this.state;
     const isNew = !data.id;
-    const { navigation } = this.props;
+    const {navigation} = this.props;
     return (
       <Container>
         <HeaderLayout
@@ -285,7 +301,15 @@ class ServicePriceForm extends Component<Props, {}> {
           )}
         />
         <Content>
-          {this.renderTabs()}
+          {!serviceId || !serviceId.length ? (
+            <View style={{display: 'flex', justifyContent: 'center'}}>
+              <Text style={{textAlign: 'center'}}>
+                Нет услуг для данного типа бизнеса. Обратитесь к администратору.
+              </Text>
+            </View>
+          ) : (
+            this.renderTabs()
+          )}
         </Content>
       </Container>
     );
@@ -298,4 +322,4 @@ class ServicePriceForm extends Component<Props, {}> {
 }
 
 
-export default withNavigation(ServicePriceForm);
+export default withNavigation(connect(state => state, {...appActions})(ServicePriceForm));
