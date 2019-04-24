@@ -66,6 +66,7 @@ class Index extends Component {
             type={"update"}
             carWashData={data}
             corporation={corporations}
+            businessType={this.props.washes.businessType}
           />
         </Content>
       </Container>

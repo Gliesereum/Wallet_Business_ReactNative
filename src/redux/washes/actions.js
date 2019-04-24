@@ -40,6 +40,8 @@ const actions = {
 
   REMOVE_PACKAGE: "REMOVE_PACKAGE",
 
+  GET_BUSINESS_TYPE: 'GET_BUSINESS_TYPE',
+
   $getWashes: () => async dispatch => {
     const url = "business/by-user";
     await dispatch($globalSpinnerOn());
@@ -109,7 +111,9 @@ const actions = {
 
   $removePackage: payload => ({ type: actions.REMOVE_PACKAGE, payload }),
 
-}
+  $getBusinessType: payload => ({type: actions.GET_BUSINESS_TYPE, payload})
+
+};
 
 
 export default actions;

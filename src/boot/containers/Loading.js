@@ -7,6 +7,7 @@ import { asyncRequestTest, delay } from "../../utils";
 
 import appActions from "../../redux/app/actions";
 import authActions from "../../redux/auth/actions";
+import businessActions from "../../redux/washes/actions";
 
 const styles = StyleSheet.create({
   container: {
@@ -27,11 +28,14 @@ class Loading extends Component {
     try {
       await this.checkToken();
       if (this.token) {
-        await this.props.$authToken(this.token);
-        await this.checkUser();
-        await this.checkEmail();
-        await this.checkCorporations();
-        await this.props.navigation.navigate("App");
+        await Promise.all([
+          this.checkUser(),
+          this.checkEmail(),
+          this.checkCorporations(),
+          this.getBusinessType(),
+          this.props.navigation.navigate("App"),
+          this.checkToken()
+      ]);
       }
       else {
         this.props.navigation.navigate("Logout");
@@ -39,7 +43,6 @@ class Loading extends Component {
     } catch (e) {
       this.props.navigation.navigate("Auth");
     }
-
   };
 
   checkToken = async () => {
@@ -54,6 +57,7 @@ class Loading extends Component {
       if (now > tokenInfo.accessExpirationDate) {
         this.props.navigation.navigate("Logout");
       }
+      await this.props.$authToken(tokenInfo.accessToken);
       this.token = tokenInfo.accessToken;
     } catch (e) {
       this.props.navigation.navigate("Logout");
@@ -90,6 +94,16 @@ class Loading extends Component {
     }
   };
 
+  getBusinessType = async () => {
+    const url = 'business/business-type';
+    try {
+      const businessType = await asyncRequestTest(url, "GET", "karma", this.token);
+      this.props.$getBusinessType(businessType);
+    } catch (e) {
+      this.props.navigation.navigate("Auth");
+    }
+  };
+
   _renderLoading = () => {
     return (
       <View style={styles.container}><Text>Loading...</Text></View>
@@ -103,4 +117,4 @@ class Loading extends Component {
 }
 
 
-export default connect(state => state, ({ ...appActions, ...authActions }))(Loading);
+export default connect(state => state, ({ ...appActions, ...authActions, ...businessActions }))(Loading);

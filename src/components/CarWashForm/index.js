@@ -7,7 +7,6 @@ import {withNavigation} from "react-navigation";
 import Field from "./children/Field";
 import Toast from "../../theme/components/Toast";
 
-const styles = StyleSheet.create({});
 
 type Props = {
   onSubmit: Function,
@@ -27,8 +26,35 @@ const fields = {
   address: {key: "address", label: "Адрес", type: "map", render: true, defaultValue: ""},
   latitude: {key: "latitude", label: "Широта", type: "string", render: false, defaultValue: ""},
   longitude: {key: "longitude", label: "Долгота", type: "string", render: false, defaultValue: ""},
-  serviceType: {key: "serviceType", label: "Тип сервиса", type: "string", render: false, defaultValue: "CAR_WASH"},
+  serviceType: {key: "serviceType", label: "Тип сервиса", type: "select", render: true, defaultValue: null},
   timeZone: {key: "timeZone", label: "Тайм Зона", type: "number", render: false, defaultValue: currentTimeZone}
+};
+
+const businessTypeTranslate = (businessType) => {
+  const translates = {
+    CAR_WASH: 'Авто мойки',
+    CAR_SERVICE: 'СТО',
+    TIRE_FITTING: 'Шиномонтаж'
+  };
+
+  if(!translates[businessType]) {
+    return `${businessType} (отсутсвует перевод)`
+  }
+
+  return translates[businessType];
+
+};
+
+const businessTypeArray = businessType => {
+  return businessType.map((businessTypeItem, index) => {
+    return {
+      label: businessTypeTranslate(businessTypeItem),
+      name: businessTypeTranslate(businessTypeItem),
+      key: businessTypeItem,
+      id: businessTypeItem,
+      value: businessTypeItem
+    }
+  })
 };
 
 
@@ -73,8 +99,12 @@ class CarWashFrom extends Component<Props, {}> {
   dataHandler = data => {
     if (!data.corporationId) {
       data['corporationId'] = this.props.corporation[0].id;
-      return data
     }
+
+    if (!data.serviceType) {
+      data['businessType'] = this.props.businessType[0];
+    }
+
     return data
   };
 
@@ -100,12 +130,19 @@ class CarWashFrom extends Component<Props, {}> {
     );
   };
 
+  optionsHandler = key => {
+    return {
+      corporationId: this.props.corporation,
+      serviceType: businessTypeArray(this.props.businessType)
+    }[key]
+  };
+
   renderItemInput = key => {
     const {onInput} = this;
     const field = fields[key];
     const value = this.state.data[field.key];
     const error = this.state.error[field.key];
-    const options = field.key === "corporationId" ? this.props.corporation : null;
+    const options = this.optionsHandler(field.key);
     const mapField = (
       <Item fixedLabel key={key} error={!!error}>
         <Label style={{paddingTop: 4}}>{field.label}</Label>

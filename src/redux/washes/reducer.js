@@ -6,7 +6,8 @@ import actions from "./actions";
 const initialState = {
   washes: [],
   servicePrices: {},                  // Object with corporationKey (from washes list) and array of service prices as value
-  servicePackages: {}                 // Object with corporationKey (from washes list) and array of service packages as value
+  servicePackages: {},                 // Object with corporationKey (from washes list) and array of service packages as value
+  businessType: []
 };
 
 
@@ -241,6 +242,13 @@ const washesReducer = createReducer(initialState, {
         [businessId]: changedPackage.filter(item => item.id !== packageId)
       }
     };
+  },
+
+  [actions.GET_BUSINESS_TYPE]: (state, payload) => {
+    return {
+      ...state,
+      businessType: payload || []
+    }
   }
 
 

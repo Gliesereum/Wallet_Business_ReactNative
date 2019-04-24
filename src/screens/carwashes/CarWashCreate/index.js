@@ -52,6 +52,7 @@ class Index extends Component {
         onSubmit={this.onSubmit}
         type={"new"}
         corporation={corporations}
+        businessType={this.props.washes.businessType}
       />
     );
   };
