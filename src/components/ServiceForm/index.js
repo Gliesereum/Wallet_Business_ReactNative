@@ -2,6 +2,7 @@
 import React, {Component} from "react";
 import {connect} from 'react-redux';
 import {View, Toast, Tabs, Tab, Container, Button, Icon, Content, Text, ScrollableTab} from "native-base";
+import {ScrollView} from 'react-native';
 import {withNavigation} from "react-navigation";
 
 import {asyncRequestAuth} from "../../utils";
@@ -83,7 +84,7 @@ class ServicePriceForm extends Component<Props, {}> {
   };
 
   _loadServices = async () => {
-    const url = `service/get-by-type?type=${this.props.business.serviceType}`;
+    const url = `service/get-by-business-category?businessCategoryId=${this.props.business.businessCategoryId}`;
     try {
       const servicesOptions = await asyncRequestAuth(url) || [];
       this.setState(({options}) => ({
@@ -93,12 +94,14 @@ class ServicePriceForm extends Component<Props, {}> {
         }
       }));
     } catch (e) {
+      console.log(e);
+    } finally {
 
     }
   };
 
   _loadClasses = async () => {
-    const url = `class/get-by-type?type=${this.props.business.serviceType}`;
+    const url = `class`;
     try {
       const classOptions = await asyncRequestAuth(url) || [];
       this.setState(({options}) => ({
@@ -113,7 +116,7 @@ class ServicePriceForm extends Component<Props, {}> {
   };
 
   _loadFilters = async () => {
-    const url = `filter/by-service-type?serviceType=${this.props.business.serviceType}`;
+    const url = `filter/by-business-category?businessCategoryId=${this.props.business.businessCategoryId}`;
     try {
       const filtersForm = await asyncRequestAuth(url);
       this.setState(({filters}) => ({filters: filtersForm || []}));
@@ -123,18 +126,9 @@ class ServicePriceForm extends Component<Props, {}> {
     }
   };
 
-  dataHandler = data => {
-    if (!data['serviceId']) {
-      data['serviceId'] = this.state.options.serviceId[0].id;
-      return data
-    }
-    return data
-
-  };
-
   _createServicePrice = async () => {
     const url = "price";
-    const data = this.dataHandler(this.state.data);
+    const data = this.state.data;
     try {
       await this.props.$globalSpinnerOn();
       const newServicePrice = await asyncRequestAuth(url, "POST", "karma", data);
@@ -246,38 +240,36 @@ class ServicePriceForm extends Component<Props, {}> {
     const isNew = !data.id;
     const saveMainInfoHandler = isNew ? this._createServicePrice : this._updateServicePrice;
     return (
-      <View>
-        <Tabs ref={tab => this.tabs = tab} locked={false} renderTabBar={() => <ScrollableTab/>}>
-          <Tab heading="Основная Информация">
-            <MainInfo
-              data={data}
-              options={options}
-              errors={errors}
-              onInput={this._onInput}
-              onSubmit={saveMainInfoHandler}
+      <Tabs ref={tab => this.tabs = tab} locked={false} renderTabBar={() => <ScrollableTab/>}>
+        <Tab heading="Основная Информация">
+          <MainInfo
+            data={data}
+            options={options}
+            errors={errors}
+            onInput={this._onInput}
+            onSubmit={saveMainInfoHandler}
+          />
+        </Tab>
+
+        {!isNew && [
+          <Tab heading="Дополнительно" key="additional">
+            <AttributesInfo
+              filters={filters}
+              service={this.state.data}
+              onAddFilter={this._pushFilterToPriceHandler}
+              onRemoveFilter={this._removeFilterFromPriceHandler}
+            />
+          </Tab>,
+          <Tab heading="Класс обслуживания" key="classes">
+            <ClassInfo
+              onAddClassToPrice={this._pushClassToPriceHandler}
+              onRemoveClassFromPrice={this._removeClassFromPriceHandler}
+              serviceClass={options.serviceClass}
+              servicePrice={data}
             />
           </Tab>
-
-          {!isNew && [
-            <Tab heading="Дополнительно" key="additional">
-              <AttributesInfo
-                filters={filters}
-                service={this.state.data}
-                onAddFilter={this._pushFilterToPriceHandler}
-                onRemoveFilter={this._removeFilterFromPriceHandler}
-              />
-            </Tab>,
-            <Tab heading="Класс обслуживания" key="classes">
-              <ClassInfo
-                onAddClassToPrice={this._pushClassToPriceHandler}
-                onRemoveClassFromPrice={this._removeClassFromPriceHandler}
-                serviceClass={options.serviceClass}
-                servicePrice={data}
-              />
-            </Tab>
-          ]}
-        </Tabs>
-      </View>
+        ]}
+      </Tabs>
     );
   };
 

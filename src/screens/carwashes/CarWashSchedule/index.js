@@ -96,7 +96,12 @@ class index extends Component {
 
   _createPromise = (url, method, day) => {
     const businessData = this.props.navigation.getParam("carWashData");
-    const body = { ...day, objectId: businessData.id, serviceType: businessData.serviceType };
+    const body = {
+      ...day,
+      objectId: businessData.id,
+      serviceType: businessData.serviceType,
+      businessCategoryId: businessData.businessCategoryId
+    };
     return asyncRequestAuth(url, method, "karma", body);
   };
 

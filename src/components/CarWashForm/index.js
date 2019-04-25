@@ -1,6 +1,5 @@
 // @flow
 import React, {Component} from "react";
-import {StyleSheet} from "react-native";
 import {Button, Form, Input, Item, Label, Text, View} from "native-base";
 import {withNavigation} from "react-navigation";
 
@@ -23,21 +22,30 @@ const fields = {
   name: {key: "name", label: "Название:", type: "string", render: true, defaultValue: ""},
   phone: {key: "phone", label: "Телефон:", type: "number", render: true, defaultValue: ""},
   description: {key: "description", label: "Описание:", type: "string", render: true, defaultValue: ""},
-  address: {key: "address", label: "Адрес", type: "map", render: true, defaultValue: ""},
+  address: {key: "address", label: "Адрес:", type: "map", render: true, defaultValue: ""},
   latitude: {key: "latitude", label: "Широта", type: "string", render: false, defaultValue: ""},
   longitude: {key: "longitude", label: "Долгота", type: "string", render: false, defaultValue: ""},
-  serviceType: {key: "serviceType", label: "Тип сервиса", type: "select", render: true, defaultValue: null},
-  timeZone: {key: "timeZone", label: "Тайм Зона", type: "number", render: false, defaultValue: currentTimeZone}
+  timeZone: {key: "timeZone", label: "Тайм Зона", type: "number", render: false, defaultValue: currentTimeZone},
+
+  serviceType: {key: "serviceType", label: "Деловая активность:", type: "select", render: true, defaultValue: null},
+  businessCategoryId: {
+    key: "businessCategoryId",
+    label: "Категория бизнеса:",
+    type: "select",
+    render: true,
+    defaultValue: ''
+  },
+
 };
 
 const businessTypeTranslate = (businessType) => {
   const translates = {
-    CAR_WASH: 'Авто мойки',
-    CAR_SERVICE: 'СТО',
-    TIRE_FITTING: 'Шиномонтаж'
+    CAR: 'Автомобили',
+    PEOPLE: 'Люди',
+    PETS: 'Животные'
   };
 
-  if(!translates[businessType]) {
+  if (!translates[businessType]) {
     return `${businessType} (отсутсвует перевод)`
   }
 
@@ -76,11 +84,14 @@ class CarWashFrom extends Component<Props, {}> {
 
   fillForm = () => {
     const carWashData = this.props.carWashData;
+
+    const businessData = this.props.type === 'update' ? {...carWashData, serviceType: 'CAR'} : carWashData;
+
     this.setState(state => ({
       ...state,
       data: {
         ...state.data,
-        ...carWashData
+        ...businessData
       }
     }));
   };
@@ -96,20 +107,8 @@ class CarWashFrom extends Component<Props, {}> {
     this.setState(state => ({...state, error: additional}));
   };
 
-  dataHandler = data => {
-    if (!data.corporationId) {
-      data['corporationId'] = this.props.corporation[0].id;
-    }
-
-    if (!data.serviceType) {
-      data['businessType'] = this.props.businessType[0];
-    }
-
-    return data
-  };
-
   submitHandler = () => {
-    this.props.onSubmit(this.dataHandler(this.state.data)).then().catch(this.errorHandler);
+    this.props.onSubmit(this.state.data).then().catch(this.errorHandler);
   };
 
   _locationSubmit = ({location, address}) => {
@@ -133,8 +132,19 @@ class CarWashFrom extends Component<Props, {}> {
   optionsHandler = key => {
     return {
       corporationId: this.props.corporation,
-      serviceType: businessTypeArray(this.props.businessType)
+      serviceType: businessTypeArray(this.props.businessType),
+      businessCategoryId: this.props.businessCategory.filter(item => item.businessType === this.state.data.serviceType)
     }[key]
+  };
+
+  disabledHandler = key => {
+    if (key === 'serviceType' && this.props.type === 'update') {
+      return true
+    }
+    if (key === 'businessCategoryId' && this.props.type === 'update') {
+      return true
+    }
+    return false
   };
 
   renderItemInput = key => {
@@ -143,6 +153,7 @@ class CarWashFrom extends Component<Props, {}> {
     const value = this.state.data[field.key];
     const error = this.state.error[field.key];
     const options = this.optionsHandler(field.key);
+    const disabled = this.disabledHandler(field.key);
     const mapField = (
       <Item fixedLabel key={key} error={!!error}>
         <Label style={{paddingTop: 4}}>{field.label}</Label>
@@ -166,6 +177,7 @@ class CarWashFrom extends Component<Props, {}> {
         value={value}
         onChange={onInput}
         options={options}
+        disabled={disabled}
       />
     );
   };
@@ -187,18 +199,6 @@ class CarWashFrom extends Component<Props, {}> {
         >
           <Text>{submitButtonTitle}</Text>
         </Button>
-        {/*{this.props.type !== "new" && (*/}
-        {/*<Button*/}
-        {/*full*/}
-        {/*block*/}
-        {/*danger*/}
-        {/*bordered*/}
-        {/*onPress={this.props.onDelete}*/}
-        {/*style={{ marginLeft: 5, marginRight: 5, marginTop: 10 }}*/}
-        {/*>*/}
-        {/*<Text>Удалить</Text>*/}
-        {/*</Button>*/}
-        {/*)}*/}
       </View>
     );
   };

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { View, Text, List, ListItem } from "native-base";
+import {EmptyScreen} from "../../../../components";
 
 
 const styles = StyleSheet.create({
@@ -10,11 +11,7 @@ const styles = StyleSheet.create({
 const PriceTab = ({ packages, onItemSelect, onPackageDelete }) => {
 
   const renderEmptyList = () => {
-    return (
-      <View style={styles.emptyList}>
-        <Text>Пустой список</Text>
-      </View>
-    );
+    return <EmptyScreen message={'Пустой список'}/>
   };
 
   const renderItemPackage = item => {

@@ -2,6 +2,7 @@ import React, {Component, Fragment} from "react";
 import {View, Text} from "react-native";
 
 import ServiceInput from "../children/Input";
+import {EmptyScreen} from "../../index";
 
 
 class AttributesInfo extends Component {
@@ -39,11 +40,7 @@ class AttributesInfo extends Component {
   };
 
   renderEmptyList = () => {
-    return (
-      <View>
-        <Text>Нет фильтров для добавления. Обратитесь к администратору.</Text>
-      </View>
-    );
+    return <EmptyScreen message={'Нет фильтров для добавления. Обратитесь к администратору'}/>
   };
 
   render() {

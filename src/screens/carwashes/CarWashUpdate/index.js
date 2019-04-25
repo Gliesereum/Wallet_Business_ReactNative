@@ -49,6 +49,7 @@ class Index extends Component {
   renderScreen = () => {
     const data = this.props.navigation.getParam("carWashData");
     const { corporations } = this.props.auth;
+    const {businessType, businessCategory} = this.props.washes;
     return (
       <Container>
         <HeaderLayout
@@ -66,7 +67,8 @@ class Index extends Component {
             type={"update"}
             carWashData={data}
             corporation={corporations}
-            businessType={this.props.washes.businessType}
+            businessType={businessType}
+            businessCategory={businessCategory}
           />
         </Content>
       </Container>

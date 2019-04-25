@@ -1,14 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Alert, Text } from "react-native";
-import { HeaderLayout } from "../../../components/Layout";
-import { Button, Container, Content, Icon, Left, List, ListItem, Right, Toast } from "native-base";
-import { asyncRequestAuth } from "../../../utils";
+import {connect} from "react-redux";
+import {Alert, Text} from "react-native";
+import {HeaderLayout} from "../../../components/Layout";
+import {Button, Container, Content, Icon, Left, List, ListItem, Right, Toast} from "native-base";
+import {asyncRequestAuth} from "../../../utils";
+
+import {EmptyScreen} from '../../../components';
 
 import appActions from "../../../redux/app/actions";
 
 const BusinessList = props => {
-  const { navigation, corporations } = props;
+  const {navigation, corporations} = props;
 
   const _deleteCorporationHandler = async corporationId => {
     const url = `corporation/${corporationId}`;
@@ -16,10 +18,10 @@ const BusinessList = props => {
       await props.$globalSpinnerOn();
       await asyncRequestAuth(url, "DELETE", 'account');
       await props.$removeCorporation(corporationId);
-      await Toast.show({ text: "Успешно удалено" });
+      await Toast.show({text: "Успешно удалено"});
     } catch (e) {
       console.log(e);
-      Toast.show({ text: "Ошибка" });
+      Toast.show({text: "Ошибка"});
     } finally {
       await props.$globalSpinnerOff();
     }
@@ -30,7 +32,7 @@ const BusinessList = props => {
       "Удалить Компанию?",
       null,
       [
-        { text: "Удалить", onPress: () => _deleteCorporationHandler(corporationId) },
+        {text: "Удалить", onPress: () => _deleteCorporationHandler(corporationId)},
         {
           text: "Отмена",
           onPress: () => {
@@ -38,7 +40,7 @@ const BusinessList = props => {
           style: "cancel"
         }
       ],
-      { cancelable: false }
+      {cancelable: false}
     );
   };
 
@@ -58,26 +60,30 @@ const BusinessList = props => {
         )}
       />
       <Content>
-        <List
-          dataArray={corporations}
-          renderRow={data =>
-            <ListItem
-              button
-              onLongPress={_deleteAlertOpenHandler(data.id)}
-              onPress={() => props.navigation.navigate("UpdateBusiness", {
-                business: data
-              })}
-            >
-              <Left>
-                <Text>
-                  {data.name}
-                </Text>
-              </Left>
-              <Right>
-                <Icon name="arrow-forward" style={{ color: "#999" }}/>
-              </Right>
-            </ListItem>}
-        />
+
+        {corporations && corporations.length ? (
+          <List
+            dataArray={corporations}
+            renderRow={data =>
+              <ListItem
+                button
+                onLongPress={_deleteAlertOpenHandler(data.id)}
+                onPress={() => props.navigation.navigate("UpdateBusiness", {
+                  business: data
+                })}
+              >
+                <Left>
+                  <Text>
+                    {data.name}
+                  </Text>
+                </Left>
+                <Right>
+                  <Icon name="arrow-forward" style={{color: "#999"}}/>
+                </Right>
+              </ListItem>}
+          />
+        ) : (<EmptyScreen message={'Пустой список'}/>)}
+
       </Content>
     </Container>
   );
@@ -87,4 +93,4 @@ const BusinessList = props => {
 export default connect(state => ({
   user: state.auth.user,
   corporations: state.auth.corporations
-}), ({ ...appActions }))(BusinessList);
+}), ({...appActions}))(BusinessList);

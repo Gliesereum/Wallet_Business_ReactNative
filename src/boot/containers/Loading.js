@@ -32,9 +32,10 @@ class Loading extends Component {
           this.checkUser(),
           this.checkEmail(),
           this.checkCorporations(),
+          this.checkToken(),
           this.getBusinessType(),
-          this.props.navigation.navigate("App"),
-          this.checkToken()
+          this.getBusinessCategory(),
+          this.props.navigation.navigate("App")
       ]);
       }
       else {
@@ -95,12 +96,20 @@ class Loading extends Component {
   };
 
   getBusinessType = async () => {
-    const url = 'business/business-type';
+    const url = 'business-category/business-type';
     try {
       const businessType = await asyncRequestTest(url, "GET", "karma", this.token);
       this.props.$getBusinessType(businessType);
     } catch (e) {
-      this.props.navigation.navigate("Auth");
+    }
+  };
+
+  getBusinessCategory = async () => {
+    const url = 'business-category';
+    try {
+      const businessCategory = await asyncRequestTest(url, "GET", "karma", this.token);
+      this.props.$getBusinessCategory(businessCategory);
+    } catch (e) {
     }
   };
 

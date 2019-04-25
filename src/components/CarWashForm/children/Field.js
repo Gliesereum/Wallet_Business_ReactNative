@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import {Platform} from "react-native";
 import { Icon, Input, Item, Label, Picker } from "native-base";
 
 type FieldProps = {
@@ -37,11 +38,12 @@ const NumberField = ({ inputKey, label, value, type, error, onChange }) => {
   );
 };
 
-const SelectField = ({ inputKey, label, value, type, options = [], onChange }) => {
+const SelectField = ({ inputKey, label, value, type, options = [], onChange, disabled }) => {
   return (
     <Item>
       <Label style={{ paddingTop: 4 }}>{label}</Label>
       <Picker
+        enabled={!disabled}
         key={inputKey}
         mode="dropdown"
         iosHeader={label}
@@ -51,6 +53,14 @@ const SelectField = ({ inputKey, label, value, type, options = [], onChange }) =
         value={value}
         onValueChange={value => onChange(inputKey, value)}
       >
+
+        {Platform.OS === 'android' &&  (
+          <Picker.Item
+            label={'Выберите'}
+            key={'empty-picker-item'}
+            value={''}
+          />
+        )}
         {options.map(item => (
           <Picker.Item
             label={item.name}

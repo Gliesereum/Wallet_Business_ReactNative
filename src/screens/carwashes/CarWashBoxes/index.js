@@ -8,6 +8,7 @@ import {asyncRequestAuth} from "../../../utils";
 
 import appActions from "../../../redux/app/actions";
 import washActions from "../../../redux/washes/actions";
+import {EmptyScreen} from "../../../components";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -47,7 +48,7 @@ class Index extends Component {
     const carWash = this.props.navigation.getParam("carWashData");
     const url = "working-space";
     const indexNumber = boxes.length ? boxes[boxes.length - 1].indexNumber + 1 : 1;
-    const body = {indexNumber, businessId: carWash.id, serviceType: "CAR_WASH"};
+    const body = {indexNumber, businessId: carWash.id, businessCategoryId: carWash.businessCategoryId};
     try {
       await $globalSpinnerOn();
       const newBox = await asyncRequestAuth(url, "POST", "karma", body);
@@ -79,13 +80,7 @@ class Index extends Component {
   };
 
   renderEmptyList = () => {
-    return (
-      <View style={styles.emptyListContainer}>
-        <Text style={styles.emptyListText}>
-          У вас нету рабочих боксов. Добавьте несколько.
-        </Text>
-      </View>
-    );
+    return <EmptyScreen message={'У вас нету рабочих боксов. Добавьте несколько'}/>
   };
 
   renderBoxItem = item => {

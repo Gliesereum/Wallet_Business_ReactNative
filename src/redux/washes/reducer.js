@@ -1,4 +1,4 @@
-import { createReducer } from "../../utils";
+import {createReducer} from "../../utils";
 
 import actions from "./actions";
 
@@ -7,7 +7,8 @@ const initialState = {
   washes: [],
   servicePrices: {},                  // Object with corporationKey (from washes list) and array of service prices as value
   servicePackages: {},                 // Object with corporationKey (from washes list) and array of service packages as value
-  businessType: []
+  businessType: [],
+  businessCategory: [],
 };
 
 
@@ -74,7 +75,7 @@ const washesReducer = createReducer(initialState, {
   [actions.ADD_SCHEDULE]: (state, payload) => {
     const updatedCarWash = state.washes.filter(item => item.id === payload[0].objectId)[0];
     const updatedCarWashIndex = state.washes.map(item => item.id).indexOf(updatedCarWash.id);
-    const newCarWash = { ...updatedCarWash, workTimes: payload };
+    const newCarWash = {...updatedCarWash, workTimes: payload};
     return {
       ...state,
       washes: [
@@ -88,7 +89,7 @@ const washesReducer = createReducer(initialState, {
   [actions.UPDATE_SCHEDULE]: (state, payload) => {
     const updatedCarWash = state.washes.filter(item => item.id === payload[0].objectId)[0];
     const updatedCarWashIndex = state.washes.map(item => item.id).indexOf(updatedCarWash.id);
-    const newCarWash = { ...updatedCarWash, workTimes: payload };
+    const newCarWash = {...updatedCarWash, workTimes: payload};
     return {
       ...state,
       washes: [
@@ -99,10 +100,10 @@ const washesReducer = createReducer(initialState, {
     };
   },
 
-  [actions.ADD_BOX]: (state, { carWashId, box }) => {
+  [actions.ADD_BOX]: (state, {carWashId, box}) => {
     const updatedCarWash = state.washes.filter(item => item.id === carWashId)[0];
     const updatedIndex = state.washes.map(item => item.id).indexOf(carWashId);
-    const newCarWash = { ...updatedCarWash, spaces: [...updatedCarWash.spaces, box] };
+    const newCarWash = {...updatedCarWash, spaces: [...updatedCarWash.spaces, box]};
     const newCarWashesList = [
       ...state.washes.slice(0, updatedIndex),
       newCarWash,
@@ -114,10 +115,10 @@ const washesReducer = createReducer(initialState, {
     };
   },
 
-  [actions.REMOVE_BOX]: (state, { carWashId, boxId }) => {
+  [actions.REMOVE_BOX]: (state, {carWashId, boxId}) => {
     const updatedCarWash = state.washes.filter(item => item.id === carWashId)[0];
     const updatedIndex = state.washes.map(item => item.id).indexOf(carWashId);
-    const newCarWash = { ...updatedCarWash, spaces: updatedCarWash.spaces.filter(item => item.id !== boxId) };
+    const newCarWash = {...updatedCarWash, spaces: updatedCarWash.spaces.filter(item => item.id !== boxId)};
     const newCarWashesList = [
       ...state.washes.slice(0, updatedIndex),
       newCarWash,
@@ -130,7 +131,7 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.ADD_SERVICE_PRICE]: (state, payload) => {
-    const { businessId } = payload;
+    const {businessId} = payload;
     const updatedBusinessServicesList = state.servicePrices[businessId];
     if (!updatedBusinessServicesList) {
       return {
@@ -155,7 +156,7 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.UPDATE_SERVICE_PRICE]: (state, payload) => {
-    const { businessId, id } = payload;
+    const {businessId, id} = payload;
     const updatedServices = state.servicePrices[businessId];
     const updatedServiceIndex = updatedServices.findIndex(item => item.id === id);
     const newServicesArray = [
@@ -173,7 +174,7 @@ const washesReducer = createReducer(initialState, {
     };
   },
 
-  [actions.REMOVE_SERVICE_PRICE]: (state, { servicePriceId, businessId }) => {
+  [actions.REMOVE_SERVICE_PRICE]: (state, {servicePriceId, businessId}) => {
     const changedServicePrice = state.servicePrices[businessId];
     if (!changedServicePrice && !changedServicePrice.length) {
       return state;
@@ -188,7 +189,7 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.ADD_PACKAGE_SERVICES]: (state, payload) => {
-    const { businessId } = payload;
+    const {businessId} = payload;
     const updatedBusiness = state.servicePackages[businessId];
     if (!updatedBusiness) {
       return {
@@ -212,7 +213,7 @@ const washesReducer = createReducer(initialState, {
   },
 
   [actions.UPDATE_PACKAGE_SERVICES]: (state, payload) => {
-    const { corporationServiceId, id } = payload;
+    const {corporationServiceId, id} = payload;
     const updatedPackage = state.servicePackages[corporationServiceId];
     const updatedPackageIndex = servicePackages.findIndex(item => item.id === id);
     const newPackagesArray = [
@@ -230,7 +231,7 @@ const washesReducer = createReducer(initialState, {
     };
   },
 
-  [actions.REMOVE_PACKAGE]: (state, { packageId, businessId }) => {
+  [actions.REMOVE_PACKAGE]: (state, {packageId, businessId}) => {
     const changedPackage = state.servicePackages[businessId];
     if (!changedPackage && !changedPackage.length) {
       return state;
@@ -249,7 +250,15 @@ const washesReducer = createReducer(initialState, {
       ...state,
       businessType: payload || []
     }
-  }
+  },
+
+  [actions.GET_BUSINESS_CATEGORY]: (state, payload) => {
+    return {
+      ...state,
+      businessCategory: payload || []
+    }
+  },
+
 
 
 });

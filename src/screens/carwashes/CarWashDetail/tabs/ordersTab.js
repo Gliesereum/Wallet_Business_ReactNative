@@ -1,9 +1,11 @@
 import React, {Component, Fragment} from 'react';
 
-import {View, Text, List, ListItem, Card, CardItem, Body} from 'native-base';
+import {View, Text, List, ListItem, Card} from 'native-base';
 import {ScrollView, RefreshControl} from 'react-native';
 
 import moment from 'moment';
+
+import {EmptyScreen} from '../../../../components';
 
 import {asyncRequestAuth} from '../../../../utils';
 
@@ -132,11 +134,7 @@ class OrdersTab extends Component {
 
   renderEmptyList = () => {
     return !this.state.loading && (
-      <View style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>
-          Пустой список
-        </Text>
-      </View>
+      <EmptyScreen message={'Нет заказов'}/>
     )
   };
 

@@ -6,7 +6,6 @@ import {
   Item,
   Label,
   Picker,
-  View,
   Accordion,
   ListItem,
   CheckBox,
@@ -14,7 +13,7 @@ import {
   Text
 } from "native-base";
 
-import TimePicker from "../../../components/TimePicker";
+import {Platform} from 'react-native'
 
 type FieldProps = {
   type: "string" | "number" | "select" | "time" | "array",
@@ -65,6 +64,15 @@ const SelectField = ({ inputKey, label, value, type, options, onChange }) => {
         value={value}
         onValueChange={value => onChange(inputKey, value)}
       >
+
+        {Platform.OS === 'android' && (
+          <Picker.Item
+            label={'Выберите'}
+            key={'select-empty-field'}
+            value={' '}
+          />
+        )}
+
         {options.map(item => (
           <Picker.Item
             label={item.name}

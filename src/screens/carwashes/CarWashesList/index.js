@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Dimensions, StyleSheet, Alert } from "react-native";
-import { Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View, Toast } from "native-base";
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Dimensions, StyleSheet, Alert} from "react-native";
+import {Button, Container, Content, Icon, Left, List, ListItem, Right, Text, View, Toast} from "native-base";
 
 import washActions from "../../../redux/washes/actions";
 import appActions from "../../../redux/app/actions";
 
-import { asyncRequestAuth } from "../../../utils";
+import {asyncRequestAuth} from "../../../utils";
 
 
 const deviceHeight = Dimensions.get("window").height;
 
 
-import { HeaderLayout } from "../../../components/Layout";
+import {HeaderLayout} from "../../../components/Layout";
+import {EmptyScreen} from "../../../components";
 
 const styles = StyleSheet.create({
   emptyListContainer: {
@@ -31,9 +32,9 @@ class CarWashes extends Component {
   }
 
   initScreen = async () => {
-    const { $getPriceService, $getServicePackages, $getRecord } = this.props;
+    const {$getPriceService, $getServicePackages, $getRecord} = this.props;
     await this.props.$getWashes();
-    const { washes } = this.props.washes;
+    const {washes} = this.props.washes;
     Promise.all(washes.map(item => $getPriceService(item.id)));
     Promise.all(washes.map(item => $getServicePackages(item.id)));
     $getRecord(washes.map(item => item.id));
@@ -45,9 +46,9 @@ class CarWashes extends Component {
       await this.props.$globalSpinnerOn();
       await asyncRequestAuth(url, "DELETE");
       await this.props.$removeBusiness(businessId);
-      await Toast.show({ text: "Успешно удалено" });
+      await Toast.show({text: "Успешно удалено"});
     } catch (e) {
-      Toast.show({ text: "Ошибка" });
+      Toast.show({text: "Ошибка"});
     } finally {
       await this.props.$globalSpinnerOff();
     }
@@ -58,25 +59,24 @@ class CarWashes extends Component {
       "Удалить Бизнес?",
       null,
       [
-        { text: "Удалить", onPress: () => this._deleteBusinessHandler(businessId) },
+        {text: "Удалить", onPress: () => this._deleteBusinessHandler(businessId)},
         {
           text: "Отмена",
-          onPress: () => {},
+          onPress: () => {
+          },
           style: "cancel"
         }
       ],
-      { cancelable: false }
+      {cancelable: false}
     );
   };
 
   renderEmptyList = () => {
-    return (
-      <View style={styles.emptyListContainer}><Text>Пустой список</Text></View>
-    );
+    return <EmptyScreen message={'Пустой список'}/>
   };
 
   renderWashesList = () => {
-    const { washes } = this.props.washes;
+    const {washes} = this.props.washes;
     return (
       <List
         dataArray={washes}
@@ -95,7 +95,7 @@ class CarWashes extends Component {
               </Text>
             </Left>
             <Right>
-              <Icon name="arrow-forward" style={{ color: "#999" }}/>
+              <Icon name="arrow-forward" style={{color: "#999"}}/>
             </Right>
           </ListItem>}
       />
@@ -103,7 +103,7 @@ class CarWashes extends Component {
   };
 
   renderScreen = () => {
-    const { washes } = this.props.washes;
+    const {washes} = this.props.washes;
     return (
       <Container>
         <HeaderLayout
@@ -133,4 +133,4 @@ class CarWashes extends Component {
 }
 
 
-export default connect(state => state, ({ ...washActions, ...appActions }))(CarWashes);
+export default connect(state => state, ({...washActions, ...appActions}))(CarWashes);

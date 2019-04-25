@@ -47,12 +47,14 @@ class Index extends Component {
 
   renderForm = () => {
     const {corporations} = this.props.auth;
+    const {businessType, businessCategory} = this.props.washes;
     return (
       <CarWashForm
         onSubmit={this.onSubmit}
         type={"new"}
         corporation={corporations}
-        businessType={this.props.washes.businessType}
+        businessType={businessType}
+        businessCategory={businessCategory}
       />
     );
   };
