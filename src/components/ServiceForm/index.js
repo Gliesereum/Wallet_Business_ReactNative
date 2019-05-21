@@ -84,7 +84,7 @@ class ServicePriceForm extends Component<Props, {}> {
   };
 
   _loadServices = async () => {
-    const url = `service/get-by-business-category?businessCategoryId=${this.props.business.businessCategoryId}`;
+    const url = `service/by-business-category?businessCategoryId=${this.props.business.businessCategoryId}`;
     try {
       const servicesOptions = await asyncRequestAuth(url) || [];
       this.setState(({options}) => ({

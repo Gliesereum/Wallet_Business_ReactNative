@@ -54,13 +54,13 @@ const SelectField = ({ inputKey, label, value, type, options = [], onChange, dis
         onValueChange={value => onChange(inputKey, value)}
       >
 
-        {Platform.OS === 'android' &&  (
+        {/* {Platform.OS === 'android' &&  (
           <Picker.Item
             label={'Выберите'}
             key={'empty-picker-item'}
             value={''}
           />
-        )}
+        )} */}
         {options.map(item => (
           <Picker.Item
             label={item.name}
