@@ -1,7 +1,14 @@
 {
-    "presets": ["babel-preset-expo"],
-    "env": {
-      "development": {
-      }
+  "presets": [
+    "babel-preset-expo"
+  ],
+  "env": {
+    "development": {
+    },
+    "production": {
+      "plugins": [
+        "react-native-paper/babel"
+      ]
     }
   }
+}

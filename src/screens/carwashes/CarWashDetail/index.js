@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Alert, Dimensions} from "react-native";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Alert, Dimensions, Image } from "react-native";
 import {
   Button,
   Container,
@@ -9,43 +9,52 @@ import {
   ActionSheet,
   Tabs,
   Tab,
-  ScrollableTab, Toast
+  ScrollableTab,
+  Toast,
+  Body,
+  Header,
+  Left,
+  Right
 } from "native-base";
 
 import appActions from "../../../redux/app/actions";
-import businessActions from '../../../redux/washes/actions';
+import businessActions from "../../../redux/washes/actions";
+
+import { Header as HeaderNavigation } from "react-navigation";
+
+
+const headerLogo = require("../../../../assets/coupler-logo-hedaer.png");
 
 import MainTab from "./tabs/mainTab";
 import LocationTab from "./tabs/locationTab";
 import PriceTab from "./tabs/priceTab";
 import ScheduleTab from "./tabs/scheduleTab";
 import PackageTab from "./tabs/packagesTab";
-import OrdersTab from './tabs/ordersTab';
+import OrdersTab from "./tabs/ordersTab";
 
-import {HeaderLayout} from "../../../components/Layout";
-import {asyncRequestAuth} from "../../../utils";
+import { asyncRequestAuth } from "../../../utils";
 
-const deviceHeight = Dimensions.get("window").height;
+const deviceHeight = Dimensions.get("screen").height;
 
 
 const BUTTONS = [
-  {text: "Основная информация", path: "UpdateCarWash"},
-  {text: "Рассписание", path: "ScheduleCarWash"},
-  {text: "Рабочее пространство", path: "BoxesCarWash"},
-  {text: "Добавить Услугу", path: "NewPrice"},
-  {text: "Добавить Пакет", path: "CreatePackage"},
-  {text: "Отмена", path: ""}
+  { text: "Основная информация", path: "UpdateCarWash" },
+  { text: "Рассписание", path: "ScheduleCarWash" },
+  { text: "Рабочее пространство", path: "BoxesCarWash" },
+  { text: "Добавить Услугу", path: "NewPrice" },
+  { text: "Добавить Пакет", path: "CreatePackage" },
+  { text: "Отмена", path: "" }
 ];
 
 const CANCEL_INDEX = 6;
 
 const tabs = [
-  {label: "Основная", key: "main", node: MainTab},
-  {label: "Локация", "key": "location", node: LocationTab},
-  {label: "Услуги", key: "services", node: PriceTab},
-  {label: "Пакет Услуг", key: "packages", node: PackageTab},
-  {label: "Рассписание", key: "schedule", node: ScheduleTab},
-  {label: "Заказы", key: "schedule", node: OrdersTab},
+  { label: "Основная", key: "main", node: MainTab },
+  { label: "Локация", "key": "location", node: LocationTab },
+  { label: "Услуги", key: "services", node: PriceTab },
+  { label: "Пакет Услуг", key: "packages", node: PackageTab },
+  { label: "Рассписание", key: "schedule", node: ScheduleTab },
+  { label: "Заказы", key: "schedule", node: OrdersTab }
 ];
 
 
@@ -60,19 +69,19 @@ class InfoCarWash extends Component {
         title: "Редактировать"
       },
       buttonIndex => {
-        this.props.navigation.navigate(BUTTONS[buttonIndex].path, {carWashData: data, isNew: false});
+        this.props.navigation.navigate(BUTTONS[buttonIndex].path, { carWashData: data, isNew: false });
       }
     );
   };
 
   _onServicePriceSelect = (servicePrice) => {
     const carWash = this.props.navigation.getParam("carWash");
-    this.props.navigation.navigate("UpdatePrice", {servicePrice, carWash});
+    this.props.navigation.navigate("UpdatePrice", { servicePrice, carWash });
   };
 
   _onPackagePricesSelect = packageServices => {
     const carWash = this.props.navigation.getParam("carWash");
-    this.props.navigation.navigate("UpdatePackage", {packageServices, carWash});
+    this.props.navigation.navigate("UpdatePackage", { packageServices, carWash });
   };
 
   _deleteServicePriceHandler = async servicePriceId => {
@@ -81,11 +90,11 @@ class InfoCarWash extends Component {
     try {
       await this.props.$globalSpinnerOn();
       await asyncRequestAuth(url, "DELETE", "karma");
-      await this.props.$removeServicePrice({servicePriceId, businessId});
-      await Toast.show({text: "Успешно удалено"});
+      await this.props.$removeServicePrice({ servicePriceId, businessId });
+      await Toast.show({ text: "Успешно удалено" });
     } catch (e) {
       console.log(e);
-      Toast.show({text: "Ошибка"});
+      Toast.show({ text: "Ошибка" });
     } finally {
       await this.props.$globalSpinnerOff();
     }
@@ -96,7 +105,7 @@ class InfoCarWash extends Component {
       "Удалить Услугу?",
       null,
       [
-        {text: "Удалить", onPress: () => this._deleteServicePriceHandler(servicePriceId)},
+        { text: "Удалить", onPress: () => this._deleteServicePriceHandler(servicePriceId) },
         {
           text: "Отмена",
           onPress: () => {
@@ -104,7 +113,7 @@ class InfoCarWash extends Component {
           style: "cancel"
         }
       ],
-      {cancelable: false}
+      { cancelable: false }
     );
   };
 
@@ -114,11 +123,11 @@ class InfoCarWash extends Component {
     try {
       await this.props.$globalSpinnerOn();
       await asyncRequestAuth(url, "DELETE", "karma");
-      await this.props.$removePackage({packageId, businessId});
-      await Toast.show({text: "Успешно удалено"});
+      await this.props.$removePackage({ packageId, businessId });
+      await Toast.show({ text: "Успешно удалено" });
     } catch (e) {
       console.log(e);
-      Toast.show({text: "Ошибка"});
+      Toast.show({ text: "Ошибка" });
     } finally {
       await this.props.$globalSpinnerOff();
     }
@@ -129,7 +138,7 @@ class InfoCarWash extends Component {
       "Удалить Услугу?",
       null,
       [
-        {text: "Удалить", onPress: () => this._deletePackageHandler(packageId)},
+        { text: "Удалить", onPress: () => this._deletePackageHandler(packageId) },
         {
           text: "Отмена",
           onPress: () => {
@@ -137,18 +146,18 @@ class InfoCarWash extends Component {
           style: "cancel"
         }
       ],
-      {cancelable: false}
+      { cancelable: false }
     );
   };
 
   renderTabItem = tab => {
-    const {label, node: Node} = tab;
-    const {_deleteAlertOpenHandler, _deletePackageAlertOpenHandler} = this;
+    const { label, node: Node } = tab;
+    const { _deleteAlertOpenHandler, _deletePackageAlertOpenHandler } = this;
     const carWashID = this.props.navigation.getParam("carWashID");
     const data = this.props.washes.washes.filter(item => item.id === carWashID)[0];
     const services = this.props.washes.servicePrices[carWashID];
     const packages = this.props.washes.servicePackages[carWashID];
-    const carWash = {...data, services, packages};
+    const carWash = { ...data, services, packages };
     const onSelectItem = tab.key === "services" ? this._onServicePriceSelect : this._onPackagePricesSelect;
     return (
       <Tab key={label} heading={label}>
@@ -163,24 +172,36 @@ class InfoCarWash extends Component {
   };
 
   renderScreen = () => {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     const tabsList = tabs.map(this.renderTabItem);
     return (
-      <Container>
-        <HeaderLayout
-          left={(
+      <Container style={{ height: deviceHeight - Header.HEIGHT + 20 }}>
+
+        <Header>
+          <Left>
             <Button transparent onPress={() => navigation.goBack()}>
               <Icon name="arrow-back"/>
             </Button>
-          )}
-          body={"Информация"}
-          right={(
+          </Left>
+
+          <Body>
+            <Image
+              source={headerLogo}
+              style={{ resizeMode: "contain", width: "100%" }}
+            />
+          </Body>
+
+          <Right>
             <Button transparent onPress={this._openSheetHandler}>
               <Text>Ред.</Text>
             </Button>
-          )}
-        />
-        <Tabs renderTabBar={() => <ScrollableTab/>} style={{height: deviceHeight}}>
+          </Right>
+        </Header>
+
+        <Tabs
+          tabBarPosition={"bottom"}
+          renderTabBar={() => <ScrollableTab/>}
+        >
           {tabsList}
         </Tabs>
       </Container>
@@ -194,4 +215,4 @@ class InfoCarWash extends Component {
 }
 
 
-export default connect(state => state, ({...appActions, ...businessActions}))(InfoCarWash);
+export default connect(state => state, ({ ...appActions, ...businessActions }))(InfoCarWash);

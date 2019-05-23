@@ -1,8 +1,8 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { StyleProvider, Root } from "native-base";
-import { View, Text } from "native-base";
 
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import RootApp from "./src/boot";
 
 import getTheme from "./src/theme/components";
@@ -12,6 +12,16 @@ import { GlobalLoader } from "./src/components";
 
 import { store } from "./src/redux/store";
 import * as Expo from "expo";
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#1078E1",
+    accent: "yellow",
+    background: "#fff"
+  }
+};
 
 
 export default class App extends React.Component {
@@ -40,7 +50,9 @@ export default class App extends React.Component {
         <StyleProvider style={getTheme(variables)}>
           <Root>
             <GlobalLoader>
-              <RootApp/>
+              <PaperProvider theme={theme}>
+                <RootApp/>
+              </PaperProvider>
             </GlobalLoader>
           </Root>
         </StyleProvider>

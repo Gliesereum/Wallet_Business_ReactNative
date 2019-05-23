@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, Image, ScrollView, KeyboardAvoidingView } from "react-native";
-import { Button, Text, View, Toast } from "native-base";
-import { Header } from 'react-navigation';
-
-import PhoneInput from "react-native-phone-input";
-
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  Dimensions,
+  View
+} from "react-native";
+import { Toast } from "native-base";
+import { TextInput, Button } from "react-native-paper";
 
 import appActions from "../../redux/app/actions";
 import authActions from "../../redux/auth/actions";
@@ -13,34 +19,46 @@ import authActions from "../../redux/auth/actions";
 import { asyncRequestTest } from "../../utils";
 
 
+const logoURL = require("../../../assets/coupler-logo.png");
+const deviceHeight = Dimensions.get("screen").height;
+
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%",
+    height: deviceHeight,
+    display: "flex",
     flexDirection: "column",
-    alignItems: "center",
     justifyContent: "center",
-    paddingTop: 24
+    paddingHorizontal: 12
   },
-  phoneInputContainer: {
+  logo: {
     width: "100%",
-    padding: 15
+    height: 230,
+    paddingBottom: 32
   },
-  submitContainer: {
-    width: "100%",
-    padding: 15
+  image: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: "contain"
+  },
+  input: {
+    paddingBottom: 32
   }
 });
 
 
 class Phone extends Component {
 
-  state = { phone: "+380", code: "" };
+  state = { phone: "+380" };
 
-  inputHandler = (key, value) => {
-    this.setState(state => ({
-      ...state,
-      [key]: value
-    }));
+  phoneInput = value => {
+    const re = new RegExp(/^[+\\d](?:.*\\d)?$/);
+    if (!re.test(value)) {
+      this.setState({ phone: value });
+    }
+
   };
 
   validPhone = () => {
@@ -69,7 +87,7 @@ class Phone extends Component {
     try {
       await asyncRequestTest(url, "GET", "account");
       this.props.navigation.navigate("Code", {
-        code: this.state.code,
+        phone: this.state.phone,
         onSubmit: this.sendCodeHandler
       });
     } catch (e) {
@@ -90,60 +108,42 @@ class Phone extends Component {
       await this.props.$loginUser(request.tokenInfo);
       this.props.navigation.navigate("Loading");
     } catch (e) {
-      Toast.show({ text: e.message || "Не верный код", position: 'absolute'}, );
+      Toast.show({ text: e.message || "Не верный код", position: "absolute" });
     } finally {
       await this.props.$globalSpinnerOff();
     }
-
   };
 
   _renderScreen = () => {
     const { validPhone, getCodeHandler } = this;
-    const requireUri = require("../../../assets/KarmaBusiness.png");
     return (
-      <KeyboardAvoidingView
-        keyboardVerticalOffset = {Header.HEIGHT + 20}
-        style = {{
-          flex: 1,
-          paddingTop: 24
-        }}
-        behavior = "padding"
-      >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ScrollView>
-          <View style={{ width: "100%", height: 250 }}>
-            <Image source={requireUri} style={{
-              flex: 1,
-              width: null,
-              height: null,
-              resizeMode: "contain"
-            }}/>
-          </View>
-          <View style={styles.phoneInputContainer}>
-            <PhoneInput
-              initialCountry={"ua"}
-              value={this.state.phone}
-              ref={(ref) => {
-                this.phone = ref;
-              }}
-              onChangePhoneNumber={number => this.inputHandler("phone", number)}
-            />
-          </View>
-
-          <View style={styles.submitContainer}>
-            <Button
-              disabled={!validPhone()}
-              onPress={getCodeHandler}
-              block
-              full
-            >
-              <Text>Получить код</Text>
-            </Button>
-          </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
+      <KeyboardAvoidingView behavior="position" enabled={true} keyboardVerticalOffset={-100}>
+          <ScrollView>
+            <View style={styles.container}>
+              <View style={styles.logo}>
+                <Image source={logoURL} style={styles.image}/>
+              </View>
+              <View style={styles.input}>
+                <TextInput
+                  value={this.state.phone}
+                  onChangeText={value => this.phoneInput(value)}
+                  mode={"outlined"}
+                  keyboardType={"phone-pad"}
+                  label={"Номер телефона"}
+                />
+              </View>
+              <View>
+                <Button
+                  disabled={!validPhone()}
+                  onPress={getCodeHandler}
+                  mode={"contained"}
+                >
+                  Получить код
+                </Button>
+              </View>
+            </View>
+          </ScrollView>
       </KeyboardAvoidingView>
-
     );
   };
 

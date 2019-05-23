@@ -1,20 +1,54 @@
 import React from "react";
-import { TouchableWithoutFeedback, Keyboard, Dimensions, KeyboardAvoidingView } from "react-native";
-import { Text, Button, Input, Form, Item, Content } from "native-base";
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  Dimensions,
+  KeyboardAvoidingView,
+  ScrollView,
+  Image,
+  View
+} from "react-native";
+import { Text } from "native-base";
+
+import { TextInput, Button } from "react-native-paper";
 
 import { Timer } from "../../components";
 
 const deviceHeight = Dimensions.get("window").height;
 
+const couplerLogo = require("../../../assets/coupler-logo.png");
+
+
 const styles = {
+
   container: {
-    flex: 1,
-    paddingTop: deviceHeight / 3.5
+    width: "100%",
+    height: deviceHeight,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    paddingHorizontal: 12
   },
-  submitButton: {
-    marginTop: 15,
-    marginLeft: 5,
-    marginRight: 5,
+  logo: {
+    width: "100%",
+    height: 230,
+    paddingBottom: 32
+  },
+  image: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: "contain"
+  },
+  text: {
+    paddingBottom: 12,
+    textAlign: "center"
+  },
+  input: {
+    paddingVertical: 24
+  },
+  cancelButton: {
+    paddingVertical: 24
   }
 };
 
@@ -23,10 +57,11 @@ class Code extends React.Component {
 
   state = { value: "" };
 
-  inputHandler = (text) => {
-    this.setState(state => ({
-      value: text
-    }));
+  inputHandler = async text => {
+    await this.setState(state => ({ value: text }));
+    if (text.length === 6) {
+      this.submitHandler();
+    }
   };
 
   submitHandler = () => {
@@ -36,37 +71,53 @@ class Code extends React.Component {
   };
 
   renderScreen = () => {
+    const phone = this.props.navigation.getParam("phone");
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <Content style={styles.container}>
-          <KeyboardAvoidingView behavior="padding" enabled>
-          <Form>
-            <Item>
-              <Input
-                keyboardType="numeric"
+      <KeyboardAvoidingView behavior="position"  keyboardVerticalOffset={-75}>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.logo}>
+              <Image source={couplerLogo} style={styles.image}/>
+            </View>
+            <View>
+              <Text style={styles.text}>Код отправлен на номер</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>{phone}</Text>
+            </View>
+            <View style={styles.input}>
+              <TextInput
+                label={"Код из СМС"}
+                mode={"outlined"}
+                keyboardType={"phone-pad"}
                 value={this.state.value}
                 onChangeText={this.inputHandler}
               />
-            </Item>
-          </Form>
-          </KeyboardAvoidingView>
-          <Text style={{ textAlign: "center" }}>
-            <Timer time={180000} onTimeOver={e => {
-              this.props.navigation.goBack();
-            }}/>
-          </Text>
-          <Button
-            style={styles.submitButton}
-            disabled={(this.state.value.length !== 6)}
-            onPress={this.submitHandler}
-            buttonStyle={{ width: "100%" }}
-            block
-            full
-          >
-            <Text>Войти</Text>
-          </Button>
-        </Content>
-      </TouchableWithoutFeedback>
+            </View>
+            <View>
+              <Text style={styles.text}>
+                <Timer time={180000} onTimeOver={e => {
+                  this.props.navigation.goBack();
+                }}/>
+              </Text>
+            </View>
+            <View>
+              <Button
+                disabled={(this.state.value.length !== 6)}
+                onPress={this.submitHandler}
+                mode={"contained"}
+              >
+                Войти
+              </Button>
+            </View>
+            <View style={styles.cancelButton}>
+              <Button mode={"outlined"} style={styles}>
+                Назад
+              </Button>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   };
 
