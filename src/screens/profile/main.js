@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+
+import {StyleSheet, KeyboardAvoidingView, ScrollView} from 'react-native';
 import {
   Text,
   Container,
@@ -7,17 +9,21 @@ import {
   Icon,
   Button,
   Form,
-  Input,
-  Item,
-  Label,
   Toast,
-  Picker
 } from "native-base";
 
 import {asyncRequestTest} from "../../utils";
 import {HeaderLayout} from "../../components/Layout";
 import authActions from "../../redux/auth/actions";
 import appActions from "../../redux/app/actions";
+
+import {Field} from '../../components';
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 12,
+  }
+});
 
 const fields = [
   {label: "Имя", key: "firstName", render: true, defaultValue: 'Не заполнено'},
@@ -31,7 +37,7 @@ const fields = [
   {label: "Аватар (URL)", key: "avatarUrl", render: false, defaultValue: null},
   {label: "Обложка (URL)", key: "coverUrl", render: false, defaultValue: null},
   {
-    label: "Пол", key: "gender", type: "select", options: [
+    label: "Пол", key: "gender", type: "select", render: true, options: [
       {label: "Не указан", key: "UNKNOWN"},
       {label: "Мужской", key: "MALE"},
       {label: "Женский", key: "FEMALE"}
@@ -59,10 +65,10 @@ class Main extends Component {
     return fields.reduce((acc, field) => {
       if (!obj[field.key] || !obj[field.key].length) {
         obj[field.key] = field.defaultValue;
-        return acc
+        return acc;
       }
-      return acc
-    }, obj)
+      return acc;
+    }, obj);
   };
 
   onInput = (key, value) => {
@@ -90,41 +96,16 @@ class Main extends Component {
   renderItemInput = (item) => {
     const {onInput} = this;
     const value = this.state.data[item.key];
-    const genders = [
-      {label: "Не указан", key: "UNKNOWN"},
-      {label: "Мужской", key: "MALE"},
-      {label: "Женский", key: "FEMALE"}
-    ];
-    if (item.type === "select") {
-      return (
-        <Item key={item.key}>
-          <Label style={{paddingTop: 4}}>{item.label}</Label>
-          <Picker
-            iosIcon={<Icon name="ios-arrow-down"/>}
-            style={{width: "100%", marginTop: 3}}
-            key={item.key}
-            mode="dropdown"
-            iosHeader={item.label}
-            selectedValue={value}
-            value={value}
-            onValueChange={value => this.onInput("gender", value)}
-          >
-            {genders.map(item => (
-              <Picker.Item
-                label={item.label}
-                key={item.key}
-                value={item.key}
-              />
-            ))}
-          </Picker>
-        </Item>
-      );
-    }
     return item.render && (
-      <Item fixedLabel key={item.key}>
-        <Label style={{paddingTop: 4}}>{item.label}</Label>
-        <Input value={value} onChangeText={text => onInput(item.key, text)}/>
-      </Item>
+      <Field
+        key={item.key}
+        type={item.type}
+        value={value}
+        label={item.label}
+        fieldKey={item.key}
+        onChange={text => onInput(item.key, text)}
+        options={item.options}
+      />
     );
   };
 
@@ -139,13 +120,17 @@ class Main extends Component {
           )}
           body={"Основна Информация"}
         />
-        <Content>
-          <Form>
-            {fields.map(this.renderItemInput)}
-          </Form>
-          <Button block style={{margin: 15, marginTop: 16}} onPress={this.updateProfile}>
-            <Text>Сохранить</Text>
-          </Button>
+        <Content style={styles.container}>
+          <KeyboardAvoidingView behavior="padding">
+            <ScrollView>
+              <Form>
+                {fields.map(this.renderItemInput)}
+              </Form>
+              <Button block onPress={this.updateProfile}>
+                <Text>Сохранить</Text>
+              </Button>
+            </ScrollView>
+          </KeyboardAvoidingView>
         </Content>
       </Container>
     );

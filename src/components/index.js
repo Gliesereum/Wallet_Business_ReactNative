@@ -5,6 +5,7 @@ import TimePicker from './TimePicker';
 import AddressForm from './AddressForm';
 import PackageForm from './PackageForm';
 import EmptyScreen from './EmptyScreen';
+import Field from './Field';
 
 
 export {
@@ -14,5 +15,6 @@ export {
   TimePicker,
   AddressForm,
   PackageForm,
-  EmptyScreen
+  EmptyScreen,
+  Field
 };

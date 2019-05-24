@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import {
   StyleSheet,
   TouchableWithoutFeedback,
@@ -10,13 +10,13 @@ import {
   Dimensions,
   View
 } from "react-native";
-import { Toast } from "native-base";
-import { TextInput, Button } from "react-native-paper";
+import {Toast} from "native-base";
+import {TextInput, Button} from "react-native-paper";
 
 import appActions from "../../redux/app/actions";
 import authActions from "../../redux/auth/actions";
 
-import { asyncRequestTest } from "../../utils";
+import {asyncRequestTest} from "../../utils";
 
 
 const logoURL = require("../../../assets/coupler-logo.png");
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
 
 class Phone extends Component {
 
-  state = { phone: "+380" };
+  state = {phone: "+380"};
 
   phoneInput = value => {
     const re = new RegExp(/^[+\\d](?:.*\\d)?$/);
     if (!re.test(value)) {
-      this.setState({ phone: value });
+      this.setState({phone: value});
     }
 
   };
@@ -67,22 +67,22 @@ class Phone extends Component {
   };
 
   getCodeConfig = () => {
-    const { phone } = this.state;
+    const {phone} = this.state;
     const phoneNumber = phone.replace("+", "");
     const url = `phone/code?phone=${phoneNumber}`;
-    return { url };
+    return {url};
   };
 
   sendCodeConfig = (code) => {
-    const { phone } = this.state;
+    const {phone} = this.state;
     const phoneNumber = phone.replace("+", "");
     const url = `auth/signin`;
-    const body = { "code": code, type: "PHONE", value: phoneNumber };
-    return { url, body };
+    const body = {"code": code, type: "PHONE", value: phoneNumber};
+    return {url, body};
   };
 
   getCodeHandler = async () => {
-    const { url } = this.getCodeConfig();
+    const {url} = this.getCodeConfig();
     await this.props.$globalSpinnerOn();
     try {
       await asyncRequestTest(url, "GET", "account");
@@ -103,46 +103,46 @@ class Phone extends Component {
   sendCodeHandler = async code => {
     await this.props.$globalSpinnerOn();
     try {
-      const { url, body } = this.sendCodeConfig(code);
+      const {url, body} = this.sendCodeConfig(code);
       const request = await asyncRequestTest(url, "POST", "account", null, body);
       await this.props.$loginUser(request.tokenInfo);
       this.props.navigation.navigate("Loading");
     } catch (e) {
-      Toast.show({ text: e.message || "Не верный код", position: "absolute" });
+      Toast.show({text: e.message || "Не верный код", position: "absolute"});
     } finally {
       await this.props.$globalSpinnerOff();
     }
   };
 
   _renderScreen = () => {
-    const { validPhone, getCodeHandler } = this;
+    const {validPhone, getCodeHandler} = this;
     return (
       <KeyboardAvoidingView behavior="position" enabled={true} keyboardVerticalOffset={-100}>
-          <ScrollView>
-            <View style={styles.container}>
-              <View style={styles.logo}>
-                <Image source={logoURL} style={styles.image}/>
-              </View>
-              <View style={styles.input}>
-                <TextInput
-                  value={this.state.phone}
-                  onChangeText={value => this.phoneInput(value)}
-                  mode={"outlined"}
-                  keyboardType={"phone-pad"}
-                  label={"Номер телефона"}
-                />
-              </View>
-              <View>
-                <Button
-                  disabled={!validPhone()}
-                  onPress={getCodeHandler}
-                  mode={"contained"}
-                >
-                  Получить код
-                </Button>
-              </View>
+        <ScrollView keyboardShouldPersistTaps={'always'}>
+          <View style={styles.container}>
+            <View style={styles.logo}>
+              <Image source={logoURL} style={styles.image}/>
             </View>
-          </ScrollView>
+            <View style={styles.input}>
+              <TextInput
+                value={this.state.phone}
+                onChangeText={value => this.phoneInput(value)}
+                mode={"outlined"}
+                keyboardType={"phone-pad"}
+                label={"Номер телефона"}
+              />
+            </View>
+            <View>
+              <Button
+                disabled={!validPhone()}
+                onPress={getCodeHandler}
+                mode={"contained"}
+              >
+                Получить код
+              </Button>
+            </View>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     );
   };
@@ -154,4 +154,4 @@ class Phone extends Component {
 }
 
 
-export default connect(state => state, ({ ...appActions, ...authActions }))(Phone);
+export default connect(state => state, ({...appActions, ...authActions}))(Phone);

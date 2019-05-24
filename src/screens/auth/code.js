@@ -8,11 +8,11 @@ import {
   Image,
   View
 } from "react-native";
-import { Text } from "native-base";
+import {Text} from "native-base";
 
-import { TextInput, Button } from "react-native-paper";
+import {TextInput, Button} from "react-native-paper";
 
-import { Timer } from "../../components";
+import {Timer} from "../../components";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -55,10 +55,10 @@ const styles = {
 
 class Code extends React.Component {
 
-  state = { value: "" };
+  state = {value: ""};
 
   inputHandler = async text => {
-    await this.setState(state => ({ value: text }));
+    await this.setState(state => ({value: text}));
     if (text.length === 6) {
       this.submitHandler();
     }
@@ -73,8 +73,8 @@ class Code extends React.Component {
   renderScreen = () => {
     const phone = this.props.navigation.getParam("phone");
     return (
-      <KeyboardAvoidingView behavior="position"  keyboardVerticalOffset={-75}>
-        <ScrollView>
+      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={-75}>
+        <ScrollView keyboardShouldPersistTaps={'always'}>
           <View style={styles.container}>
             <View style={styles.logo}>
               <Image source={couplerLogo} style={styles.image}/>
@@ -111,7 +111,7 @@ class Code extends React.Component {
               </Button>
             </View>
             <View style={styles.cancelButton}>
-              <Button mode={"outlined"} style={styles}>
+              <Button mode={"outlined"} style={styles} onPress={() => this.props.navigation.goBack()}>
                 Назад
               </Button>
             </View>
