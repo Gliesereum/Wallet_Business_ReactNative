@@ -4,12 +4,19 @@ import {View} from 'react-native';
 import {HelperText, TextInput} from 'react-native-paper';
 
 
-const Text = ({value, onChange, label, error}) => {
+const Text = ({value, onChange, onBlur, label, error, touched}) => {
   return (
     <View>
-      <TextInput label={label} value={value} onChangeText={onChange} mode={"outlined"}/>
+      <TextInput
+        error={touched && error}
+        label={label}
+        value={value}
+        onChangeText={onChange}
+        mode={"outlined"}
+        onBlur={onBlur}
+      />
       <HelperText type="error" visible={true}>
-        {error}
+        {touched && error}
       </HelperText>
     </View>
   );

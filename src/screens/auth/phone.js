@@ -95,6 +95,7 @@ class Phone extends Component {
         text: e.message || "Ошибка"
       });
     } finally {
+      Keyboard.dismiss()
       await this.props.$globalSpinnerOff();
     }
 
@@ -110,6 +111,7 @@ class Phone extends Component {
     } catch (e) {
       Toast.show({text: e.message || "Не верный код", position: "absolute"});
     } finally {
+      Keyboard.dismiss();
       await this.props.$globalSpinnerOff();
     }
   };

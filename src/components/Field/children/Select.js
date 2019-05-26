@@ -24,6 +24,19 @@ export default class MyComponent extends React.Component {
 
   _hideDialog = () => this.setState({visible: false});
 
+  checkedValueRenderHandle = () => {
+    const {value, options} = this.props;
+    try {
+      const [inputValue] = options.filter(item => item.key.toLowerCase() === value.toLowerCase());
+      if (!inputValue) {
+        return '';
+      }
+      return inputValue.label;
+    } catch (e) {
+      return '';
+    }
+  };
+
   changeHandle = value => () => {
     this.props.onChange(value);
     this._hideDialog();
@@ -32,7 +45,7 @@ export default class MyComponent extends React.Component {
   renderItemOption = option => {
     const checked = this.props.value === option.key;
     return (
-      <View key={option.key} style={styles.itemOption}  onPress={this.changeHandle(option.key)}>
+      <View key={option.key} style={styles.itemOption} onPress={this.changeHandle(option.key)}>
         <Checkbox status={checked ? 'checked' : 'unchecked'} onPress={this.changeHandle(option.key)}/>
         <Text>{option.label}</Text>
       </View>
@@ -40,21 +53,22 @@ export default class MyComponent extends React.Component {
   };
 
   renderSelectField = () => {
-    const {value, label, error, onChange, options} = this.props;
-    const [inputValue] = options.filter(item => item.key === value);
+    const {label, error, touched, onChange, options} = this.props;
+    const inputValue = this.checkedValueRenderHandle();
     const renderOptions = options.map(this.renderItemOption);
     return (
       <View>
         <View>
           <TextInput
             label={label}
-            value={inputValue.label}
+            value={inputValue}
             onChangeText={onChange}
             mode={"outlined"}
-            error={error}
+            error={touched && error}
             onFocus={this._showDialog}
           />
           <HelperText type="error" visible={true}>
+            {touched && error}
           </HelperText>
         </View>
 
