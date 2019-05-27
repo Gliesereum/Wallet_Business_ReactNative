@@ -14,7 +14,8 @@ type P = {
   onChange: Function,
   label: String,
   fieldKey: String,
-  options?: Array<OptionType>
+  options?: Array<OptionType>,
+  keyboardType?: 'default' | 'number-pad' | 'decimal-pad' | 'numeric' | 'email-address' | 'phone-pad'
 };
 
 const fieldTypes = {

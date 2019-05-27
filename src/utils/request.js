@@ -83,6 +83,12 @@ export const asyncRequestAuth = (url, method = "GET", moduleUrl = "karma", body,
         resolve();
       }
       if (request.status >= 200 && request.status <= 300) {
+
+        if (method === 'DELETE') {
+          clearTimeout(timer);
+          resolve();
+        }
+
         const data = await request.json();
         clearTimeout(timer);
         resolve(data);

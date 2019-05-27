@@ -8,6 +8,7 @@ import {asyncRequestAuth} from "../../../utils";
 import {EmptyScreen} from '../../../components';
 
 import appActions from "../../../redux/app/actions";
+import authActions from "../../../redux/auth/actions";
 
 const BusinessList = props => {
   const {navigation, corporations} = props;
@@ -93,4 +94,4 @@ const BusinessList = props => {
 export default connect(state => ({
   user: state.auth.user,
   corporations: state.auth.corporations
-}), ({...appActions}))(BusinessList);
+}), ({...appActions, ...authActions}))(BusinessList);

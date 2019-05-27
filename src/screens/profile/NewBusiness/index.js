@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { Button, Container, Content, Icon, Toast } from "native-base";
 
 import { HeaderLayout } from "../../../components/Layout";
-import BusinessForm from "../../../components/BusinessForm";
 import { asyncRequestAuth } from "../../../utils";
 import appActions from "../../../redux/app/actions";
 import authActions from "../../../redux/auth/actions";
 
+import {CorporationForm} from '../../../components/Forms';
 
 class NewBusiness extends Component {
 
@@ -16,8 +16,9 @@ class NewBusiness extends Component {
     const { $addBusiness, $globalSpinnerOn, $globalSpinnerOff, navigation } = this.props;
     try {
       $globalSpinnerOn();
-      const newBusiness = await asyncRequestAuth(url, "POST", "account", data);
-      await $addBusiness(newBusiness);
+      const newCorporation = await asyncRequestAuth(url, "POST", "account", data);
+      await $addBusiness(newCorporation);
+      console.log(newCorporation);
       await Toast.show({ text: "Успешно добавлена компания" });
       await navigation.goBack();
     } catch (e) {
@@ -40,7 +41,7 @@ class NewBusiness extends Component {
           body={"Новая Компания"}
         />
         <Content>
-          <BusinessForm isNew onSubmit={this.createBusiness}/>
+          <CorporationForm isNew onSubmit={this.createBusiness}/>
         </Content>
       </Container>
     );
