@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Alert } from "react-native";
 
-
+import {Header} from 'react-navigation';
 import GoogleAddressAutoComplete from "./children/addressAutocomplete";
 import Map from "./children/map";
 import config from '../../config';
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    marginTop: 64
+    marginTop: Header.HEIGHT
   },
   map: {
     flex: 1,
@@ -109,7 +109,7 @@ class AddressForm extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.input}>
-          <GoogleAddressAutoComplete onSelect={this._onSelectFromInput} query={address}/>
+          <GoogleAddressAutoComplete onSelect={this._onSelectFromInput} query={address} />
         </View>
         <View style={styles.map}>
           <Map

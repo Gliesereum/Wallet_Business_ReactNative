@@ -18,7 +18,6 @@ class NewBusiness extends Component {
       $globalSpinnerOn();
       const newCorporation = await asyncRequestAuth(url, "POST", "account", data);
       await $addBusiness(newCorporation);
-      console.log(newCorporation);
       await Toast.show({ text: "Успешно добавлена компания" });
       await navigation.goBack();
     } catch (e) {

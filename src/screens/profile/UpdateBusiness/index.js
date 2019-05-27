@@ -14,7 +14,6 @@ import authActions from "../../../redux/auth/actions";
 class UpdateBusiness extends Component {
 
   updateBusiness = async data => {
-    console.log(data);
     const url = `corporation`;
     const { $updateBusiness, $globalSpinnerOn, $globalSpinnerOff, navigation } = this.props;
     try {

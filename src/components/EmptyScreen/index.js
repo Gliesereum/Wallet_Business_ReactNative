@@ -20,26 +20,28 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#c0c0c0',
-    fontSize: 32,
+    fontSize: 24,
     textAlign: 'center'
   }
 });
 
 type P = {
-  message?: string
+  message?: string,
+  iconName?: string
 }
 
 const EmptyScreen = (props: P) => {
   return (
     <View style={styles.container}>
-      <Icon name={'archive'} style={styles.icon}/>
+      <Icon name={props.iconName} style={styles.icon}/>
       <Text style={styles.text}>{props.message}</Text>
     </View>
   );
 };
 
 EmptyScreen.defaultProps = {
-  message: 'Пустой список.'
+  message: 'Пустой список.',
+  iconName: 'archive'
 };
 
 export default EmptyScreen;

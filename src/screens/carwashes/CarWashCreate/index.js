@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Button, Container, Content, Icon, Text, Toast, View } from "native-base";
 
 import { HeaderLayout } from "../../../components/Layout";
-import { CarWashForm } from "../../../components";
+import { CarWashForm, EmptyScreen } from "../../../components";
 import { asyncRequestTest } from "../../../utils";
 
 import appActions from "../../../redux/app/actions";
@@ -36,13 +36,10 @@ class Index extends Component {
   };
 
   renderNotAllowedCreateCarWash = () => {
-    return (
-      <View style={{ paddingTop: deviceHeight / 2.5 }}>
-        <Text style={{ textAlign: "center" }}>
-          Аккаунт не верифицирован. Добавьте личную информацию, компанию и электронную почту.
-        </Text>
-      </View>
-    );
+    return <EmptyScreen
+      message={'Аккаунт не верифицирован. Добавьте личную информацию, компанию и электронную почту.'}
+      iconName={"md-lock"}
+      />
   };
 
   renderForm = () => {
