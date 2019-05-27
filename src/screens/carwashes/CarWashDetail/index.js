@@ -54,7 +54,7 @@ const tabs = [
   { label: "Услуги", key: "services", node: PriceTab },
   { label: "Пакет Услуг", key: "packages", node: PackageTab },
   { label: "Рассписание", key: "schedule", node: ScheduleTab },
-  { label: "Заказы", key: "schedule", node: OrdersTab }
+  { label: "Отчеты", key: "schedule", node: OrdersTab }
 ];
 
 
@@ -199,7 +199,7 @@ class InfoCarWash extends Component {
         </Header>
 
         <Tabs
-          tabBarPosition={"bottom"}
+          // tabBarPosition={"bottom"}
           renderTabBar={() => <ScrollableTab/>}
         >
           {tabsList}
