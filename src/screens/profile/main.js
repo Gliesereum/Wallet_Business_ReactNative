@@ -16,7 +16,7 @@ import {UserProfileForm} from '../../components/Forms';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    paddingHorizontal: 12,
   }
 });
 

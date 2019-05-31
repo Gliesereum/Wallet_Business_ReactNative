@@ -199,7 +199,7 @@ class InfoCarWash extends Component {
         </Header>
 
         <Tabs
-          // tabBarPosition={"bottom"}
+          tabBarPosition={"bottom"}
           renderTabBar={() => <ScrollableTab/>}
         >
           {tabsList}

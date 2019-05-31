@@ -85,6 +85,7 @@ class Phone extends Component {
     const {url} = this.getCodeConfig();
     await this.props.$globalSpinnerOn();
     try {
+      Keyboard.dismiss();
       await asyncRequestTest(url, "GET", "account");
       this.props.navigation.navigate("Code", {
         phone: this.state.phone,
@@ -95,7 +96,6 @@ class Phone extends Component {
         text: e.message || "Ошибка"
       });
     } finally {
-      Keyboard.dismiss()
       await this.props.$globalSpinnerOff();
     }
 
