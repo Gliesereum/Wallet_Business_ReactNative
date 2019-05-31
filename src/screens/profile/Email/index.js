@@ -79,7 +79,6 @@ class Email extends Component {
     );
   };
 
-
   renderCodeForm = () => {
     const { onInput, sendCode } = this;
     const { code } = this.state;

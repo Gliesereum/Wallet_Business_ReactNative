@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 
 import Profile from "../../screens/profile";
-import CarWashes from "../../screens/carwashes/CarWashesList";
+import CarWashes from "../../screens/business/CarWashesList";
 import LogOut from "../../screens/logout";
 
 import Email from '../../screens/profile/Email';
@@ -12,21 +12,21 @@ import BusinessList from '../../screens/profile/BusinessList';
 import NewBusiness from '../../screens/profile/NewBusiness';
 import UpdateBusiness from '../../screens/profile/UpdateBusiness';
 
-import NewCarWash from "../../screens/carwashes/CarWashCreate";
-import UpdateCarWash from "../../screens/carwashes/CarWashUpdate";
-import ScheduleCarWash from "../../screens/carwashes/CarWashSchedule";
-import BoxesCarWash from "../../screens/carwashes/CarWashBoxes";
+import NewCarWash from "../../screens/business/CarWashCreate";
+import UpdateCarWash from "../../screens/business/CarWashUpdate";
+import ScheduleCarWash from "../../screens/business/CarWashSchedule";
+import BoxesCarWash from "../../screens/business/CarWashBoxes";
 
-import NewPrice from '../../screens/carwashes/CarWashNewServicePrice';
-import UpdatePrice from '../../screens/carwashes/CarWashUpdateServicePrice';
+import NewPrice from '../../screens/business/CarWashNewServicePrice';
+import UpdatePrice from '../../screens/business/CarWashUpdateServicePrice';
 
-import CarWashCreatePackage from '../../screens/carwashes/CarWashCreatePackage';
-import CarWashUpdatePackage from '../../screens/carwashes/CarWashUpdatePackage';
+import CarWashCreatePackage from '../../screens/business/CarWashCreatePackage';
+import CarWashUpdatePackage from '../../screens/business/CarWashUpdatePackage';
 
 import AddressInfo from "../../screens/addressinfo";
 
 import SideBar from "../../screens/sidebar";
-import InfoCarWash from "../../screens/carwashes/CarWashDetail";
+import InfoCarWash from "../../screens/business/CarWashDetail";
 
 
 const Drawer = createDrawerNavigator({

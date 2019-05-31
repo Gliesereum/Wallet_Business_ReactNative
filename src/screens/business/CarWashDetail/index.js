@@ -23,7 +23,7 @@ import businessActions from "../../../redux/washes/actions";
 import { Header as HeaderNavigation } from "react-navigation";
 
 
-const headerLogo = require("../../../../assets/coupler-logo-hedaer.png");
+const headerLogo = require("../../../../assets/images/coupler-logo-hedaer.png");
 
 import MainTab from "./tabs/mainTab";
 import LocationTab from "./tabs/locationTab";

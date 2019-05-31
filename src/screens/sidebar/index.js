@@ -13,8 +13,8 @@ import {
 } from "native-base";
 import styles from "./style";
 
-const drawerCover = require("../../../assets/sidebar-cover.png");
-const drawerImage = require("../../../assets/logo.svg");
+const drawerCover = require("../../../assets/images/sidebar-cover.png");
+const drawerImage = require("../../../assets/images/logo.svg");
 const datas = [
   {
     name: "Мои Бизнесы",

@@ -16,37 +16,13 @@ import {TextInput, Button} from "react-native-paper";
 import appActions from "../../redux/app/actions";
 import authActions from "../../redux/auth/actions";
 
+import styles from './styles';
+
 import {asyncRequestTest} from "../../utils";
 
 
-const logoURL = require("../../../assets/coupler-logo.png");
+const logoURL = require("../../../assets/images/coupler-logo.png");
 const deviceHeight = Dimensions.get("screen").height;
-
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    height: deviceHeight,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    paddingHorizontal: 12
-  },
-  logo: {
-    width: "100%",
-    height: 230,
-    paddingBottom: 32
-  },
-  image: {
-    flex: 1,
-    width: null,
-    height: null,
-    resizeMode: "contain"
-  },
-  input: {
-    paddingBottom: 32
-  }
-});
 
 
 class Phone extends Component {
@@ -120,7 +96,7 @@ class Phone extends Component {
     const {validPhone, getCodeHandler} = this;
     return (
       <KeyboardAvoidingView behavior="position" enabled={true} keyboardVerticalOffset={-100}>
-        <ScrollView keyboardShouldPersistTaps={'always'}>
+        <View keyboardShouldPersistTaps={'always'}>
           <View style={styles.container}>
             <View style={styles.logo}>
               <Image source={logoURL} style={styles.image}/>
@@ -144,7 +120,7 @@ class Phone extends Component {
               </Button>
             </View>
           </View>
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     );
   };

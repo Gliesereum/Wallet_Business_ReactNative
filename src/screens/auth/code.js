@@ -16,7 +16,7 @@ import {Timer} from "../../components";
 
 const deviceHeight = Dimensions.get("window").height;
 
-const couplerLogo = require("../../../assets/coupler-logo.png");
+const couplerLogo = require("../../../assets/images/coupler-logo.png");
 
 
 const styles = {
@@ -74,7 +74,7 @@ class Code extends React.Component {
     const phone = this.props.navigation.getParam("phone");
     return (
       <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={-75}>
-        <ScrollView keyboardShouldPersistTaps={'always'}>
+        <View keyboardShouldPersistTaps={'always'}>
           <View style={styles.container}>
             <View style={styles.logo}>
               <Image source={couplerLogo} style={styles.image}/>
@@ -116,7 +116,7 @@ class Code extends React.Component {
               </Button>
             </View>
           </View>
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     );
   };
