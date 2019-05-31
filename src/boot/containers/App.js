@@ -8,7 +8,7 @@ import LogOut from "../../screens/logout";
 import Email from '../../screens/profile/Email';
 import MainProfile from "../../screens/profile/main";
 
-import BusinessList from '../../screens/profile/BusinessList';
+import CorporationsList from '../../screens/profile/CorporationsList';
 import NewBusiness from '../../screens/profile/NewBusiness';
 import UpdateBusiness from '../../screens/profile/UpdateBusiness';
 
@@ -49,7 +49,7 @@ const AppNavigator = createStackNavigator({
     MainProfile: { screen: MainProfile },
     EmailProfile: { screen: Email },
 
-    BusinessList: { screen: BusinessList },
+    CorporationsList: { screen: CorporationsList },
     NewBusiness: {screen: NewBusiness},
     UpdateBusiness: {screen: UpdateBusiness},
 

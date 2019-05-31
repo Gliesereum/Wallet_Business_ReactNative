@@ -10,7 +10,7 @@ import {EmptyScreen} from '../../../components';
 import appActions from "../../../redux/app/actions";
 import authActions from "../../../redux/auth/actions";
 
-const BusinessList = props => {
+const CorporationsList = props => {
   const {navigation, corporations} = props;
 
   const _deleteCorporationHandler = async corporationId => {
@@ -94,4 +94,4 @@ const BusinessList = props => {
 export default connect(state => ({
   user: state.auth.user,
   corporations: state.auth.corporations
-}), ({...appActions, ...authActions}))(BusinessList);
+}), ({...appActions, ...authActions}))(CorporationsList);

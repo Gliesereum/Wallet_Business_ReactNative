@@ -17,7 +17,7 @@ import { HeaderLayout } from "../../components/Layout";
 
 const subroutes = [
   { route: "MainProfile", text: "Основная Информация" },
-  { route: "BusinessList", text: "Компании" },
+  { route: "CorporationsList", text: "Компании" },
   { route: "EmailProfile", text: "Электронная почта" }
 ];
 
