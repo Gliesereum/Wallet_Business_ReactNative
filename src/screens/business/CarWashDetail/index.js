@@ -69,7 +69,12 @@ class InfoCarWash extends Component {
         title: "Редактировать"
       },
       buttonIndex => {
-        this.props.navigation.navigate(BUTTONS[buttonIndex].path, { carWashData: data, isNew: false });
+        try {
+          this.props.navigation.navigate(BUTTONS[buttonIndex].path, { carWashData: data, isNew: false });
+        }
+        catch (e) {
+
+        }
       }
     );
   };

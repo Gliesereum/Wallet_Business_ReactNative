@@ -52,7 +52,7 @@ const NumberField = ({ inputKey, label, value, type, error, onChange }) => {
 
 const SelectField = ({ inputKey, label, value, type, options, onChange }) => {
   const selectedOptions = Platform.OS === 'android' ?
-    [{key: 'empty', value: '', label: 'Выберите'}, ...options] :
+    [{id: 'empty', value: '', name: 'Выберите'}, ...options] :
     options;
   return (
     <Item key={inputKey}>

@@ -30,5 +30,32 @@ export default {
     fontWeight: "400",
     textAlign: "center",
     marginTop: Platform.OS === "android" ? -3 : undefined
+  },
+  userInfo: {
+    position: "absolute",
+    left: Platform.OS === "android" ? deviceWidth / 20 : deviceWidth / 16,
+    top: Platform.OS === "android" ? deviceHeight / 10 : deviceHeight / 14,
+    color: '#fff'
+  },
+  userAvatar: {
+    paddingBottom: 16
+  },
+  userName: {
+    fontSize: 20,
+    lineHeight: 24,
+    color: '#fff'
+  },
+  myProfile: {
+    color: '#fff',
+    fontSize: 14,
+    lineHeight: 24,
+  },
+  mainRoutes: {
+    borderBottomColor: `rgba(0, 0, 0, 0.08);`,
+    borderBottomWidth: 2,
+    paddingBottom: 16
+  },
+  bottomRoutes: {
+    paddingTop: 16
   }
 };

@@ -3,6 +3,8 @@ import React from "react";
 
 import MapView, { Marker } from "react-native-maps";
 
+const pin = require('../../../../assets/images/pin.png');
+
 
 const defaultLocation = {
   latitudeDelta: 0.1,
@@ -18,7 +20,7 @@ const markerDelta = {
 
 
 const Map = ({ location, style, onMapSelect }) => {
-  const locationParameters = location ? { ...markerDelta, ...location } : defaultLocation;
+  const locationParameters = location.latitude && location.longitude ? { ...markerDelta, ...location } : defaultLocation;
   const { latitudeDelta, longitudeDelta, latitude, longitude } = locationParameters;
   return (
     <MapView
@@ -33,13 +35,16 @@ const Map = ({ location, style, onMapSelect }) => {
       onPress={e => onMapSelect(e.nativeEvent)}
       animateCamera={{ duration: 3 }}
     >
-      {location && (
-        <Marker coordinate={{
-          latitude: +latitude,
-          longitude: +longitude,
-          latitudeDelta: +latitudeDelta,
-          longitudeDelta: +longitudeDelta
-        }}/>)}
+      {location.latitude && location.longitude ? (
+        <Marker
+          image={pin}
+          coordinate={{
+            latitude: +latitude,
+            longitude: +longitude,
+            latitudeDelta: +latitudeDelta,
+            longitudeDelta: +longitudeDelta
+          }}/>
+      ) : null}
     </MapView>
   );
 };

@@ -15,6 +15,7 @@ const style = StyleSheet.create({
 
 import MapView, {Marker} from 'react-native-maps';
 
+const pin = require('../../../../../assets/images/pin.png');
 
 const LocationTab = ({latitude, longitude}) => {
   return (
@@ -29,7 +30,11 @@ const LocationTab = ({latitude, longitude}) => {
         }}
         style={style.map}
       >
-        <Marker coordinate={{latitude, longitude}}/>
+        <Marker
+          image={pin}
+          pinColor={'#1078E1'}
+          coordinate={{latitude, longitude}}
+        />
       </MapView>
     </View>
   );
