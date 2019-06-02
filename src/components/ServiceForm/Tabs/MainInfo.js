@@ -15,7 +15,7 @@ const renderFields = {
   businessId: { label: "Бизнес:", type: "string", defaultValue: "", render: false },
   serviceId: { label: "Вид Услуги:", type: "select", defaultValue: "", render: true },
   name: { label: "Название:", key: "name", type: "string", defaultValue: "", render: true },
-  // description: { label: "Описание:", type: "string", defaultValue: "", render: true },
+  description: { label: "Описание:", type: "string", defaultValue: "", render: true },
   price: { label: "Цена, ГРН:", type: "number", defaultValue: "", render: true },
   duration: { label: "Продолжительность, минуты:", type: "number", defaultValue: "", render: true },
   serviceClass: { label: "Класс обслуживания:", type: "string", defaultValue: [], render: false }

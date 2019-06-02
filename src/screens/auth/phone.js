@@ -1,18 +1,17 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {
-  StyleSheet,
-  TouchableWithoutFeedback,
   Keyboard,
   Image,
   KeyboardAvoidingView,
-  ScrollView,
   Dimensions,
   View
 } from "react-native";
 import {Toast} from "native-base";
 import {TextInput, Button} from "react-native-paper";
 
+
+import {DismissKeyboard} from '../../components';
 import appActions from "../../redux/app/actions";
 import authActions from "../../redux/auth/actions";
 
@@ -96,31 +95,33 @@ class Phone extends Component {
     const {validPhone, getCodeHandler} = this;
     return (
       <KeyboardAvoidingView behavior="position" enabled={true} keyboardVerticalOffset={-100}>
-        <View keyboardShouldPersistTaps={'always'}>
-          <View style={styles.container}>
-            <View style={styles.logo}>
-              <Image source={logoURL} style={styles.image}/>
-            </View>
-            <View style={styles.input}>
-              <TextInput
-                value={this.state.phone}
-                onChangeText={value => this.phoneInput(value)}
-                mode={"outlined"}
-                keyboardType={"phone-pad"}
-                label={"Номер телефона"}
-              />
-            </View>
-            <View>
-              <Button
-                disabled={!validPhone()}
-                onPress={getCodeHandler}
-                mode={"contained"}
-              >
-                Получить код
-              </Button>
+        <DismissKeyboard>
+          <View keyboardShouldPersistTaps={'always'}>
+            <View style={styles.container}>
+              <View style={styles.logo}>
+                <Image source={logoURL} style={styles.image}/>
+              </View>
+              <View style={styles.input}>
+                <TextInput
+                  value={this.state.phone}
+                  onChangeText={value => this.phoneInput(value)}
+                  mode={"outlined"}
+                  keyboardType={"phone-pad"}
+                  label={"Номер телефона"}
+                />
+              </View>
+              <View>
+                <Button
+                  disabled={!validPhone()}
+                  onPress={getCodeHandler}
+                  mode={"contained"}
+                >
+                  Получить код
+                </Button>
+              </View>
             </View>
           </View>
-        </View>
+        </DismissKeyboard>
       </KeyboardAvoidingView>
     );
   };

@@ -6,6 +6,7 @@ import AddressForm from './AddressForm';
 import PackageForm from './PackageForm';
 import EmptyScreen from './EmptyScreen';
 import Field from './Field';
+import DismissKeyboard from './DismissKeyboard'
 
 
 export {
@@ -16,5 +17,6 @@ export {
   AddressForm,
   PackageForm,
   EmptyScreen,
-  Field
+  Field,
+  DismissKeyboard
 };

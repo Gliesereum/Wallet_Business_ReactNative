@@ -13,7 +13,7 @@ import {
   Text
 } from "native-base";
 
-import {Platform} from 'react-native'
+import { Platform } from "react-native";
 
 type FieldProps = {
   type: "string" | "number" | "select" | "time" | "array",
@@ -24,7 +24,7 @@ type FieldProps = {
   onChange: Function;
 }
 
-const StringField = ({ inputKey, label, value, type, error, onChange }) => {
+const StringField = ({ inputKey, label, value = "", type, error, onChange }) => {
   return (
     <Item fixedLabel key={inputKey}>
       <Label style={{ paddingTop: 4 }}>{label}</Label>
@@ -51,6 +51,9 @@ const NumberField = ({ inputKey, label, value, type, error, onChange }) => {
 };
 
 const SelectField = ({ inputKey, label, value, type, options, onChange }) => {
+  const selectedOptions = Platform.OS === 'android' ?
+    [{key: 'empty', value: '', label: 'Выберите'}, ...options] :
+    options;
   return (
     <Item key={inputKey}>
       <Label style={{ paddingTop: 4 }}>{label}</Label>
@@ -64,16 +67,7 @@ const SelectField = ({ inputKey, label, value, type, options, onChange }) => {
         value={value}
         onValueChange={value => onChange(inputKey, value)}
       >
-
-        {Platform.OS === 'android' && (
-          <Picker.Item
-            label={'Выберите'}
-            key={'select-empty-field'}
-            value={' '}
-          />
-        )}
-
-        {options.map(item => (
+        {selectedOptions.map(item => (
           <Picker.Item
             label={item.name}
             key={item.id}
@@ -110,7 +104,7 @@ const ArrayField = ({ inputKey, label, value, type, options, error, onChange }) 
           onPress={onInput(item)}
         />
         <Body>
-        <Text>{item.title}</Text>
+          <Text>{item.title}</Text>
         </Body>
       </ListItem>
     );
