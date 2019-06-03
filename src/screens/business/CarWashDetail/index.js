@@ -20,7 +20,7 @@ import {
 import appActions from "../../../redux/app/actions";
 import businessActions from "../../../redux/washes/actions";
 
-import { Header as HeaderNavigation } from "react-navigation";
+import withLoadData from './withLoadData';
 
 
 const headerLogo = require("../../../../assets/images/coupler-logo-hedaer.png");
@@ -220,4 +220,7 @@ class InfoCarWash extends Component {
 }
 
 
-export default connect(state => state, ({ ...appActions, ...businessActions }))(InfoCarWash);
+export default connect(
+  state => state,
+  ({ ...appActions, ...businessActions }))
+(withLoadData(InfoCarWash));

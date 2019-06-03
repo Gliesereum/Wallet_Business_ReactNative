@@ -32,12 +32,7 @@ class CarWashes extends Component {
   }
 
   initScreen = async () => {
-    const {$getPriceService, $getServicePackages, $getRecord} = this.props;
     await this.props.$getWashes();
-    const {washes} = this.props.washes;
-    Promise.all(washes.map(item => $getPriceService(item.id)));
-    Promise.all(washes.map(item => $getServicePackages(item.id)));
-    $getRecord(washes.map(item => item.id));
   };
 
   _deleteBusinessHandler = async businessId => {

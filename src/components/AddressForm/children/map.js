@@ -1,9 +1,10 @@
-// @flow
 import React from "react";
 
 import MapView, { Marker } from "react-native-maps";
 
 const pin = require('../../../../assets/images/pin.png');
+
+import customMapStyle from '../../../config/map';
 
 
 const defaultLocation = {
@@ -24,6 +25,7 @@ const Map = ({ location, style, onMapSelect }) => {
   const { latitudeDelta, longitudeDelta, latitude, longitude } = locationParameters;
   return (
     <MapView
+      customMapStyle={customMapStyle}
       style={style}
       provider="google"
       region={{

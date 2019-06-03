@@ -1,14 +1,14 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { View, Text, List, ListItem } from "native-base";
+import {StyleSheet, ScrollView} from "react-native";
+import {View, Text, List, ListItem} from "native-base";
 import {EmptyScreen} from "../../../../components";
 
 
 const styles = StyleSheet.create({
-  emptyList: { flex: 1, justifyContent: "center", alignItems: "center" }
+  emptyList: {flex: 1, justifyContent: "center", alignItems: "center"}
 });
 
-const PriceTab = ({ services, onItemSelect, onServicePriceDelete }) => {
+const PriceTab = ({services, onItemSelect, onServicePriceDelete}) => {
 
   const renderEmptyList = () => {
     return <EmptyScreen message={'Пустой список'}/>
@@ -28,9 +28,11 @@ const PriceTab = ({ services, onItemSelect, onServicePriceDelete }) => {
 
   const renderList = () => {
     return (
-      <List>
-        {services.map(renderItemPrice)}
-      </List>
+      <ScrollView>
+        <List>
+          {services.map(renderItemPrice)}
+        </List>
+      </ScrollView>
     );
   };
 

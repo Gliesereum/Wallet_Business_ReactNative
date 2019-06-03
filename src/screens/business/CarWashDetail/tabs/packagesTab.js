@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
-import { View, Text, List, ListItem } from "native-base";
+import { StyleSheet, ScrollView } from "react-native";
+import { Text, List, ListItem } from "native-base";
 import {EmptyScreen} from "../../../../components";
 
 
@@ -28,9 +28,11 @@ const PriceTab = ({ packages, onItemSelect, onPackageDelete }) => {
 
   const renderList = () => {
     return (
-      <List>
-        {packages.map(renderItemPackage)}
-      </List>
+      <ScrollView>
+        <List>
+          {packages.map(renderItemPackage)}
+        </List>
+      </ScrollView>
     );
   };
 

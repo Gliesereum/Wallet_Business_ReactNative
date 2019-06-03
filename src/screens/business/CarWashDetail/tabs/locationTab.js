@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {View, Text} from 'native-base';
+import {View} from 'native-base';
+
+import customMapStyle from '../../../../config/map';
 
 const style = StyleSheet.create({
   container: {flex: 1},
@@ -17,10 +19,12 @@ import MapView, {Marker} from 'react-native-maps';
 
 const pin = require('../../../../../assets/images/pin.png');
 
+
 const LocationTab = ({latitude, longitude}) => {
   return (
     <View style={style.container}>
       <MapView
+        customMapStyle={customMapStyle}
         provider="google"
         initialRegion={{
           latitude,
