@@ -19,7 +19,7 @@ const todayStartPeriod = new Date().setHours(0, 0, 0, 0);
 const todayEndPeriod = new Date().setHours(23, 59, 59, 0);
 
 
-const startOfWeek = +moment().startOf("week");
+const startOfWeek = +moment().startOf("isoWeek");
 const startOfMonth = +moment().startOf("month");
 const startOfYear = +moment().startOf("year");
 
@@ -67,7 +67,7 @@ class OrdersTab extends Component {
       records: [],
       loading: false,
       period: "today",
-      mode: "list",                // list, chart
+      mode: "chart",                // list, chart
       periodSelectBarHeight: 0
     };
   }
@@ -418,6 +418,7 @@ class OrdersTab extends Component {
   };
 
   render() {
+    console.log(this.state.records);
     return this.renderTab();
   }
 
