@@ -17,7 +17,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/coupler-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
