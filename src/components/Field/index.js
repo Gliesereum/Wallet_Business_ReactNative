@@ -15,12 +15,13 @@ type P = {
   label: String,
   fieldKey: String,
   options?: Array<OptionType>,
-  keyboardType?: 'default' | 'number-pad' | 'decimal-pad' | 'numeric' | 'email-address' | 'phone-pad'
+  keyboardType?: 'default' | 'number-pad' | 'decimal-pad' | 'numeric' | 'email-address' | 'phone-pad',
+  autoFocus?: Boolean
 };
 
 const fieldTypes = {
   text: TextInput,
-  select: SelectInput
+  select: SelectInput,
 };
 
 

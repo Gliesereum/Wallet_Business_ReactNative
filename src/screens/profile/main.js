@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 
-import {StyleSheet, KeyboardAvoidingView, ScrollView, Platform} from 'react-native';
+import {StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Dimensions} from 'react-native';
 import {Container, Content, Icon, Button, Toast} from "native-base";
 
-import { Header } from 'react-navigation';
 
 import {asyncRequestTest} from "../../utils";
 import {HeaderLayout} from "../../components/Layout";
@@ -16,7 +15,8 @@ import {UserProfileForm} from '../../components/Forms';
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 12,
+    padding: 8,
+    height: 160000
   }
 });
 
@@ -24,13 +24,6 @@ const styles = StyleSheet.create({
 class Main extends Component {
 
   fillUserData = obj => {
-    // return fields.reduce((acc, field) => {
-    //   if (!obj[field.key] || !obj[field.key].length) {
-    //     obj[field.key] = field.defaultValue;
-    //     return acc;
-    //   }
-    //   return acc;
-    // }, obj);
     return obj;
   };
 
@@ -64,20 +57,15 @@ class Main extends Component {
           )}
           body={"Основна Информация"}
         />
-        <Content style={styles.container}>
-          <KeyboardAvoidingView
-            style = {{ flex: 1 }}
-            behavior = {Platform.OS === 'android' ? 'padding' : 'position'}
-            keyboardVerticalOffset={Platform.select({ios: 0, android: 300})}
-          >
-            <ScrollView keyboardShouldPersistTaps={'always'}>
-              <UserProfileForm onUpdate={this.updateProfile} user={user}/>
-            </ScrollView>
-          </KeyboardAvoidingView>
+        <Content>
+          <ScrollView keyboardShouldPersistTaps={'always'}>
+            <UserProfileForm onUpdate={this.updateProfile} user={user}/>
+          </ScrollView>
         </Content>
       </Container>
     );
   }
+
 
 }
 

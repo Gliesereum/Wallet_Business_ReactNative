@@ -4,7 +4,7 @@ import {View} from 'react-native';
 import {HelperText, TextInput} from 'react-native-paper';
 
 
-const Text = ({value, onChange, onBlur, label, error, touched, keyboardType}) => {
+const Text = ({value, onChange, onBlur, label, error, touched, keyboardType, autoFocus}) => {
   return (
     <View>
       <TextInput
@@ -15,6 +15,7 @@ const Text = ({value, onChange, onBlur, label, error, touched, keyboardType}) =>
         mode={"outlined"}
         onBlur={onBlur}
         keyboardType={keyboardType}
+        autoFocus={autoFocus}
       />
       <HelperText type="error" visible={true}>
         {touched && error}

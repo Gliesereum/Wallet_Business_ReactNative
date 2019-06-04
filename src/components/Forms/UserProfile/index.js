@@ -36,7 +36,7 @@ const UserProfileForm = (props: P) => {
     <Formik initialValues={props.user} onSubmit={props.onUpdate} validationSchema={Schema}>
       {props => {
         return (
-          <View>
+          <View style={{padding: 8}}>
             {fields.map(field => renderItemInput({
               ...field,
               value: props.values[field.key],

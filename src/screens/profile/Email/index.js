@@ -9,13 +9,13 @@ import {
   Toast,
   View,
   Form,
-  Input,
-  Label,
-  Item,
   ListItem,
   Body
 } from "native-base";
+
 import { asyncRequestTest, asyncRequestAuth } from "../../../utils";
+
+import {Field} from '../../../components';
 
 import { HeaderLayout } from "../../../components/Layout";
 
@@ -84,17 +84,17 @@ class Email extends Component {
     const { code } = this.state;
     return (
       <Form>
-        <Item floatingLabel>
-          <Label style={{ paddingTop: 4 }}>Код</Label>
-          <Input
-            value={code}
-            onChangeText={text => onInput("code", text)}
-            keyboardType={"numeric"}
-            autoFocus={true}
-          />
-        </Item>
+        <Field
+          type={'text'}
+          value={code}
+          onChange={text => onInput("code", text)}
+          keyboardType={"numeric"}
+          label={'Код'}
+          fieldKey={'code'}
+          autoFocus
+        />
         <Button
-          style={{ margin: 15, marginTop: 50 }}
+          style={{ marginTop: 8 }}
           disabled={code.length !== 6}
           onPress={sendCode}
           block
@@ -110,19 +110,19 @@ class Email extends Component {
     const { email, gotCode } = this.state;
     return (
       <Form>
-        <Item floatingLabel>
-          <Label style={{ paddingTop: 4 }}>Почта</Label>
-          <Input
-            value={email}
-            onChangeText={text => onInput("email", text)}
-            keyboardType={"email-address"}
+
+        <Field
+          type={'text'}
+          value={email}
+          onChange={text => onInput("email", text)}
+          label={'Почта'}
+          fieldKey={'email'}
+          keyboardType={'email-address'}
           />
-        </Item>
         {gotCode ? (
           this.renderCodeForm()
         ) : (
           <Button
-            style={{ margin: 15, marginTop: 50 }}
             disabled={!emailValid()}
             onPress={getCode}
             block
@@ -147,7 +147,7 @@ class Email extends Component {
           )}
           body={("Электронная почта")}
         />
-        <Content>
+        <Content style={{padding: 8}}>
           {email ? this.renderEmailsList() : this.renderEmailForm()}
         </Content>
       </Container>

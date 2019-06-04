@@ -67,7 +67,7 @@ class OrdersTab extends Component {
       records: [],
       loading: false,
       period: "today",
-      mode: "chart",                // list, chart
+      mode: "list",                // list, chart
       periodSelectBarHeight: 0
     };
   }
