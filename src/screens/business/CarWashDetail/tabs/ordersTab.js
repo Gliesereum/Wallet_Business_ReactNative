@@ -8,6 +8,8 @@ import { Header } from "react-navigation";
 
 import moment from "moment";
 
+import periods from './periods';
+
 import { EmptyScreen } from "../../../../components";
 
 import { asyncRequestAuth } from "../../../../utils";
@@ -15,13 +17,6 @@ import { asyncRequestAuth } from "../../../../utils";
 const screenHeight = Dimensions.get("window").height;
 
 const listFontSize = 12;
-const todayStartPeriod = new Date().setHours(0, 0, 0, 0);
-const todayEndPeriod = new Date().setHours(23, 59, 59, 0);
-
-
-const startOfWeek = +moment().startOf("isoWeek");
-const startOfMonth = +moment().startOf("month");
-const startOfYear = +moment().startOf("year");
 
 const chartConfig = {
   backgroundColor: "#4baaee",
@@ -39,13 +34,6 @@ const tabMode = [
   { key: "chart", value: "chart", icon: "show-chart" }
 ];
 
-const periods = {
-  today: { label: "Текущий день", from: todayStartPeriod, to: todayEndPeriod },
-  thisWeek: { label: "Текущая неделя", from: startOfWeek, to: todayEndPeriod },
-  thisMonth: { label: "Текущий месяц", from: startOfMonth, to: todayEndPeriod },
-  thisYear: { label: "Текущий год", from: startOfYear, to: todayEndPeriod },
-  wholePeriod: { label: "Весь период", from: 0, to: 1745411340867 }
-};
 
 const statusTranslate = key => {
   const translatesList = {
@@ -418,7 +406,6 @@ class OrdersTab extends Component {
   };
 
   render() {
-    console.log(this.state.records);
     return this.renderTab();
   }
 

@@ -31,6 +31,7 @@ import PriceTab from "./tabs/priceTab";
 import ScheduleTab from "./tabs/scheduleTab";
 import PackageTab from "./tabs/packagesTab";
 import OrdersTab from "./tabs/ordersTab";
+import AnalyticTab from "./tabs/analyticTab";
 
 import { asyncRequestAuth } from "../../../utils";
 
@@ -54,7 +55,8 @@ const tabs = [
   { label: "Услуги", key: "services", node: PriceTab },
   { label: "Пакет Услуг", key: "packages", node: PackageTab },
   { label: "Рассписание", key: "schedule", node: ScheduleTab },
-  { label: "Отчеты", key: "schedule", node: OrdersTab }
+  { label: "Отчеты", key: "schedule", node: OrdersTab },
+  { label: "Аналитика", key: "analytic", node: AnalyticTab },
 ];
 
 
