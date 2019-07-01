@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Alert, Dimensions, Image } from "react-native";
+import {Alert, Dimensions, Image, StyleSheet} from "react-native";
 import {
   Button,
   Container,
@@ -36,6 +36,13 @@ import AnalyticTab from "./tabs/analyticTab";
 import { asyncRequestAuth } from "../../../utils";
 
 const deviceHeight = Dimensions.get("screen").height;
+
+const styles = StyleSheet.create({
+  header:{
+    marginTop: 20
+  }
+});
+
 
 
 const BUTTONS = [
@@ -184,7 +191,7 @@ class InfoCarWash extends Component {
     return (
       <Container style={{ height: deviceHeight - Header.HEIGHT + 20 }}>
 
-        <Header>
+        <Header style={styles.header}>
           <Left>
             <Button transparent onPress={() => navigation.goBack()}>
               <Icon name="arrow-back"/>

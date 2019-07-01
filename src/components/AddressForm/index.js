@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     right: 0,
     marginTop: Header.HEIGHT
   },
+  header:{
+    marginTop: 20
+  },
   map: {
     flex: 1,
     position: "absolute",
